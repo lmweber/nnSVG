@@ -5,9 +5,9 @@ Title: Method for scalable identification of spatially variable genes (SVGs) in
 Description: Method for scalable identification of spatially variable genes 
     (SVGs) in spatially resolved transcriptomics data. This method is based on 
     nearest neighbor Gaussian processes (Datta et al. 2016) and uses the BRISC 
-    algorithm (Saha and Datta 2018) for model fitting. The method scales 
-    linearly in the number of spatial coordinates, and can be applied to 
-    datasets containing thousands of spatial coordinates.
+    algorithm (Saha and Datta 2018). The method scales linearly in the number 
+    of spatial coordinates, and can be applied to datasets containing thousands 
+    of spatial coordinates.
 Authors@R:
     person("Lukas M.", "Weber", 
            email = "lukas.weber.edu@gmail.com", 
@@ -30,12 +30,15 @@ Imports:
     SummarizedExperiment, 
     BRISC, 
     BiocParallel, 
+    Matrix, 
     matrixStats, 
-    stats
+    stats, 
+    scran, 
+    scuttle
 VignetteBuilder: knitr
 Suggests:
     BiocStyle, 
     knitr, 
     rmarkdown, 
     STexampleData
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

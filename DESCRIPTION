@@ -1,0 +1,41 @@
+Package: nnSVG
+Version: 0.99.0
+Title: Method for scalable identification of spatially variable genes (SVGs) in 
+    spatially resolved transcriptomics data.
+Description: Method for scalable identification of spatially variable genes 
+    (SVGs) in spatially resolved transcriptomics data. This method is based on 
+    nearest neighbor Gaussian processes (Datta et al. 2016) and uses the BRISC 
+    algorithm (Saha and Datta 2018) for model fitting. The method scales 
+    linearly in the number of spatial coordinates, and can be applied to 
+    datasets containing thousands of spatial coordinates.
+Authors@R:
+    person("Lukas M.", "Weber", 
+           email = "lukas.weber.edu@gmail.com", 
+           role = c("aut", "cre"), 
+           comment = c(ORCID = "0000-0002-3282-1730")), 
+    person("Stephanie C.", "Hicks", 
+           email = "shicks19@jhu.edu", 
+           role = c("aut"), 
+           comment = c(ORCID = "0000-0002-7858-0231"))
+URL: https://github.com/lmweber/nnSVG
+BugReports: https://github.com/lmweber/nnSVG/issues
+License: MIT + file LICENSE
+biocViews:
+    Spatial, 
+    SingleCell, 
+    Transcriptomics
+Imports:
+    SpatialExperiment, 
+    SingleCellExperiment, 
+    SummarizedExperiment, 
+    BRISC, 
+    BiocParallel, 
+    matrixStats, 
+    stats
+VignetteBuilder: knitr
+Suggests:
+    BiocStyle, 
+    knitr, 
+    rmarkdown, 
+    STexampleData
+RoxygenNote: 7.1.1

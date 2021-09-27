@@ -1,7 +1,7 @@
 Package: nnSVG
 Version: 0.99.0
 Title: Method for scalable identification of spatially variable genes (SVGs) in 
-    spatially resolved transcriptomics data.
+    spatially resolved transcriptomics data
 Description: Method for scalable identification of spatially variable genes 
     (SVGs) in spatially resolved transcriptomics data. This method is based on 
     nearest neighbor Gaussian processes (Datta et al. 2016) and uses the BRISC 
@@ -32,9 +32,10 @@ Imports:
     BiocParallel, 
     Matrix, 
     matrixStats, 
-    stats, 
     scran, 
-    scuttle
+    scuttle, 
+    stats, 
+    methods
 VignetteBuilder: knitr
 Suggests:
     BiocStyle, 

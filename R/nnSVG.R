@@ -75,7 +75,8 @@
 #' @importFrom SummarizedExperiment assayNames rowData 'rowData<-'
 #' @importFrom BRISC BRISC_order BRISC_neighbor BRISC_estimation
 #' @importFrom BiocParallel bplapply MulticoreParam
-#' @importFrom Matrix rowMeans rowVars
+#' @importFrom Matrix rowMeans
+#' @importFrom matrixStats rowVars
 #' @importFrom stats lm logLik pchisq p.adjust
 #' 
 #' @export

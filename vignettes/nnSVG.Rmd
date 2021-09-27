@@ -1,0 +1,32 @@
+---
+title: "nnSVG package"
+author: 
+  - name: Lukas M. Weber
+    affiliation: &id1 "Johns Hopkins Bloomberg School of Public Health, Baltimore, USA"
+  - name: Stephanie C. Hicks
+    affiliation: &id1
+package: nnSVG
+output: 
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{nnSVG package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+# Introduction
+
+Vignette template for `nnSVG` package.
+
+```{r, message=FALSE}
+library(nnSVG)
+```
+
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+

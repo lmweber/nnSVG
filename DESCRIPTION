@@ -8,7 +8,7 @@ Description: Method for scalable identification of spatially variable genes
     algorithm (Saha and Datta 2018). The method scales linearly in the number 
     of spatial coordinates, and can be applied to datasets containing thousands 
     of spatial coordinates.
-Authors@R:
+Authors@R: c(
     person("Lukas M.", "Weber", 
            email = "lukas.weber.edu@gmail.com", 
            role = c("aut", "cre"), 
@@ -16,7 +16,7 @@ Authors@R:
     person("Stephanie C.", "Hicks", 
            email = "shicks19@jhu.edu", 
            role = c("aut"), 
-           comment = c(ORCID = "0000-0002-7858-0231"))
+           comment = c(ORCID = "0000-0002-7858-0231")))
 URL: https://github.com/lmweber/nnSVG
 BugReports: https://github.com/lmweber/nnSVG/issues
 License: MIT + file LICENSE

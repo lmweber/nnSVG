@@ -49,6 +49,7 @@
 #' @importFrom scran quickCluster computeSumFactors
 #' @importFrom scuttle logNormCounts
 #' @importFrom methods isClass
+#' @importFrom Matrix rowSums
 #' 
 #' @export
 #' 

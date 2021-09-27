@@ -4,13 +4,7 @@
 \alias{preprocessSVG}
 \title{preprocessSVG}
 \usage{
-preprocessSVG(
-  spe,
-  in_tissue = TRUE,
-  filter_genes = 20,
-  filter_mito = TRUE,
-  seed = 123
-)
+preprocessSVG(spe, in_tissue = TRUE, filter_genes = 20, filter_mito = TRUE)
 }
 \arguments{
 \item{spe}{\code{SpatialExperiment} Input data, assumed to be a 
@@ -34,9 +28,6 @@ disable.}
 Assumes the \code{rowData} slot of \code{spe} contains a column named 
 \code{gene_name}, which can be used to identify mitochondrial genes. 
 Default = TRUE. Set to FALSE to disable.}
-
-\item{seed}{\code{integer} Random seed for steps requiring random seed. 
-Default = 123.}
 }
 \value{
 Returns a \code{SpatialExperiment} object that can be provided to 
@@ -59,10 +50,11 @@ Bioconductor (OSTA)}.
 \examples{
 library(SpatialExperiment)
 library(STexampleData)
-library(nnSVG)
 
 spe <- Visium_humanDLPFC()
 
+# set seed for scran::quickCluster() in preprocessSVG()
+set.seed(123)
 spe <- preprocessSVG(spe)
 
 spe

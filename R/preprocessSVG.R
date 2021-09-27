@@ -35,9 +35,6 @@
 #'   \code{gene_name}, which can be used to identify mitochondrial genes. 
 #'   Default = TRUE. Set to FALSE to disable.
 #' 
-#' @param seed \code{integer} Random seed for steps requiring random seed. 
-#'   Default = 123.
-#' 
 #' 
 #' @return Returns a \code{SpatialExperiment} object that can be provided to 
 #'   \code{\link{nnSVG}}.
@@ -56,17 +53,17 @@
 #' @examples
 #' library(SpatialExperiment)
 #' library(STexampleData)
-#' library(nnSVG)
 #' 
 #' spe <- Visium_humanDLPFC()
 #' 
+#' # set seed for scran::quickCluster() in preprocessSVG()
+#' set.seed(123)
 #' spe <- preprocessSVG(spe)
 #' 
 #' spe
 #' 
 preprocessSVG <- function(spe, in_tissue = TRUE, 
-                          filter_genes = 20, filter_mito = TRUE, 
-                          seed = 123) {
+                          filter_genes = 20, filter_mito = TRUE) {
   
   stopifnot(isClass(spe, "SpatialExperiment"))
   
@@ -96,7 +93,6 @@ preprocessSVG <- function(spe, in_tissue = TRUE,
   
   # normalization and log-transformation
   
-  set.seed(seed)
   qclus <- quickCluster(spe)
   spe <- computeSumFactors(spe, cluster = qclus)
   spe <- logNormCounts(spe)

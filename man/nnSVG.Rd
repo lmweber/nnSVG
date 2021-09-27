@@ -87,10 +87,11 @@ or using the default filtering arguments in `nnSVG()`.
 \examples{
 library(SpatialExperiment)
 library(STexampleData)
-library(nnSVG)
 
 spe <- Visium_humanDLPFC()
 
+# set seed for scran::quickCluster() in preprocessSVG()
+set.seed(123)
 spe <- preprocessSVG(spe)
 
 # subset 1 gene

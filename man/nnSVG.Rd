@@ -98,8 +98,14 @@ spe <- preprocessSVG(spe)
 spe_1 <- spe[1, ]
 spe_1 <- nnSVG(spe_1, verbose = TRUE)
 
+# show results
+rowData(spe_1)
+
 # subset 100 genes and use parallelization
 # spe_100 <- spe[1:100, ]
 # spe_100 <- nnSVG(spe_100, n_threads = 4)
+
+# show results
+# rowData(spe_100)
 
 }

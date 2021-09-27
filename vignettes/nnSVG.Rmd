@@ -17,10 +17,57 @@ vignette: >
 
 # Introduction
 
-Vignette template for `nnSVG` package.
+`nnSVG` is a method for scalable identification of spatially variable genes (SVGs) in spatially resolved transcriptomics data.
+
+The method is based on nearest neighbor Gaussian processes ([Datta et al. (2016)](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091)) and uses the BRISC algorithm ([Saha and Datta (2018)](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)).
+
+`nnSVG` scales linearly in the number of spatial coordinates, and can be applied to datasets containing thousands of spatial coordinates, e.g. from the 10x Genomics Visium platform.
+
+
+# Example
+
+Here we show a short example demonstrating how to use `nnSVG`.
 
 ```{r, message=FALSE}
+library(SpatialExperiment)
+library(STexampleData)
 library(nnSVG)
+```
+
+```{r}
+# load example dataset
+spe <- Visium_humanDLPFC()
+```
+
+```{r}
+# preprocessing steps
+
+# set seed for scran::quickCluster() used in preprocessSVG()
+set.seed(123)
+
+spe <- preprocessSVG(spe)
+```
+
+```{r}
+# run nnSVG on a single gene for demonstration purposes
+
+# subset 1 gene
+spe_1 <- spe[1, ]
+spe_1 <- nnSVG(spe_1, verbose = TRUE)
+
+# show results
+rowData(spe_1)
+```
+
+```{r, eval=FALSE}
+# code to run nnSVG on 100 genes using parallelization
+
+# subset 100 genes and use parallelization
+# spe_100 <- spe[1:100, ]
+# spe_100 <- nnSVG(spe_100, n_threads = 4)
+
+# show results
+rowData(spe_100)
 ```
 
 

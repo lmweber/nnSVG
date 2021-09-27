@@ -1,5 +1,7 @@
 # nnSVG
 
+[![R build status](https://github.com/lmweber/nnSVG/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/lmweber/nnSVG/actions)
+
 R package containing implementation of our method `nnSVG` for scalable identification of spatially variable genes (SVGs) in spatially resolved transcriptomics data.
 
 References:

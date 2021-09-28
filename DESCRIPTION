@@ -34,7 +34,7 @@ Imports:
     matrixStats, 
     scran, 
     scuttle, 
-    BiocSingular, 
+    scater, 
     igraph, 
     stats, 
     methods

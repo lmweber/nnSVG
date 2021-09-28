@@ -16,8 +16,8 @@
 #' marker genes of major cell types with spatially defined distributions.
 #' 
 #' The most appropriate type of analysis (i.e. whether or not to take into
-#' account for variation due to cell types) will depend on the biological
-#' context of your dataset.
+#' account variation due to cell types) will depend on the biological context of
+#' your dataset.
 #' 
 #' 
 #' @param spe \code{SpatialExperiment} Input data, assumed to be a
@@ -39,7 +39,7 @@
 #' @importFrom SingleCellExperiment logcounts 'colLabels<-'
 #' @importFrom SummarizedExperiment assayNames
 #' @importFrom scran modelGeneVar getTopHVGs buildSNNGraph
-#' @importFrom BiocSingular runPCA
+#' @importFrom scater runPCA
 #' @importFrom igraph cluster_walktrap
 #' @importFrom methods isClass
 #' 
@@ -51,10 +51,12 @@
 #' 
 #' spe <- Visium_humanDLPFC()
 #' 
-#' # set seed for scran::quickCluster() in preprocessSVG()
+#' # set seed for reproducibility
 #' set.seed(123)
 #' spe <- preprocessSVG(spe)
 #' 
+#' # set seed for reproducibility
+#' set.seed(123)
 #' spe <- clusterSVG(spe)
 #' 
 #' # show results

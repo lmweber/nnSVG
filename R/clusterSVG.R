@@ -23,7 +23,7 @@
 #' @param spe \code{SpatialExperiment} Input data, assumed to be a
 #'   \code{\link{SpatialExperiment}} object containing an assay named
 #'   \code{logcounts} containing log-transformed normalized counts, e.g. from
-#'   \code{\link{processSVG}}.
+#'   \code{\link{preprocessSVG}}.
 #' 
 #' @param filter_mito \code{logical} Whether to filter mitochondrial genes. 
 #'   Assumes the \code{rowData} slot of \code{spe} contains a column named 

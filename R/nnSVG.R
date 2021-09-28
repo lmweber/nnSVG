@@ -87,7 +87,7 @@
 #' 
 #' spe <- Visium_humanDLPFC()
 #' 
-#' # set seed for scran::quickCluster() in preprocessSVG()
+#' # set seed for reproducibility
 #' set.seed(123)
 #' spe <- preprocessSVG(spe)
 #' 

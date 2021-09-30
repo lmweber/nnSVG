@@ -91,19 +91,17 @@
 #' set.seed(123)
 #' spe <- preprocessSVG(spe)
 #' 
-#' # subset 1 gene
-#' spe_1 <- spe[1, ]
-#' spe_1 <- nnSVG(spe_1, verbose = TRUE)
+#' # subset genes for faster runtime in this example
+#' set.seed(123)
+#' spe <- spe[sample(seq_len(10)), ]
+#' dim(spe)
+#' 
+#' # run nnSVG
+#' # note: gene filtering has already been performed above
+#' spe <- nnSVG(spe, n_threads = 1)
 #' 
 #' # show results
-#' rowData(spe_1)
-#' 
-#' # subset 100 genes and use parallelization
-#' # spe_100 <- spe[1:100, ]
-#' # spe_100 <- nnSVG(spe_100, n_threads = 4)
-#' 
-#' # show results
-#' # rowData(spe_100)
+#' rowData(spe)
 #' 
 nnSVG <- function(spe, x = NULL, 
                   filter_genes = 20, filter_mito = TRUE, 

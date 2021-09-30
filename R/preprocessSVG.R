@@ -56,6 +56,10 @@
 #' 
 #' spe <- Visium_humanDLPFC()
 #' 
+#' # subset genes for faster runtime in this example
+#' set.seed(123)
+#' spe <- spe[sample(seq_len(1000)), ]
+#' 
 #' # set seed for reproducibility
 #' set.seed(123)
 #' spe <- preprocessSVG(spe)

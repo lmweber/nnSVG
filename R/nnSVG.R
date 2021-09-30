@@ -207,9 +207,9 @@ nnSVG <- function(spe, x = NULL,
     prop_sv = mat_brisc[, "sigma.sq"] / (mat_brisc[, "sigma.sq"] + mat_brisc[, "tau.sq"])
   )
   
-  # -------------------------------------
-  # likelihood ratio statistics and tests
-  # -------------------------------------
+  # ------------------------------------------
+  # likelihood ratio (LR) statistics and tests
+  # ------------------------------------------
   
   # calculate log likelihoods for non-spatial models
   
@@ -226,17 +226,22 @@ nnSVG <- function(spe, x = NULL,
     loglik_lm = loglik_lm
   )
   
-  # calculate likelihood ratio statistics and tests (Wilks' theorem, asymptotic 
-  # chi-square with 2 degrees of freedom since 2 more parameters in full model)
+  # calculate LR statistics and tests (Wilks' theorem, asymptotic chi-square
+  # with 2 degrees of freedom since 2 more parameters in full model)
   
   LR_stat = -2 * (mat_brisc[, "loglik_lm"] - mat_brisc[, "loglik"])
   
   pval <- 1 - pchisq(LR_stat, df = 2)
   padj <- p.adjust(pval, method = "BH")
   
+  # rank SVGs according to LR statistics
+  
+  LR_rank <- rank(-1 * LR_stat)
+  
   mat_brisc <- cbind(
     mat_brisc, 
     LR_stat = LR_stat, 
+    rank = LR_rank, 
     pval = pval, 
     padj = padj
   )

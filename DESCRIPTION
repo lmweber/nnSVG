@@ -43,5 +43,6 @@ Suggests:
     BiocStyle, 
     knitr, 
     rmarkdown, 
-    STexampleData
+    STexampleData, 
+    ggplot2
 RoxygenNote: 7.1.2

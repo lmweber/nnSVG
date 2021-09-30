@@ -24,14 +24,19 @@ The method is based on nearest neighbor Gaussian processes ([Datta et al. (2016)
 `nnSVG` scales linearly in the number of spatial coordinates, and can be applied to datasets containing thousands of spatial coordinates, e.g. from the 10x Genomics Visium platform.
 
 
-# Example
+# Tutorial
+
+## Run nnSVG
 
 Here we show a short example demonstrating how to use `nnSVG`.
+
+For faster runtime in this example, we subsample the dataset after gene filtering to contain only a small number of genes. For a full analysis, the subsampling step can be skipped.
 
 ```{r, message=FALSE}
 library(SpatialExperiment)
 library(STexampleData)
 library(nnSVG)
+library(ggplot2)
 ```
 
 ```{r}
@@ -49,25 +54,69 @@ spe <- preprocessSVG(spe)
 ```
 
 ```{r}
-# run nnSVG on a single gene for demonstration purposes
+# subsampling to select small number of random genes and one known SVG for 
+# faster runtime in example
+set.seed(123)
+ix_20 <- sample(seq_len(nrow(spe)), 20)
+ix_snap25 <- which(rowData(spe)$gene_name == "SNAP25")
+ix <- c(ix_20, ix_snap25)
 
-# subset 1 gene
-spe_1 <- spe[1, ]
-spe_1 <- nnSVG(spe_1, verbose = TRUE)
-
-# show results
-rowData(spe_1)
+spe <- spe[ix, ]
+dim(spe)
 ```
 
-```{r, eval=FALSE}
-# code to run nnSVG on 100 genes using parallelization
+```{r}
+# run nnSVG
 
-# subset 100 genes and use parallelization
-# spe_100 <- spe[1:100, ]
-# spe_100 <- nnSVG(spe_100, n_threads = 4)
+# note: gene filtering was already performed above, so we disable it here
+spe <- nnSVG(spe, filter_genes = FALSE, filter_mito = FALSE, n_threads = 1)
 
 # show results
-rowData(spe_100)
+rowData(spe)
+```
+
+
+## Investigate results
+
+The results are stored in the `rowData` of the `SpatialExperiment` object, as shown above.
+
+The main results of interest are:
+
+- `LR_stat`: likelihood ratio (LR) statistics
+- `rank`: rank of top SVGs according to LR statistics
+- `p_adj`: adjusted p-values, which can be used to define a cutoff for significant SVGs
+- `prop_sv`: effect size, defined as proportion of spatial variance out of total variance
+
+```{r}
+# number of significant SVGs
+table(rowData(spe)$padj <= 0.05)
+```
+
+```{r}
+# show results for top n SVGs
+rowData(spe)[rowData(spe)$rank <= 5, ]
+```
+
+```{r, fig.width=4, fig.height=3.5}
+# plot expression of top SVG
+ix <- which(rowData(spe)$rank == 1)
+ix_name <- rowData(spe)$gene_name[ix]
+
+df <- as.data.frame(
+  cbind(spatialCoords(spe), 
+        expr = counts(spe)[ix, ]))
+
+ggplot(df, aes(x = x, y = y, color = expr)) + 
+  geom_point(size = 0.4) + 
+  coord_fixed() + 
+  scale_y_reverse() + 
+  scale_color_gradient(low = "gray90", high = "blue") + 
+  ggtitle(ix_name) + 
+  theme_bw() + 
+  theme(panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_blank(), 
+        axis.ticks = element_blank())
 ```
 
 

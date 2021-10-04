@@ -35,6 +35,11 @@
 #'   \code{gene_name}, which can be used to identify mitochondrial genes. 
 #'   Default = TRUE. Set to FALSE to disable.
 #' 
+#' @param deconv \code{logical} Whether to apply normalization by deconvolution
+#'   (see \code{?computeSumFactors} from \code{scran} package) (TRUE) or simpler
+#'   library size normalization (\code{?computeLibraryFactors} from
+#'   \code{scran}) (FALSE). Default = TRUE.
+#' 
 #' 
 #' @return Returns a \code{SpatialExperiment} object that can be provided to 
 #'   \code{\link{nnSVG}}.
@@ -44,6 +49,7 @@
 #' @importFrom SingleCellExperiment counts
 #' @importFrom SummarizedExperiment assayNames
 #' @importFrom scran quickCluster computeSumFactors
+#' @importFrom scuttle computeLibraryFactors
 #' @importFrom scuttle logNormCounts
 #' @importFrom methods isClass
 #' @importFrom Matrix rowSums
@@ -67,7 +73,8 @@
 #' spe
 #' 
 preprocessSVG <- function(spe, in_tissue = TRUE, 
-                          filter_genes = 20, filter_mito = TRUE) {
+                          filter_genes = 20, filter_mito = TRUE, 
+                          deconv = TRUE) {
   
   stopifnot(isClass(spe, "SpatialExperiment"))
   
@@ -97,8 +104,12 @@ preprocessSVG <- function(spe, in_tissue = TRUE,
   
   # normalization and log-transformation
   
-  qclus <- quickCluster(spe)
-  spe <- computeSumFactors(spe, cluster = qclus)
+  if (deconv) {
+    qclus <- quickCluster(spe)
+    spe <- computeSumFactors(spe, cluster = qclus)
+  } else {
+    spe <- computeLibraryFactors(spe)
+  }
   spe <- logNormCounts(spe)
   
   # return object

@@ -4,7 +4,13 @@
 \alias{preprocessSVG}
 \title{preprocessSVG}
 \usage{
-preprocessSVG(spe, in_tissue = TRUE, filter_genes = 20, filter_mito = TRUE)
+preprocessSVG(
+  spe,
+  in_tissue = TRUE,
+  filter_genes = 20,
+  filter_mito = TRUE,
+  deconv = TRUE
+)
 }
 \arguments{
 \item{spe}{\code{SpatialExperiment} Input data, assumed to be a 
@@ -28,6 +34,11 @@ disable.}
 Assumes the \code{rowData} slot of \code{spe} contains a column named 
 \code{gene_name}, which can be used to identify mitochondrial genes. 
 Default = TRUE. Set to FALSE to disable.}
+
+\item{deconv}{\code{logical} Whether to apply normalization by deconvolution
+(see \code{?computeSumFactors} from \code{scran} package) (TRUE) or simpler
+library size normalization (\code{?computeLibraryFactors} from
+\code{scran}) (FALSE). Default = TRUE.}
 }
 \value{
 Returns a \code{SpatialExperiment} object that can be provided to 

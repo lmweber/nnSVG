@@ -30,6 +30,7 @@ Imports:
     SummarizedExperiment, 
     BRISC, 
     BiocParallel, 
+    BiocSingular, 
     Matrix, 
     matrixStats, 
     scry, 

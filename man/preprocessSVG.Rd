@@ -10,8 +10,8 @@ preprocessSVG(
   filter_genes = 20,
   filter_mito = TRUE,
   residuals = TRUE,
-  logcounts = FALSE,
-  logcounts_lib = FALSE
+  logcounts = TRUE,
+  deconv = TRUE
 )
 }
 \arguments{
@@ -37,21 +37,17 @@ Assumes the \code{rowData} slot of \code{spe} contains a column named
 \code{gene_name}, which can be used to identify mitochondrial genes. 
 Default = TRUE. Set to FALSE to disable.}
 
-\item{residuals}{\code{logical} Whether to transform data by calculating
-deviance residuals from an approximate multinomial model using the
-\code{scry} package. Default = TRUE. (Only one of \code{residuals},
-\code{logcounts}, or \code{logcounts_lib} should be TRUE.)}
+\item{residuals}{\code{logical} Whether to calculate deviance residuals from
+an approximate multinomial model using the \code{scry} package for input to
+BRISC. Default = TRUE.}
 
-\item{logcounts}{\code{logical} Whether to transform data by calculating
-log-transformed normalized counts (logcounts) by deconvolution the
-\code{scran} package. Default = FALSE. (Only one of \code{residuals},
-\code{logcounts}, or \code{logcounts_lib} should be TRUE.)}
+\item{logcounts}{\code{logical} Whether to calculate log-transformed
+normalized counts (logcounts) using the \code{scran} package. Default =
+TRUE.}
 
-\item{logcounts_lib}{\code{logical} Whether to transform data by calculating
-log-transformed normalized counts (logcounts) with library size
-normalization using the \code{scran} package. Default = FALSE. (Only one of
-\code{residuals}, \code{logcounts}, or \code{logcounts_lib} should be
-TRUE.)}
+\item{deconv}{\code{logical} Whether to use deconvolution method to calculate
+logcounts (see \code{?scran::computeSumFactors}). If \code{FALSE}, library
+size normalization will be used instead. Default = TRUE.}
 }
 \value{
 Returns a \code{SpatialExperiment} object that can be provided to 

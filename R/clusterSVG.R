@@ -21,9 +21,15 @@
 #' 
 #' 
 #' @param spe \code{SpatialExperiment} Input data, assumed to be a
-#'   \code{\link{SpatialExperiment}} object containing an assay named
-#'   \code{logcounts} containing log-transformed normalized counts, e.g. from
+#'   \code{\link{SpatialExperiment}} object with an \code{assay} slot containing
+#'   either deviance residuals or log-transformed normalized counts, e.g. from
 #'   \code{\link{preprocessSVG}}.
+#' 
+#' @param assay_name \code{character} Name of assay containing preprocessed
+#'   expression values to use for clustering, i.e. either deviance residuals or
+#'   log-transformed normalized counts. Assumed to be either
+#'   \code{binomial_deviance_residuals} or \code{logcounts}. Default =
+#'   \code{binomial_deviance_residuals}.
 #' 
 #' @param filter_mito \code{logical} Whether to filter mitochondrial genes. 
 #'   Assumes the \code{rowData} slot of \code{spe} contains a column named 
@@ -40,6 +46,7 @@
 #' @importFrom SummarizedExperiment assayNames
 #' @importFrom scran modelGeneVar getTopHVGs buildSNNGraph
 #' @importFrom scater runPCA
+#' @importFrom BiocSingular RandomParam
 #' @importFrom igraph cluster_walktrap
 #' @importFrom methods isClass
 #' 
@@ -66,10 +73,14 @@
 #' # show results
 #' colData(spe)
 #' 
-clusterSVG <- function(spe, filter_mito = TRUE) {
+clusterSVG <- function(spe, 
+                       assay_name = c("binomial_deviance_residuals", "logcounts"), 
+                       filter_mito = TRUE) {
   
   stopifnot(isClass(spe, "SpatialExperiment"))
-  stopifnot("logcounts" %in% assayNames(spe))
+  
+  assay_name <- match.arg(assay_name, c("binomial_deviance_residuals", "logcounts"))
+  stopifnot(assay_name %in% assayNames(spe))
   
   # filter mitochondrial genes (if not already done)
   
@@ -80,17 +91,23 @@ clusterSVG <- function(spe, filter_mito = TRUE) {
     spe <- spe[!is_mito, ]
   }
   
-  # feature selection
+  if (assay_name == "binomial_deviance_residuals") {
+    # dimensionality reduction
+    spe <- runPCA(spe, exprs_values = "binomial_deviance_residuals", 
+                  scale = TRUE, name = "PCA", BSPARAM = RandomParam())
+  }
   
-  # fit mean-variance relationship
-  dec <- modelGeneVar(spe)
-  # select top HVGs
-  top_hvgs <- getTopHVGs(dec, prop = 0.1)
-  
-  # dimensionality reduction
-  
-  # compute PCA (note: set random seed for reproducibility)
-  spe <- runPCA(spe, subset_row = top_hvgs)
+  if (assay_name == "logcounts") {
+    # feature selection
+    # fit mean-variance relationship
+    dec <- modelGeneVar(spe)
+    # select top HVGs
+    top_hvgs <- getTopHVGs(dec, prop = 0.1)
+    
+    # dimensionality reduction
+    # compute PCA (note: set random seed for reproducibility)
+    spe <- runPCA(spe, subset_row = top_hvgs)
+  }
   
   # clustering
   

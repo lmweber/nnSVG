@@ -35,21 +35,17 @@
 #'   \code{gene_name}, which can be used to identify mitochondrial genes. 
 #'   Default = TRUE. Set to FALSE to disable.
 #' 
-#' @param residuals \code{logical} Whether to transform data by calculating
-#'   deviance residuals from an approximate multinomial model using the
-#'   \code{scry} package. Default = TRUE. (Only one of \code{residuals},
-#'   \code{logcounts}, or \code{logcounts_lib} should be TRUE.)
+#' @param residuals \code{logical} Whether to calculate deviance residuals from
+#'   an approximate multinomial model using the \code{scry} package for input to
+#'   BRISC. Default = TRUE.
 #' 
-#' @param logcounts \code{logical} Whether to transform data by calculating
-#'   log-transformed normalized counts (logcounts) by deconvolution the
-#'   \code{scran} package. Default = FALSE. (Only one of \code{residuals},
-#'   \code{logcounts}, or \code{logcounts_lib} should be TRUE.)
+#' @param logcounts \code{logical} Whether to calculate log-transformed
+#'   normalized counts (logcounts) using the \code{scran} package. Default =
+#'   TRUE.
 #' 
-#' @param logcounts_lib \code{logical} Whether to transform data by calculating
-#'   log-transformed normalized counts (logcounts) with library size
-#'   normalization using the \code{scran} package. Default = FALSE. (Only one of
-#'   \code{residuals}, \code{logcounts}, or \code{logcounts_lib} should be
-#'   TRUE.)
+#' @param deconv \code{logical} Whether to use deconvolution method to calculate
+#'   logcounts (see \code{?scran::computeSumFactors}). If \code{FALSE}, library
+#'   size normalization will be used instead. Default = TRUE.
 #' 
 #' 
 #' @return Returns a \code{SpatialExperiment} object that can be provided to 
@@ -86,12 +82,10 @@
 #' 
 preprocessSVG <- function(spe, in_tissue = TRUE, 
                           filter_genes = 20, filter_mito = TRUE, 
-                          residuals = TRUE, logcounts = FALSE, 
-                          logcounts_lib = FALSE) {
+                          residuals = TRUE, logcounts = TRUE, 
+                          deconv = TRUE) {
   
   stopifnot(isClass(spe, "SpatialExperiment"))
-  
-  stopifnot(sum(residuals, logcounts, logcounts_lib) == 1)
   
   # keep only spots over tissue
   
@@ -124,13 +118,14 @@ preprocessSVG <- function(spe, in_tissue = TRUE,
                          fam = "binomial", type = "deviance")
   }
   if (logcounts) {
-    qclus <- quickCluster(spe)
-    spe <- computeSumFactors(spe, cluster = qclus)
-    spe <- logNormCounts(spe)
-  }
-  if (logcounts_lib) {
-    spe <- computeLibraryFactors(spe)
-    spe <- logNormCounts(spe)
+    if (deconv) {
+      qclus <- quickCluster(spe)
+      spe <- computeSumFactors(spe, cluster = qclus)
+      spe <- logNormCounts(spe)
+    } else {
+      spe <- computeLibraryFactors(spe)
+      spe <- logNormCounts(spe)
+    }
   }
   
   # return object

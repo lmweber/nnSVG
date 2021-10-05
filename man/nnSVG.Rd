@@ -7,6 +7,7 @@
 nnSVG(
   spe,
   x = NULL,
+  assay_name = c("binomial_deviance_residuals", "logcounts"),
   filter_genes = 20,
   filter_mito = TRUE,
   n_threads = 1,
@@ -14,15 +15,21 @@ nnSVG(
 )
 }
 \arguments{
-\item{spe}{\code{SpatialExperiment} Input data, assumed to be a 
-\code{\link{SpatialExperiment}} object containing an assay named 
-\code{logcounts} containing log-transformed normalized counts, and 
-spatial coordinates stored in the \code{spatialCoords} slot.}
+\item{spe}{\code{SpatialExperiment} Input data, assumed to be a
+\code{\link{SpatialExperiment}} object with \code{assay} slots containing
+deviance residuals and/or log-transformed normalized counts, and spatial
+coordinates stored in the \code{spatialCoords} slot.}
 
 \item{x}{\code{numeric matrix} Optional matrix of covariates (e.g. known 
 cell types) per spatial coordinate. Number of rows must match the number 
 of spatial coordinates (columns) in the input object \code{spe}. Default = 
 NULL, which fits an intercept-only model.}
+
+\item{assay_name}{\code{character} Name of assay containing preprocessed
+expression values to use for clustering, i.e. either deviance residuals or
+log-transformed normalized counts. Assumed to be either
+\code{binomial_deviance_residuals} or \code{logcounts}. Default =
+\code{binomial_deviance_residuals}.}
 
 \item{filter_genes}{\code{integer} Whether to filter low-expressed genes 
 according to total unique molecular identifier (UMI) counts per gene 
@@ -75,10 +82,10 @@ Likelihood ratio tests are calculated using the asymptotic chi-squared
 distribution with 2 degrees of freedom, and adjusted p-values using the 
 Benjamini-Hochberg method.
 
-Assumes the input is provided as a \code{\link{SpatialExperiment}} object 
-containing an assay named \code{logcounts}, which contains log-transformed 
-normalized counts (e.g. using methods from the \code{scater} package; 
-McCarthy et al. 2017), and which has been filtered to remove low-quality 
+Assumes the input is provided as a \code{\link{SpatialExperiment}} object
+with an \code{assay} slot containing either deviance residuals (e.g. from the
+\code{scry} package) or log-transformed normalized counts (e.g. from the
+\code{scran} package), and which has been filtered to remove low-quality
 spatial coordinates.
 
 Low-expressed genes can be filtered before providing the input to `nnSVG()`, 

@@ -4,13 +4,23 @@
 \alias{clusterSVG}
 \title{clusterSVG}
 \usage{
-clusterSVG(spe, filter_mito = TRUE)
+clusterSVG(
+  spe,
+  assay_name = c("binomial_deviance_residuals", "logcounts"),
+  filter_mito = TRUE
+)
 }
 \arguments{
 \item{spe}{\code{SpatialExperiment} Input data, assumed to be a
-\code{\link{SpatialExperiment}} object containing an assay named
-\code{logcounts} containing log-transformed normalized counts, e.g. from
+\code{\link{SpatialExperiment}} object with an \code{assay} slot containing
+either deviance residuals or log-transformed normalized counts, e.g. from
 \code{\link{preprocessSVG}}.}
+
+\item{assay_name}{\code{character} Name of assay containing preprocessed
+expression values to use for clustering, i.e. either deviance residuals or
+log-transformed normalized counts. Assumed to be either
+\code{binomial_deviance_residuals} or \code{logcounts}. Default =
+\code{binomial_deviance_residuals}.}
 
 \item{filter_mito}{\code{logical} Whether to filter mitochondrial genes. 
 Assumes the \code{rowData} slot of \code{spe} contains a column named 

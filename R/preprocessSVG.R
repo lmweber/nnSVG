@@ -35,10 +35,22 @@
 #'   \code{gene_name}, which can be used to identify mitochondrial genes. 
 #'   Default = TRUE. Set to FALSE to disable.
 #' 
-#' @param deconv \code{logical} Whether to apply normalization by deconvolution
-#'   (see \code{?computeSumFactors} from \code{scran} package) (TRUE) or simpler
-#'   library size normalization (\code{?computeLibraryFactors} from
-#'   \code{scran}) (FALSE). Default = TRUE.
+#' @param residuals \code{logical} Whether to transform data by calculating
+#'   deviance residuals from an approximate multinomial model using the
+#'   \code{scry} package. Default = TRUE. (Only one of \code{residuals},
+#'   \code{logcounts}, or \code{logcounts_lib} should be TRUE.)
+#' 
+#' @param logcounts \code{logical} Whether to transform data by calculating
+#'   log-transformed normalized counts (logcounts) by deconvolution using the
+#'   \code{mbkmeans} package for clustering and \code{scuttle} / \code{scran}
+#'   packages. Default = FALSE. (Only one of \code{residuals}, \code{logcounts},
+#'   or \code{logcounts_lib} should be TRUE.)
+#' 
+#' @param logcounts_lib \code{logical} Whether to transform data by calculating
+#'   log-transformed normalized counts (logcounts) with library size
+#'   normalization using the \code{scuttle} / \code{scran} packages. Default =
+#'   FALSE. (Only one of \code{residuals}, \code{logcounts}, or
+#'   \code{logcounts_lib} should be TRUE.)
 #' 
 #' 
 #' @return Returns a \code{SpatialExperiment} object that can be provided to 
@@ -48,7 +60,9 @@
 #' @importFrom SpatialExperiment spatialData
 #' @importFrom SingleCellExperiment counts
 #' @importFrom SummarizedExperiment assayNames
-#' @importFrom scran quickCluster computeSumFactors
+#' @importFrom scry nullResiduals
+#' @importFrom mbkmeans mbkmeans
+#' @importFrom scran computeSumFactors
 #' @importFrom scuttle computeLibraryFactors
 #' @importFrom scuttle logNormCounts
 #' @importFrom methods isClass
@@ -74,9 +88,12 @@
 #' 
 preprocessSVG <- function(spe, in_tissue = TRUE, 
                           filter_genes = 20, filter_mito = TRUE, 
-                          deconv = TRUE) {
+                          residuals = TRUE, logcounts = FALSE, 
+                          logcounts_lib = FALSE) {
   
   stopifnot(isClass(spe, "SpatialExperiment"))
+  
+  stopifnot(sum(residuals, logcounts, logcounts_lib) == 1)
   
   # keep only spots over tissue
   
@@ -102,15 +119,23 @@ preprocessSVG <- function(spe, in_tissue = TRUE,
     spe <- spe[!is_mito, ]
   }
   
-  # normalization and log-transformation
+  # calculate deviance residuals or log-transformed normalized counts
   
-  if (deconv) {
-    qclus <- quickCluster(spe)
-    spe <- computeSumFactors(spe, cluster = qclus)
-  } else {
-    spe <- computeLibraryFactors(spe)
+  if (residuals) {
+    spe <- nullResiduals(spe, assay = "counts", 
+                         fam = "binomial", type = "deviance")
   }
-  spe <- logNormCounts(spe)
+  if (logcounts) {
+    mbk <- mbkmeans(spe, whichAssay = "counts", reduceMethod = NA, 
+                    clusters = 10)
+    colData(spe)$mbk <- mbk$Clusters
+    spe <- computeSumFactors(spe, cluster = mbk$Clusters, min.mean = 0.1)
+    spe <- logNormCounts(spe)
+  }
+  if (logcounts_lib) {
+    spe <- computeLibraryFactors(spe)
+    spe <- logNormCounts(spe)
+  }
   
   # return object
   

@@ -9,7 +9,9 @@ preprocessSVG(
   in_tissue = TRUE,
   filter_genes = 20,
   filter_mito = TRUE,
-  deconv = TRUE
+  residuals = TRUE,
+  logcounts = FALSE,
+  logcounts_lib = FALSE
 )
 }
 \arguments{
@@ -35,10 +37,22 @@ Assumes the \code{rowData} slot of \code{spe} contains a column named
 \code{gene_name}, which can be used to identify mitochondrial genes. 
 Default = TRUE. Set to FALSE to disable.}
 
-\item{deconv}{\code{logical} Whether to apply normalization by deconvolution
-(see \code{?computeSumFactors} from \code{scran} package) (TRUE) or simpler
-library size normalization (\code{?computeLibraryFactors} from
-\code{scran}) (FALSE). Default = TRUE.}
+\item{residuals}{\code{logical} Whether to transform data by calculating
+deviance residuals from an approximate multinomial model using the
+\code{scry} package. Default = TRUE. (Only one of \code{residuals},
+\code{logcounts}, or \code{logcounts_lib} should be TRUE.)}
+
+\item{logcounts}{\code{logical} Whether to transform data by calculating
+log-transformed normalized counts (logcounts) by deconvolution using the
+\code{mbkmeans} package for clustering and \code{scuttle} / \code{scran}
+packages. Default = FALSE. (Only one of \code{residuals}, \code{logcounts},
+or \code{logcounts_lib} should be TRUE.)}
+
+\item{logcounts_lib}{\code{logical} Whether to transform data by calculating
+log-transformed normalized counts (logcounts) with library size
+normalization using the \code{scuttle} / \code{scran} packages. Default =
+FALSE. (Only one of \code{residuals}, \code{logcounts}, or
+\code{logcounts_lib} should be TRUE.)}
 }
 \value{
 Returns a \code{SpatialExperiment} object that can be provided to 

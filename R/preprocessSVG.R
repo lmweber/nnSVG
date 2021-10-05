@@ -22,13 +22,12 @@
 #'   identified by the column \code{in_tissue} in the \code{spatialData} slot. 
 #'   Default = TRUE.
 #' 
-#' @param filter_genes \code{integer} Whether to filter low-expressed genes 
-#'   according to total unique molecular identifier (UMI) counts per gene 
-#'   across spatial coordinates. If an integer value is provided, genes with 
-#'   less than or equal to this number of total UMI counts across spatial 
-#'   coordinates will be removed. Assumes \code{spe} contains an assay named 
-#'   \code{counts} containing raw UMI counts. Default = 20. Set to NULL to 
-#'   disable.
+#' @param filter_genes \code{integer} Whether to filter low-expressed genes. If
+#'   a value is provided, genes with at least 1 unique molecular identifier
+#'   (UMI) count in at least this percentage of spatial coordinates will be
+#'   kept. Assumes \code{spe} contains an assay named \code{counts} containing
+#'   UMI counts. Default = 5, i.e. keep genes with at least 1 UMI in 5% of
+#'   spatial coordinates. Set to NULL to disable.
 #' 
 #' @param filter_mito \code{logical} Whether to filter mitochondrial genes. 
 #'   Assumes the \code{rowData} slot of \code{spe} contains a column named 
@@ -81,7 +80,7 @@
 #' spe
 #' 
 preprocessSVG <- function(spe, in_tissue = TRUE, 
-                          filter_genes = 20, filter_mito = TRUE, 
+                          filter_genes = 5, filter_mito = TRUE, 
                           residuals = TRUE, logcounts = TRUE, 
                           deconv = TRUE) {
   
@@ -96,10 +95,10 @@ preprocessSVG <- function(spe, in_tissue = TRUE,
   
   # gene filtering
   
-  if (!is.null(filter_genes) & filter_genes > 0 ) {
+  if (!is.null(filter_genes) & filter_genes > 0) {
     stopifnot("counts" %in% assayNames(spe))
-    sums <- rowSums(counts(spe))
-    ix_remove <- sums <= filter_genes
+    n_spots <- ceiling(filter_genes / 100 * ncol(spe))
+    ix_remove <- rowSums(counts(spe) > 0) < n_spots
     message("removing ", sum(ix_remove), " out of ", nrow(spe), " genes due to low expression")
     spe <- spe[!ix_remove, ]
   }

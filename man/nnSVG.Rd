@@ -8,7 +8,7 @@ nnSVG(
   spe,
   x = NULL,
   assay_name = c("binomial_deviance_residuals", "logcounts"),
-  filter_genes = 20,
+  filter_genes = 5,
   filter_mito = TRUE,
   n_threads = 1,
   verbose = FALSE
@@ -31,13 +31,12 @@ log-transformed normalized counts. Assumed to be either
 \code{binomial_deviance_residuals} or \code{logcounts}. Default =
 \code{binomial_deviance_residuals}.}
 
-\item{filter_genes}{\code{integer} Whether to filter low-expressed genes 
-according to total unique molecular identifier (UMI) counts per gene 
-across spatial coordinates. If an integer value is provided, genes with 
-less than or equal to this number of total UMI counts across spatial 
-coordinates will be removed. Assumes \code{spe} contains an assay named 
-\code{counts} containing raw UMI counts. Default = 20. Set to NULL to 
-disable.}
+\item{filter_genes}{\code{integer} Whether to filter low-expressed genes. If
+a value is provided, genes with at least 1 unique molecular identifier
+(UMI) count in at least this percentage of spatial coordinates will be
+kept. Assumes \code{spe} contains an assay named \code{counts} containing
+UMI counts. Default = 5, i.e. keep genes with at least 1 UMI in 5% of
+spatial coordinates. Set to NULL to disable.}
 
 \item{filter_mito}{\code{logical} Whether to filter mitochondrial genes. 
 Assumes the \code{rowData} slot of \code{spe} contains a column named 

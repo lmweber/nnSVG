@@ -41,28 +41,26 @@
 #'   \code{logcounts}, or \code{logcounts_lib} should be TRUE.)
 #' 
 #' @param logcounts \code{logical} Whether to transform data by calculating
-#'   log-transformed normalized counts (logcounts) by deconvolution using the
-#'   \code{mbkmeans} package for clustering and \code{scuttle} / \code{scran}
-#'   packages. Default = FALSE. (Only one of \code{residuals}, \code{logcounts},
-#'   or \code{logcounts_lib} should be TRUE.)
+#'   log-transformed normalized counts (logcounts) by deconvolution the
+#'   \code{scran} package. Default = FALSE. (Only one of \code{residuals},
+#'   \code{logcounts}, or \code{logcounts_lib} should be TRUE.)
 #' 
 #' @param logcounts_lib \code{logical} Whether to transform data by calculating
 #'   log-transformed normalized counts (logcounts) with library size
-#'   normalization using the \code{scuttle} / \code{scran} packages. Default =
-#'   FALSE. (Only one of \code{residuals}, \code{logcounts}, or
-#'   \code{logcounts_lib} should be TRUE.)
+#'   normalization using the \code{scran} package. Default = FALSE. (Only one of
+#'   \code{residuals}, \code{logcounts}, or \code{logcounts_lib} should be
+#'   TRUE.)
 #' 
 #' 
 #' @return Returns a \code{SpatialExperiment} object that can be provided to 
 #'   \code{\link{nnSVG}}.
 #' 
 #' 
-#' @importFrom SpatialExperiment spatialData
+#' @importFrom SpatialExperiment spatialData 'colData<-'
 #' @importFrom SingleCellExperiment counts
 #' @importFrom SummarizedExperiment assayNames
 #' @importFrom scry nullResiduals
-#' @importFrom mbkmeans mbkmeans
-#' @importFrom scran computeSumFactors
+#' @importFrom scran quickCluster computeSumFactors
 #' @importFrom scuttle computeLibraryFactors
 #' @importFrom scuttle logNormCounts
 #' @importFrom methods isClass
@@ -126,10 +124,8 @@ preprocessSVG <- function(spe, in_tissue = TRUE,
                          fam = "binomial", type = "deviance")
   }
   if (logcounts) {
-    mbk <- mbkmeans(spe, whichAssay = "counts", reduceMethod = NA, 
-                    clusters = 10)
-    colData(spe)$mbk <- mbk$Clusters
-    spe <- computeSumFactors(spe, cluster = mbk$Clusters, min.mean = 0.1)
+    qclus <- quickCluster(spe)
+    spe <- computeSumFactors(spe, cluster = qclus)
     spe <- logNormCounts(spe)
   }
   if (logcounts_lib) {

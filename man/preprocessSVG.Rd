@@ -43,16 +43,15 @@ deviance residuals from an approximate multinomial model using the
 \code{logcounts}, or \code{logcounts_lib} should be TRUE.)}
 
 \item{logcounts}{\code{logical} Whether to transform data by calculating
-log-transformed normalized counts (logcounts) by deconvolution using the
-\code{mbkmeans} package for clustering and \code{scuttle} / \code{scran}
-packages. Default = FALSE. (Only one of \code{residuals}, \code{logcounts},
-or \code{logcounts_lib} should be TRUE.)}
+log-transformed normalized counts (logcounts) by deconvolution the
+\code{scran} package. Default = FALSE. (Only one of \code{residuals},
+\code{logcounts}, or \code{logcounts_lib} should be TRUE.)}
 
 \item{logcounts_lib}{\code{logical} Whether to transform data by calculating
 log-transformed normalized counts (logcounts) with library size
-normalization using the \code{scuttle} / \code{scran} packages. Default =
-FALSE. (Only one of \code{residuals}, \code{logcounts}, or
-\code{logcounts_lib} should be TRUE.)}
+normalization using the \code{scran} package. Default = FALSE. (Only one of
+\code{residuals}, \code{logcounts}, or \code{logcounts_lib} should be
+TRUE.)}
 }
 \value{
 Returns a \code{SpatialExperiment} object that can be provided to 

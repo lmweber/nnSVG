@@ -2,27 +2,27 @@
 #' 
 #' Run 'nnSVG' to identify spatially variable genes
 #' 
-#' Run 'nnSVG' method to identify spatially variable genes (SVGs) in spatially 
+#' Run 'nnSVG' method to identify spatially variable genes (SVGs) in spatially
 #' resolved transcriptomics data.
 #' 
-#' The method is based on nearest neighbor Gaussian processes (Datta et al. 
-#' 2016) and uses the BRISC algorithm (Saha and Datta 2018). The method scales 
-#' linearly in the number of spatial coordinates, and can be applied to 
-#' datasets containing thousands of spatial coordinates.
+#' The method is based on nearest neighbor Gaussian processes (Datta et al.
+#' 2016) and uses the BRISC algorithm (Saha and Datta 2018). The method scales
+#' linearly in the number of spatial coordinates, and can be applied to datasets
+#' containing thousands of spatial coordinates.
 #' 
-#' This function runs BRISC once per gene for model fitting and parameter 
-#' estimation, using parallelization for faster runtime with one core per BRISC 
-#' run. The spatial covariance parameter estimates (sigma.sq, tau.sq, phi) from 
+#' This function runs BRISC once per gene for model fitting and parameter
+#' estimation, using parallelization for faster runtime with one core per BRISC
+#' run. The spatial covariance parameter estimates (sigma.sq, tau.sq, phi) from
 #' BRISC are stored in 'Theta' in the BRISC output.
 #' 
-#' nnSVG performs inference on the 'sigma.sq' estimates using an approximate 
-#' likelihood ratio test against a model without spatial terms, and uses these 
-#' likelihood ratios to rank SVGs. We also calculate an effect size, defined as 
-#' the proportion of spatial variance out of total variance, i.e. 'prop_sv = 
+#' nnSVG performs inference on the 'sigma.sq' estimates using an approximate
+#' likelihood ratio test against a model without spatial terms, and uses these
+#' likelihood ratios to rank SVGs. We also calculate an effect size, defined as
+#' the proportion of spatial variance out of total variance, i.e. 'prop_sv =
 #' sigma.sq / (sigma.sq + tau.sq)'.
 #' 
-#' Likelihood ratio tests are calculated using the asymptotic chi-squared 
-#' distribution with 2 degrees of freedom, and adjusted p-values using the 
+#' Likelihood ratio tests are calculated using the asymptotic chi-squared
+#' distribution with 2 degrees of freedom, and adjusted p-values using the
 #' Benjamini-Hochberg method.
 #' 
 #' Assumes the input is provided as a \code{\link{SpatialExperiment}} object
@@ -31,8 +31,8 @@
 #' \code{scran} package), and which has been filtered to remove low-quality
 #' spatial coordinates.
 #' 
-#' Low-expressed genes can be filtered before providing the input to `nnSVG()`, 
-#' or using the default filtering arguments in `nnSVG()`.
+#' Low-expressed genes can be filtered before providing the input to
+#' \code{nnSVG()}, or using the default filtering arguments in \code{nnSVG()}.
 #' 
 #' 
 #' @param spe \code{SpatialExperiment} Input data, assumed to be a
@@ -40,9 +40,9 @@
 #'   deviance residuals and/or log-transformed normalized counts, and spatial
 #'   coordinates stored in the \code{spatialCoords} slot.
 #' 
-#' @param x \code{numeric matrix} Optional matrix of covariates (e.g. known 
-#'   cell types) per spatial coordinate. Number of rows must match the number 
-#'   of spatial coordinates (columns) in the input object \code{spe}. Default = 
+#' @param x \code{numeric matrix} Optional matrix of covariates (e.g. known cell
+#'   types) per spatial coordinate. Number of rows must match the number of
+#'   spatial coordinates (columns) in the input object \code{spe}. Default =
 #'   NULL, which fits an intercept-only model.
 #' 
 #' @param assay_name \code{character} Name of assay containing preprocessed
@@ -58,21 +58,21 @@
 #'   UMI counts. Default = 5, i.e. keep genes with at least 1 UMI in 5% of
 #'   spatial coordinates. Set to NULL to disable.
 #' 
-#' @param filter_mito \code{logical} Whether to filter mitochondrial genes. 
-#'   Assumes the \code{rowData} slot of \code{spe} contains a column named 
-#'   \code{gene_name}, which can be used to identify mitochondrial genes. 
+#' @param filter_mito \code{logical} Whether to filter mitochondrial genes.
+#'   Assumes the \code{rowData} slot of \code{spe} contains a column named
+#'   \code{gene_name}, which can be used to identify mitochondrial genes.
 #'   Default = TRUE. Set to FALSE to disable.
 #' 
-#' @param n_threads \code{integer} Number of threads for parallelization. 
+#' @param n_threads \code{integer} Number of threads for parallelization.
 #'   Default = 1.
 #' 
-#' @param verbose \code{logical} Whether to display verbose output from 
+#' @param verbose \code{logical} Whether to display verbose output from
 #'   \code{BRISC}. Default = FALSE.
 #' 
 #' 
-#' @return Returns output values (including parameter estimates, likelihood 
-#'   ratios, and adjusted p-values) in the \code{rowData} slot in the 
-#'   \code{spe} \code{SpatialExperiment} object.
+#' @return Returns output values (including parameter estimates, likelihood
+#'   ratios, and adjusted p-values) in \code{rowData} in the \code{spe}
+#'   \code{SpatialExperiment} object.
 #' 
 #' 
 #' @importFrom SpatialExperiment spatialCoords
@@ -202,6 +202,7 @@ nnSVG <- function(spe, x = NULL,
       spcov = sqrt(mat_brisc[, "sigma.sq"]) / mat_brisc[, "mean"]
     )
   } else {
+    # return NAs if logcounts not provided
     mat_brisc <- cbind(
       mat_brisc, 
       mean = NA, 

@@ -2,24 +2,24 @@
 #' 
 #' Preprocessing steps to prepare input data for nnSVG
 #' 
-#' Convenience function to run several preprocessing steps to prepare input 
-#' data object for nnSVG. This function is designed for data from the 10x 
-#' Genomics Visium platform, and is used for examples in the nnSVG package.
+#' Convenience function to run several preprocessing steps to prepare input data
+#' object for nnSVG. This function is designed for data from the 10x Genomics
+#' Visium platform, and is used for examples in the nnSVG package.
 #' 
-#' In general, the code in this function will need to be adapted for a given 
-#' dataset, so we recommend running the steps individually instead of using 
-#' this function. The steps are described in detail in our online book 
-#' \code{Orchestrating Spatially Resolved Transcriptomics Analysis with 
-#' Bioconductor (OSTA)}.
+#' In general, the code in this function will need to be adapted for a given
+#' dataset, so we recommend running the steps individually instead of using this
+#' function. The steps are described in more detail in our online book
+#' "Orchestrating Spatially Resolved Transcriptomics Analysis with Bioconductor
+#' (OSTA)".
 #' 
 #' 
-#' @param spe \code{SpatialExperiment} Input data, assumed to be a 
-#'   \code{\link{SpatialExperiment}} object containing an assay named 
-#'   \code{counts} containing raw unique molecular identifier (UMI) counts, and 
+#' @param spe \code{SpatialExperiment} Input data, assumed to be a
+#'   \code{\link{SpatialExperiment}} object containing an assay named
+#'   \code{counts} containing unique molecular identifier (UMI) counts, and
 #'   spatial coordinates stored in the \code{spatialCoords} slot.
 #' 
-#' @param in_tissue \code{logical} Whether to keep only spots over tissue, 
-#'   identified by the column \code{in_tissue} in the \code{spatialData} slot. 
+#' @param in_tissue \code{logical} Whether to keep only spots over tissue,
+#'   identified by the column \code{in_tissue} in the \code{spatialData} slot.
 #'   Default = TRUE.
 #' 
 #' @param filter_genes \code{integer} Whether to filter low-expressed genes. If
@@ -29,9 +29,9 @@
 #'   UMI counts. Default = 5, i.e. keep genes with at least 1 UMI in 5% of
 #'   spatial coordinates. Set to NULL to disable.
 #' 
-#' @param filter_mito \code{logical} Whether to filter mitochondrial genes. 
-#'   Assumes the \code{rowData} slot of \code{spe} contains a column named 
-#'   \code{gene_name}, which can be used to identify mitochondrial genes. 
+#' @param filter_mito \code{logical} Whether to filter mitochondrial genes.
+#'   Assumes the \code{rowData} slot of \code{spe} contains a column named
+#'   \code{gene_name}, which can be used to identify mitochondrial genes.
 #'   Default = TRUE. Set to FALSE to disable.
 #' 
 #' @param residuals \code{logical} Whether to calculate deviance residuals from
@@ -47,7 +47,7 @@
 #'   size normalization will be used instead. Default = TRUE.
 #' 
 #' 
-#' @return Returns a \code{SpatialExperiment} object that can be provided to 
+#' @return Returns a \code{SpatialExperiment} object that can be provided to
 #'   \code{\link{nnSVG}}.
 #' 
 #' 

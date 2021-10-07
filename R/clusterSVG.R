@@ -9,11 +9,9 @@
 #' then identify spatially variable genes (SVGs) after taking variation due to
 #' major cell types into account.
 #' 
-#' Alternatively, cell types can be identified using manually guided analyses 
-#' or a different clustering algorithm, or \code{nnSVG} can also be run without 
-#' taking cell types into account (\code{x = NULL}). If \code{nnSVG} is run 
-#' without taking cell types into account, the set of top SVGs will include 
-#' marker genes of major cell types with spatially defined distributions.
+#' Alternatively, cell types can be identified using manually guided analyses or
+#' a different clustering algorithm, or \code{nnSVG} can also be run without
+#' taking cell types into account (\code{x = NULL}).
 #' 
 #' The most appropriate type of analysis (i.e. whether or not to take into
 #' account variation due to cell types) will depend on the biological context of
@@ -31,15 +29,15 @@
 #'   \code{binomial_deviance_residuals} or \code{logcounts}. Default =
 #'   \code{binomial_deviance_residuals}.
 #' 
-#' @param filter_mito \code{logical} Whether to filter mitochondrial genes. 
-#'   Assumes the \code{rowData} slot of \code{spe} contains a column named 
-#'   \code{gene_name}, which can be used to identify mitochondrial genes. 
+#' @param filter_mito \code{logical} Whether to filter mitochondrial genes.
+#'   Assumes the \code{rowData} slot of \code{spe} contains a column named
+#'   \code{gene_name}, which can be used to identify mitochondrial genes.
 #'   Default = TRUE. Set to FALSE to disable.
 #' 
 #' 
-#' @return Returns a \code{SpatialExperiment} object with a factor of cluster 
-#'   labels stored in the \code{colData} slot, which can then be extracted and 
-#'   provided to \code{\link{nnSVG}} as a matrix of covariates.
+#' @return Returns a \code{SpatialExperiment} object with cluster labels stored
+#'   in a column in \code{colData}, which can then be extracted and provided to
+#'   \code{\link{nnSVG}} as a matrix of covariates.
 #' 
 #' 
 #' @importFrom SingleCellExperiment logcounts 'colLabels<-'

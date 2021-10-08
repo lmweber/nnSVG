@@ -11,6 +11,7 @@ nnSVG(
   filter_genes = 5,
   filter_mito = TRUE,
   n_threads = 1,
+  on_disk = FALSE,
   verbose = FALSE
 )
 }
@@ -45,6 +46,11 @@ Default = TRUE. Set to FALSE to disable.}
 
 \item{n_threads}{\code{integer} Number of threads for parallelization.
 Default = 1.}
+
+\item{on_disk}{\code{logical} Whether to store matrix of preprocessed
+expression values internally in HDF5 (on-disk) format. This significantly
+reduces memory requirements but can increase runtime. Recommended for
+datasets with >10,000 spatial coordinates. Default = FALSE.}
 
 \item{verbose}{\code{logical} Whether to display verbose output from
 \code{BRISC}. Default = FALSE.}

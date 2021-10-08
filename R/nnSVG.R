@@ -66,6 +66,11 @@
 #' @param n_threads \code{integer} Number of threads for parallelization.
 #'   Default = 1.
 #' 
+#' @param on_disk \code{logical} Whether to store matrix of preprocessed
+#'   expression values internally in HDF5 (on-disk) format. This significantly
+#'   reduces memory requirements but can increase runtime. Recommended for
+#'   datasets with >10,000 spatial coordinates. Default = FALSE.
+#' 
 #' @param verbose \code{logical} Whether to display verbose output from
 #'   \code{BRISC}. Default = FALSE.
 #' 
@@ -83,6 +88,7 @@
 #' @importFrom Matrix rowSums rowMeans
 #' @importFrom matrixStats rowVars
 #' @importFrom stats lm logLik pchisq p.adjust
+#' @importFrom methods as
 #' 
 #' @export
 #' 
@@ -111,7 +117,7 @@
 nnSVG <- function(spe, x = NULL, 
                   assay_name = c("binomial_deviance_residuals", "logcounts"), 
                   filter_genes = 5, filter_mito = TRUE, 
-                  n_threads = 1, verbose = FALSE) {
+                  n_threads = 1, on_disk = FALSE, verbose = FALSE) {
   
   if (!is.null(x)) stopifnot(nrow(x) == ncol(spe))
   
@@ -141,7 +147,12 @@ nnSVG <- function(spe, x = NULL,
   # run BRISC
   # ---------
   
-  y <- assays(spe)[[assay_name]]
+  if (on_disk) {
+    # HDF5Array format (on-disk) to reduce memory during parallelization
+    y <- as(assays(spe)[[assay_name]], "HDF5Array")
+  } else {
+    y <- assays(spe)[[assay_name]]
+  }
   
   # scale coordinates proportionally
   coords <- spatialCoords(spe)

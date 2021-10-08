@@ -33,7 +33,6 @@ Imports:
     BiocSingular, 
     Matrix, 
     matrixStats, 
-    HDF5Array, 
     scry, 
     scran, 
     scuttle, 

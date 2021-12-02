@@ -1,13 +1,14 @@
 Package: nnSVG
 Version: 0.99.0
-Title: Method for scalable identification of spatially variable genes (SVGs) in 
-    spatially resolved transcriptomics data
+Title: Scalable identification of spatially variable genes (SVGs) in spatially 
+    resolved transcriptomics data
 Description: Method for scalable identification of spatially variable genes 
-    (SVGs) in spatially resolved transcriptomics data. This method is based on 
+    (SVGs) in spatially resolved transcriptomics data. The method is based on 
     nearest neighbor Gaussian processes (Datta et al. 2016) and uses the BRISC 
-    algorithm (Saha and Datta 2018). The method scales linearly in the number 
-    of spatial coordinates, and can be applied to datasets containing thousands 
-    of spatial coordinates.
+    algorithm (Saha and Datta 2018). Allows identification and ranking of SVGs 
+    across the whole tissue slide or within spatial domains defined by 
+    covariates. Scales linearly with the number of spatial locations and can be 
+    applied to datasets containing thousands of spatial locations.
 Authors@R: c(
     person("Lukas M.", "Weber", 
            email = "lukas.weber.edu@gmail.com", 

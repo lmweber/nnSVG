@@ -21,7 +21,9 @@ vignette: >
 
 The method is based on nearest neighbor Gaussian processes ([Datta et al. (2016)](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091)) and uses the BRISC algorithm ([Saha and Datta (2018)](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)).
 
-`nnSVG` scales linearly in the number of spatial coordinates, and can be applied to datasets containing thousands of spatial coordinates, e.g. from the 10x Genomics Visium platform.
+`nnSVG` allows identification and ranking of SVGs across the full set of spatial locations (e.g. the whole tissue slide) or within spatial domains defined by known covariates.
+
+The method scales linearly with the number of spatial locations and can be applied to datasets containing thousands of spatial locations.
 
 
 # Tutorial

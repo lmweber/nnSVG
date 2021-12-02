@@ -44,6 +44,8 @@ library(ggplot2)
 ```{r}
 # load example dataset
 spe <- Visium_humanDLPFC()
+
+dim(spe)
 ```
 
 ```{r}
@@ -53,6 +55,8 @@ spe <- Visium_humanDLPFC()
 set.seed(123)
 
 spe <- preprocessSVG(spe)
+
+dim(spe)
 ```
 
 ```{r}
@@ -86,7 +90,7 @@ The main results of interest are:
 
 - `LR_stat`: likelihood ratio (LR) statistics
 - `rank`: rank of top SVGs according to LR statistics
-- `p_adj`: adjusted p-values, which can be used to define a cutoff for significant SVGs
+- `padj`: p-values (adjusted for multiple testing), which can be used to define a cutoff for significant SVGs (e.g. `padj` <= 0.05)
 - `prop_sv`: effect size, defined as proportion of spatial variance out of total variance
 
 ```{r}
@@ -103,6 +107,7 @@ rowData(spe)[rowData(spe)$rank <= 5, ]
 # plot expression of top SVG
 ix <- which(rowData(spe)$rank == 1)
 ix_name <- rowData(spe)$gene_name[ix]
+ix_name
 
 df <- as.data.frame(
   cbind(spatialCoords(spe), 

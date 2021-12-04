@@ -74,6 +74,9 @@ dim(spe)
 ```{r}
 # run nnSVG
 
+# set seed for reproducibility
+set.seed(123)
+
 # note: gene filtering was already performed above, so we disable it here
 spe <- nnSVG(spe, filter_genes = FALSE, filter_mito = FALSE, n_threads = 1)
 

@@ -34,11 +34,6 @@ Imports:
     BiocSingular, 
     Matrix, 
     matrixStats, 
-    scry, 
-    scran, 
-    scuttle, 
-    scater, 
-    igraph, 
     stats, 
     methods
 VignetteBuilder: knitr
@@ -47,5 +42,6 @@ Suggests:
     knitr, 
     rmarkdown, 
     STexampleData, 
+    spatzli, 
     ggplot2
 RoxygenNote: 7.1.2

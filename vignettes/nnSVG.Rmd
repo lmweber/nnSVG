@@ -38,6 +38,7 @@ For faster runtime in this example, we subsample the dataset after gene filterin
 library(SpatialExperiment)
 library(STexampleData)
 library(nnSVG)
+library(spatzli)
 library(ggplot2)
 ```
 

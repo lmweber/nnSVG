@@ -96,7 +96,7 @@
 #' 
 #' # preprocessing steps
 #' 
-#' keep only spots over tissue
+#' # keep only spots over tissue
 #' spe <- spe[, int_colData(spe)$spatialData$in_tissue == 1]
 #' 
 #' # filter low-expressed genes
@@ -105,11 +105,11 @@
 #' ix_remove <- rowSums(counts(spe) > 0) < n_spots
 #' spe <- spe[!ix_remove, ]
 #' 
-#' filter mitochondrial genes
+#' # filter mitochondrial genes
 #' is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
 #' spe <- spe[!is_mito, ]
 #' 
-#' calculate deviance residuals using scry package
+#' # calculate deviance residuals using scry package
 #' set.seed(123)
 #' spe <- nullResiduals(spe, assay = "counts", 
 #'                      fam = "binomial", type = "deviance")

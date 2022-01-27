@@ -89,23 +89,42 @@
 #' @examples
 #' library(SpatialExperiment)
 #' library(STexampleData)
+#' library(scry)
 #' 
+#' # load example dataset from STexampleData package
 #' spe <- Visium_humanDLPFC()
 #' 
-#' # set seed for reproducibility
+#' # preprocessing steps
+#' 
+#' keep only spots over tissue
+#' spe <- spe[, int_colData(spe)$spatialData$in_tissue == 1]
+#' 
+#' # filter low-expressed genes
+#' filter_genes <- 5
+#' n_spots <- ceiling(filter_genes / 100 * ncol(spe))
+#' ix_remove <- rowSums(counts(spe) > 0) < n_spots
+#' spe <- spe[!ix_remove, ]
+#' 
+#' filter mitochondrial genes
+#' is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
+#' spe <- spe[!is_mito, ]
+#' 
+#' calculate deviance residuals using scry package
 #' set.seed(123)
-#' spe <- preprocessSVG(spe)
+#' spe <- nullResiduals(spe, assay = "counts", 
+#'                      fam = "binomial", type = "deviance")
 #' 
 #' # subset genes for faster runtime in this example
 #' set.seed(123)
 #' spe <- spe[sample(seq_len(10)), ]
-#' dim(spe)
 #' 
 #' # run nnSVG
-#' # note: gene filtering has already been performed above
-#' spe <- nnSVG(spe, n_threads = 1)
+#' # note: gene filtering was already performed above, so disable it here
+#' set.seed(123)
+#' spe <- nnSVG(spe, filter_genes = FALSE, filter_mito = FALSE, n_threads = 1)
 #' 
 #' # show results
+#' # for more details see extended example in vignette
 #' rowData(spe)
 #' 
 nnSVG <- function(spe, x = NULL, 

@@ -37,13 +37,13 @@ For faster runtime in this example, we subsample the dataset after gene filterin
 ```{r, message=FALSE}
 library(SpatialExperiment)
 library(STexampleData)
+library(scry)
 library(nnSVG)
-library(spatzli)
 library(ggplot2)
 ```
 
 ```{r}
-# load example dataset
+# load example dataset from STexampleData package
 spe <- Visium_humanDLPFC()
 
 dim(spe)
@@ -52,17 +52,38 @@ dim(spe)
 ```{r}
 # preprocessing steps
 
+# keep only spots over tissue
+spe <- spe[, int_colData(spe)$spatialData$in_tissue == 1]
+dim(spe)
+
+# filter low-expressed genes
+filter_genes <- 5
+n_spots <- ceiling(filter_genes / 100 * ncol(spe))
+ix_remove <- rowSums(counts(spe) > 0) < n_spots
+table(ix_remove)
+spe <- spe[!ix_remove, ]
+dim(spe)
+
+# filter mitochondrial genes
+is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
+table(is_mito)
+spe <- spe[!is_mito, ]
+dim(spe)
+
 # set seed for reproducibility
 set.seed(123)
 
-spe <- preprocessSVG(spe)
+# calculate deviance residuals using scry package
+# (alternatively could use log-transformed normalized counts)
+spe <- nullResiduals(spe, assay = "counts", 
+                     fam = "binomial", type = "deviance")
 
-dim(spe)
+assayNames(spe)
 ```
 
 ```{r}
 # subsampling to select small number of random genes and one known SVG for 
-# faster runtime in example
+# faster runtime in this example
 set.seed(123)
 ix_20 <- sample(seq_len(nrow(spe)), 20)
 ix_snap25 <- which(rowData(spe)$gene_name == "SNAP25")
@@ -78,7 +99,7 @@ dim(spe)
 # set seed for reproducibility
 set.seed(123)
 
-# note: gene filtering was already performed above, so we disable it here
+# note: gene filtering was already performed above, so disable it here
 spe <- nnSVG(spe, filter_genes = FALSE, filter_mito = FALSE, n_threads = 1)
 
 # show results
@@ -108,7 +129,7 @@ rowData(spe)[rowData(spe)$rank <= 5, ]
 ```
 
 ```{r, fig.width=4, fig.height=3.5}
-# plot expression of top SVG
+# plot expression of top-ranked SVG
 ix <- which(rowData(spe)$rank == 1)
 ix_name <- rowData(spe)$gene_name[ix]
 ix_name

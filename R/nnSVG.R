@@ -114,9 +114,9 @@
 #' spe <- nullResiduals(spe, assay = "counts", 
 #'                      fam = "binomial", type = "deviance")
 #' 
-#' # subset genes for faster runtime in this example
+#' # subset small number of genes for faster runtime in this example
 #' set.seed(123)
-#' spe <- spe[sample(seq_len(10)), ]
+#' spe <- spe[sample(seq_len(6)), ]
 #' 
 #' # run nnSVG
 #' # note: gene filtering was already performed above, so disable it here

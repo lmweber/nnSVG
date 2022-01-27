@@ -76,7 +76,7 @@
 #' 
 #' 
 #' @importFrom SpatialExperiment spatialCoords
-#' @importFrom SingleCellExperiment logcounts
+#' @importFrom SingleCellExperiment counts logcounts
 #' @importFrom SummarizedExperiment assayNames assays rowData 'rowData<-'
 #' @importFrom BRISC BRISC_order BRISC_neighbor BRISC_estimation
 #' @importFrom BiocParallel bplapply MulticoreParam

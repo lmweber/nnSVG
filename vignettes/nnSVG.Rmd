@@ -57,7 +57,7 @@ spe <- spe[, colData(spe)$in_tissue == 1]
 dim(spe)
 
 # filter low-expressed genes
-filter_genes <- 5
+filter_genes <- 1
 n_spots <- ceiling(filter_genes / 100 * ncol(spe))
 ix_remove <- rowSums(counts(spe) > 0) < n_spots
 table(ix_remove)

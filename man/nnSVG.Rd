@@ -8,7 +8,7 @@ nnSVG(
   spe,
   x = NULL,
   assay_name = c("binomial_deviance_residuals", "logcounts"),
-  filter_genes = 5,
+  filter_genes = 1,
   filter_mito = TRUE,
   n_threads = 1,
   verbose = FALSE
@@ -35,7 +35,7 @@ log-transformed normalized counts. Assumed to be either
 a value is provided, genes with at least 1 unique molecular identifier
 (UMI) count in at least this percentage of spatial coordinates will be
 kept. Assumes \code{spe} contains an assay named \code{counts} containing
-UMI counts. Default = 5, i.e. keep genes with at least 1 UMI in 5% of
+UMI counts. Default = 1, i.e. keep genes with at least 1 UMI in 1% of
 spatial coordinates. Set to NULL to disable.}
 
 \item{filter_mito}{\code{logical} Whether to filter mitochondrial genes.
@@ -104,7 +104,7 @@ spe <- Visium_humanDLPFC()
 spe <- spe[, colData(spe)$in_tissue == 1]
 
 # filter low-expressed genes
-filter_genes <- 5
+filter_genes <- 1
 n_spots <- ceiling(filter_genes / 100 * ncol(spe))
 ix_remove <- rowSums(counts(spe) > 0) < n_spots
 spe <- spe[!ix_remove, ]

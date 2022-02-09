@@ -101,7 +101,7 @@ spe <- Visium_humanDLPFC()
 # preprocessing steps
 
 # keep only spots over tissue
-spe <- spe[, int_colData(spe)$spatialData$in_tissue == 1]
+spe <- spe[, colData(spe)$in_tissue == 1]
 
 # filter low-expressed genes
 filter_genes <- 5

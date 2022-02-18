@@ -17,13 +17,13 @@ vignette: >
 
 # Introduction
 
-`nnSVG` is a method for scalable identification of spatially variable genes (SVGs) in spatially resolved transcriptomics data.
+`nnSVG` is a method for scalable identification of spatially variable genes (SVGs) in spatially resolved transcriptomics (ST) data.
 
-The method is based on nearest neighbor Gaussian processes ([Datta et al. (2016)](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091)) and uses the BRISC algorithm ([Saha and Datta (2018)](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)).
+The method is based on nearest-neighbor Gaussian processes ([Datta et al. (2016)](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091)) and uses the BRISC algorithm ([Saha and Datta (2018)](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)).
 
-`nnSVG` allows identification and ranking of SVGs across the full set of spatial locations (e.g. the whole tissue slide) or within spatial domains defined by known covariates.
+`nnSVG` allows identification and ranking of SVGs with flexible spatial bandwidths across a tissue slide or within spatial domains defined by covariates. The method scales linearly with the number of spatial locations and can be applied to datasets containing thousands or more spatial locations.
 
-The method scales linearly with the number of spatial locations and can be applied to datasets containing thousands of spatial locations.
+For more details on the method, see our paper.
 
 
 # Tutorial
@@ -32,7 +32,7 @@ The method scales linearly with the number of spatial locations and can be appli
 
 Here we show a short example demonstrating how to use `nnSVG`.
 
-For faster runtime in this example, we subsample the dataset after gene filtering to contain only a small number of genes. For a full analysis, the subsampling step can be skipped.
+For faster runtime in this example, we subsample the dataset after gene filtering to keep only a small number of genes. For a full analysis, the subsampling step can be skipped.
 
 ```{r, message=FALSE}
 library(SpatialExperiment)
@@ -56,25 +56,8 @@ dim(spe)
 spe <- spe[, colData(spe)$in_tissue == 1]
 dim(spe)
 
-# filter low-expressed genes
-filter_genes <- 1
-n_spots <- ceiling(filter_genes / 100 * ncol(spe))
-ix_remove <- rowSums(counts(spe) > 0) < n_spots
-table(ix_remove)
-spe <- spe[!ix_remove, ]
-dim(spe)
-
-# filter mitochondrial genes
-is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
-table(is_mito)
-spe <- spe[!is_mito, ]
-dim(spe)
-
-# set seed for reproducibility
-set.seed(123)
-
 # calculate deviance residuals using scry package
-# (alternatively could use log-transformed normalized counts)
+# (alternatively could calculate log-transformed normalized counts)
 spe <- nullResiduals(spe, assay = "counts", 
                      fam = "binomial", type = "deviance")
 
@@ -82,12 +65,15 @@ assayNames(spe)
 ```
 
 ```{r}
-# subsampling to select small number of random genes and one known SVG for 
+# subsampling to select small number of random genes and several known SVGs for 
 # faster runtime in this example
 set.seed(123)
 ix_20 <- sample(seq_len(nrow(spe)), 20)
-ix_snap25 <- which(rowData(spe)$gene_name == "SNAP25")
-ix <- c(ix_20, ix_snap25)
+
+known_genes <- c("MOBP", "PCP4", "SNAP25", "HBB", "IGKC", "NPY")
+ix_known <- which(rowData(spe)$gene_name %in% known_genes)
+
+ix <- c(ix_20, ix_known)
 
 spe <- spe[ix, ]
 dim(spe)
@@ -98,9 +84,8 @@ dim(spe)
 
 # set seed for reproducibility
 set.seed(123)
-
-# note: gene filtering was already performed above, so disable it here
-spe <- nnSVG(spe, filter_genes = FALSE, filter_mito = FALSE, n_threads = 1)
+# using default gene filtering parameters and a single thread
+spe <- nnSVG(spe)
 
 # show results
 rowData(spe)

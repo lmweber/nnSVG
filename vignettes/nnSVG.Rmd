@@ -32,7 +32,7 @@ For more details on the method, see our paper.
 
 Here we show a short example demonstrating how to use `nnSVG`.
 
-For faster runtime in this example, we subsample the dataset after gene filtering to keep only a small number of genes. For a full analysis, the subsampling step can be skipped.
+For faster runtime in this example, we subsample the dataset to keep only a small number of genes. For a full analysis, the subsampling step can be skipped.
 
 ```{r, message=FALSE}
 library(SpatialExperiment)

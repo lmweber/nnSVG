@@ -6,7 +6,7 @@
 \usage{
 filter_genes(
   spe,
-  filter_genes_ncounts = 2,
+  filter_genes_ncounts = 3,
   filter_genes_pcspots = 0.5,
   filter_mito = TRUE
 )
@@ -20,9 +20,9 @@ filter_genes(
 low-expressed genes. Filtering retains genes containing at least
 \code{filter_genes_ncounts} expression counts in at least
 \code{filter_genes_pcspots} percent of the total number of spatial
-locations (spots). Defaults: \code{filter_genes_ncounts} = 2,
-\code{filter_genes_pcspots} = 0.5, i.e. keep genes with at least 2 counts
-in at least 0.5 percent of spots. Set to NULL to disable.}
+locations (spots). Defaults: \code{filter_genes_ncounts} = 3,
+\code{filter_genes_pcspots} = 1, i.e. keep genes with at least 3 counts in
+at least 0.5 percent of spots. Set to NULL to disable.}
 
 \item{filter_genes_pcspots}{\code{numeric}: Second filtering parameter for
 low-expressed genes. See \code{filter_genes_ncounts} for details.}

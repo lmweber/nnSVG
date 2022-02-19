@@ -27,9 +27,9 @@
 #'   low-expressed genes. Filtering retains genes containing at least
 #'   \code{filter_genes_ncounts} expression counts in at least
 #'   \code{filter_genes_pcspots} percent of the total number of spatial
-#'   locations (spots). Defaults: \code{filter_genes_ncounts} = 2,
-#'   \code{filter_genes_pcspots} = 0.5, i.e. keep genes with at least 2 counts
-#'   in at least 0.5 percent of spots. Set to NULL to disable.
+#'   locations (spots). Defaults: \code{filter_genes_ncounts} = 3,
+#'   \code{filter_genes_pcspots} = 1, i.e. keep genes with at least 3 counts in
+#'   at least 0.5 percent of spots. Set to NULL to disable.
 #' 
 #' @param filter_genes_pcspots \code{numeric}: Second filtering parameter for
 #'   low-expressed genes. See \code{filter_genes_ncounts} for details.
@@ -63,19 +63,19 @@
 #' # filter low-expressed and mitochondrial genes
 #' spe <- filter_genes(spe)
 #' 
-filter_genes <- function(spe, filter_genes_ncounts = 2, 
+filter_genes <- function(spe, filter_genes_ncounts = 3, 
                          filter_genes_pcspots = 0.5, 
                          filter_mito = TRUE) {
   
   # filter low-expressed genes
   if (!is.null(filter_genes_ncounts) | !is.null(filter_genes_pcspots)) {
+    stopifnot("counts" %in% assayNames(spe))
+    nspots <- ceiling(filter_genes_pcspots / 100 * ncol(spe))
+    
     message("Gene filtering: retaining genes with at least ", 
             filter_genes_ncounts, " counts in at least " , 
-            filter_genes_pcspots, "% of spatial locations")
+            filter_genes_pcspots, "% (n = ", nspots, ") of spatial locations")
     
-    stopifnot("counts" %in% assayNames(spe))
-    
-    nspots <- ceiling(filter_genes_pcspots / 100 * ncol(spe))
     ix_remove <- rowSums(counts(spe) >= filter_genes_ncounts) < nspots
     message("removed ", sum(ix_remove), " out of ", nrow(spe), 
             " genes due to low expression")
@@ -85,8 +85,8 @@ filter_genes <- function(spe, filter_genes_ncounts = 2,
   
   # filter mitochondrial genes
   if (filter_mito) {
-    message("Gene filtering: removing mitochondrial genes")
     stopifnot("gene_name" %in% colnames(rowData(spe)))
+    message("Gene filtering: removing mitochondrial genes")
     
     is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
     message("removed ", sum(is_mito), " mitochondrial genes")

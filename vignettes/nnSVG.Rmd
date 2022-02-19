@@ -71,7 +71,7 @@ assayNames(spe)
 ```{r}
 # select small set of random genes and several known SVGs for faster runtime 
 # in this example
-set.seed(1)
+set.seed(123)
 ix_random <- sample(seq_len(nrow(spe)), 10)
 
 known_genes <- c("MOBP", "PCP4", "SNAP25", "HBB", "IGKC", "NPY")

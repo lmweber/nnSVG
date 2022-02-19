@@ -98,7 +98,7 @@
 #'                      fam = "binomial", type = "deviance")
 #' 
 #' # select small number of genes for faster runtime in this example
-#' set.seed(1)
+#' set.seed(123)
 #' ix <- sample(seq_len(nrow(spe)), 4)
 #' spe <- spe[ix, ]
 #' 

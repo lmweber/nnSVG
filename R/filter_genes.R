@@ -28,8 +28,8 @@
 #'   \code{filter_genes_ncounts} expression counts in at least
 #'   \code{filter_genes_pcspots} percent of the total number of spatial
 #'   locations (spots). Defaults: \code{filter_genes_ncounts} = 3,
-#'   \code{filter_genes_pcspots} = 1, i.e. keep genes with at least 3 counts in
-#'   at least 0.5 percent of spots. Set to NULL to disable.
+#'   \code{filter_genes_pcspots} = 0.5, i.e. keep genes with at least 3 counts
+#'   in at least 0.5 percent of spots. Set to NULL to disable.
 #' 
 #' @param filter_genes_pcspots \code{numeric}: Second filtering parameter for
 #'   low-expressed genes. See \code{filter_genes_ncounts} for details.

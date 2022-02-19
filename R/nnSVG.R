@@ -156,7 +156,7 @@ nnSVG <- function(spe, X = NULL,
     nspots <- ceiling(filter_genes_pcspots / 100 * ncol(spe))
     ix_remove <- rowSums(counts(spe) >= filter_genes_ncounts) < nspots
     message("removed ", sum(ix_remove), " out of ", nrow(spe), 
-            "genes due to low expression")
+            " genes due to low expression")
     
     spe <- spe[!ix_remove, ]
   }

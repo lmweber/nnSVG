@@ -71,7 +71,7 @@ filter_genes <- function(spe, filter_genes_ncounts = 2,
   if (!is.null(filter_genes_ncounts) | !is.null(filter_genes_pcspots)) {
     message("Gene filtering: retaining genes with at least ", 
             filter_genes_ncounts, " counts in at least " , 
-            filter_genes_pcspots, " % of spatial locations")
+            filter_genes_pcspots, "% of spatial locations")
     
     stopifnot("counts" %in% assayNames(spe))
     
@@ -89,7 +89,7 @@ filter_genes <- function(spe, filter_genes_ncounts = 2,
     stopifnot("gene_name" %in% colnames(rowData(spe)))
     
     is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
-    message("removing ", sum(is_mito), " mitochondrial genes")
+    message("removed ", sum(is_mito), " mitochondrial genes")
     
     spe <- spe[!is_mito, ]
   }

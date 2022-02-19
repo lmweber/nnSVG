@@ -56,6 +56,10 @@ dim(spe)
 spe <- spe[, colData(spe)$in_tissue == 1]
 dim(spe)
 
+# filter low-expressed and mitochondrial genes
+# using default filtering parameters
+spe <- filter_genes(spe)
+
 # calculate deviance residuals using scry package
 # (alternatively could calculate log-transformed normalized counts)
 spe <- nullResiduals(spe, assay = "counts", 

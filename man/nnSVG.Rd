@@ -8,9 +8,6 @@ nnSVG(
   spe,
   X = NULL,
   assay_name = "binomial_deviance_residuals",
-  filter_genes_ncounts = 2,
-  filter_genes_pcspots = 0.5,
-  filter_mito = TRUE,
   n_threads = 1,
   verbose = FALSE
 )
@@ -34,27 +31,6 @@ example, \code{binomial_deviance_residuals} for deviance residuals from the
 \code{scry} package, or \code{logcounts} for log-transformed normalized
 counts from the \code{scran} package. Default =
 \code{binomial_deviance_residuals}.}
-
-\item{filter_genes_ncounts}{\code{numeric}: Filtering parameter to filter
-low-expressed genes. If values are provided, filtering will be performed to
-retain genes containing at least \code{filter_genes_ncounts} expression
-counts in at least \code{filter_genes_pcspots} percent of the total number
-of spatial locations (spots). This also requires that the input object
-contains an additional \code{assay} named \code{counts} containing raw gene
-expression counts. Defaults: \code{filter_genes_ncounts} = 2,
-\code{filter_genes_pcspots} = 0.5, i.e. keep genes with at least 2 counts
-in at least 0.5% of spots. Set to NULL to disable filtering, e.g. if
-filtering has already been performed separately.}
-
-\item{filter_genes_pcspots}{\code{numeric}: Second filtering parameter for
-low-expressed genes. See \code{filter_genes_ncounts} for details.}
-
-\item{filter_mito}{\code{logical}: Whether to filter out mitochondrial genes,
-identified by gene names starting with "MT" or "mt". This requires that the
-\code{rowData} slot of the input object contains a column named
-\code{gene_name}. Default = TRUE. Set to FALSE to disable, e.g. if
-mitochondrial genes are of interest or have already been filtered out from
-the input object.}
 
 \item{n_threads}{\code{integer}: Number of threads for parallelization.
 Default = 1.}
@@ -102,10 +78,6 @@ object containing an \code{assay} slot containing either deviance residuals
 (e.g. from the \code{scry} package) or log-transformed normalized counts
 (e.g. from the \code{scran} package), which have been preprocessed, quality
 controlled, and filtered to remove any low-quality spatial locations.
-
-Low-expressed genes can be filtered out either manually before providing the
-input to 'nnSVG', or using the filtering arguments and default values
-provided here.
 }
 \examples{
 library(SpatialExperiment)
@@ -119,6 +91,9 @@ spe <- Visium_humanDLPFC()
 
 # keep only spots over tissue
 spe <- spe[, colData(spe)$in_tissue == 1]
+
+# filter low-expressed and mitochondrial genes
+spe <- filter_genes(spe)
 
 # calculate deviance residuals using scry package
 spe <- nullResiduals(spe, assay = "counts", 

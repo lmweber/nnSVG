@@ -99,13 +99,9 @@ spe <- filter_genes(spe)
 spe <- nullResiduals(spe, assay = "counts", 
                      fam = "binomial", type = "deviance")
 
-# select small set of random genes and several known SVGs for faster runtime 
-# in this example
-set.seed(123)
-ix_20 <- sample(seq_len(nrow(spe)), 20)
-known_genes <- c("MOBP", "PCP4", "SNAP25", "HBB", "IGKC", "NPY")
-ix_known <- which(rowData(spe)$gene_name \%in\% known_genes)
-ix <- c(ix_20, ix_known)
+# select small number of genes for faster runtime in this example
+set.seed(1)
+ix <- sample(seq_len(nrow(spe)), 4)
 spe <- spe[ix, ]
 
 # run nnSVG

@@ -72,12 +72,12 @@ assayNames(spe)
 # select small set of random genes and several known SVGs for faster runtime 
 # in this example
 set.seed(123)
-ix_20 <- sample(seq_len(nrow(spe)), 20)
+ix_random <- sample(seq_len(nrow(spe)), 6)
 
 known_genes <- c("MOBP", "PCP4", "SNAP25", "HBB", "IGKC", "NPY")
 ix_known <- which(rowData(spe)$gene_name %in% known_genes)
 
-ix <- c(ix_20, ix_known)
+ix <- c(ix_known, ix_random)
 
 spe <- spe[ix, ]
 dim(spe)

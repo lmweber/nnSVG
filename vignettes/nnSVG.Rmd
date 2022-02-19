@@ -71,8 +71,8 @@ assayNames(spe)
 ```{r}
 # select small set of random genes and several known SVGs for faster runtime 
 # in this example
-set.seed(123)
-ix_random <- sample(seq_len(nrow(spe)), 6)
+set.seed(1)
+ix_random <- sample(seq_len(nrow(spe)), 10)
 
 known_genes <- c("MOBP", "PCP4", "SNAP25", "HBB", "IGKC", "NPY")
 ix_known <- which(rowData(spe)$gene_name %in% known_genes)
@@ -114,7 +114,7 @@ table(rowData(spe)$padj <= 0.05)
 
 ```{r}
 # show results for top n SVGs
-rowData(spe)[rowData(spe)$rank <= 5, ]
+rowData(spe)[order(rowData(spe)$rank)[1:10], ]
 ```
 
 ```{r, fig.width=4, fig.height=3.5}

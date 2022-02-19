@@ -124,12 +124,16 @@ spe <- spe[, colData(spe)$in_tissue == 1]
 spe <- nullResiduals(spe, assay = "counts", 
                      fam = "binomial", type = "deviance")
 
-# subset small number of genes for faster runtime in this example
+# select small set of random genes and several known SVGs for faster runtime 
+# in this example
 set.seed(123)
-spe <- spe[sample(seq_len(6)), ]
+ix_20 <- sample(seq_len(nrow(spe)), 20)
+known_genes <- c("MOBP", "PCP4", "SNAP25", "HBB", "IGKC", "NPY")
+ix_known <- which(rowData(spe)$gene_name \%in\% known_genes)
+ix <- c(ix_20, ix_known)
+spe <- spe[ix, ]
 
 # run nnSVG
-# set seed for reproducibility
 set.seed(123)
 spe <- nnSVG(spe)
 

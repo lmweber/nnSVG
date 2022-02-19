@@ -65,8 +65,8 @@ assayNames(spe)
 ```
 
 ```{r}
-# subsampling to select small number of random genes and several known SVGs for 
-# faster runtime in this example
+# select small set of random genes and several known SVGs for faster runtime 
+# in this example
 set.seed(123)
 ix_20 <- sample(seq_len(nrow(spe)), 20)
 

@@ -20,7 +20,7 @@ normalized counts (e.g. from the \code{scran} package), and a
 \code{spatialCoords} slot containing spatial coordinates of the
 measurements.}
 
-\item{X}{\code{numeric matrix}: Optional design matrix containing columns of
+\item{X}{\code{numeric} matrix: Optional design matrix containing columns of
 covariates per spatial location, e.g. known spatial domains. Number of rows
 must match the number of spatial locations. Default = NULL, which fits an
 intercept-only model.}

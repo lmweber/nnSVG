@@ -41,7 +41,7 @@
 #'   \code{spatialCoords} slot containing spatial coordinates of the
 #'   measurements.
 #' 
-#' @param X \code{numeric matrix}: Optional design matrix containing columns of
+#' @param X \code{numeric} matrix: Optional design matrix containing columns of
 #'   covariates per spatial location, e.g. known spatial domains. Number of rows
 #'   must match the number of spatial locations. Default = NULL, which fits an
 #'   intercept-only model.

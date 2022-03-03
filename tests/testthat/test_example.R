@@ -1,6 +1,7 @@
 # run example from nnSVG function documentation
 example(nnSVG, echo = FALSE)
 
+
 test_that("example has correct class", {
   expect_s4_class(spe, "SpatialExperiment")
 })

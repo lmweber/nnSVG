@@ -4,7 +4,9 @@
 
 R/Bioconductor package implementing our method `nnSVG` for scalable identification of spatially variable genes (SVGs) using nearest-neighbor Gaussian processes in spatially resolved transcriptomics (ST) data.
 
-The package is integrated into Bioconductor and will be submitted to Bioconductor soon.
+The package is integrated into the Bioconductor framework and uses the [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) class to store ST data and results.
+
+The package will be submitted to Bioconductor soon.
 
 
 ## Installation
@@ -13,12 +15,6 @@ The development version of the package can be installed from GitHub:
 
 ```
 remotes::install_github("lmweber/nnSVG")
-```
-
-The current development version also depends on the development version of the [BRISC](https://cran.r-project.org/package=BRISC) R package, which can be installed from the following repository:
-
-```
-remotes::install_github("ArkajyotiSaha/BRISC-extensions")
 ```
 
 

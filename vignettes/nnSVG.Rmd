@@ -1,5 +1,5 @@
 ---
-title: "nnSVG package"
+title: "nnSVG tutorial"
 author: 
   - name: Lukas M. Weber
     affiliation: &id1 "Johns Hopkins Bloomberg School of Public Health, Baltimore, USA"
@@ -9,7 +9,7 @@ package: nnSVG
 output: 
   BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{nnSVG package}
+  %\VignetteIndexEntry{nnSVG tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,7 +19,7 @@ vignette: >
 
 `nnSVG` is a method for scalable identification of spatially variable genes (SVGs) in spatially resolved transcriptomics (ST) data.
 
-The method is based on nearest-neighbor Gaussian processes ([Datta et al. (2016)](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091)) and uses the BRISC algorithm ([Saha and Datta (2018)](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)).
+The method is based on nearest-neighbor Gaussian processes ([Datta et al. (2016)](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091)) and uses the BRISC algorithm ([Saha and Datta (2018)](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)) for model fitting and parameter estimation.
 
 `nnSVG` allows identification and ranking of SVGs with flexible spatial bandwidths across a tissue slide or within spatial domains defined by covariates. The method scales linearly with the number of spatial locations and can be applied to datasets containing thousands or more spatial locations.
 
@@ -30,7 +30,7 @@ For more details on the method, see our paper.
 
 ## Run nnSVG
 
-Here we show a short example demonstrating how to use `nnSVG`.
+Here we show a short example demonstrating how to run `nnSVG`.
 
 For faster runtime in this example, we subsample the dataset and run `nnSVG` on only a small number of genes. For a full analysis, the subsampling step can be skipped.
 
@@ -69,8 +69,8 @@ assayNames(spe)
 ```
 
 ```{r}
-# select small set of random genes and several known SVGs for faster runtime 
-# in this example
+# select small set of random genes and several known SVGs for 
+# faster runtime in this example
 set.seed(123)
 ix_random <- sample(seq_len(nrow(spe)), 10)
 
@@ -88,7 +88,7 @@ dim(spe)
 
 # set seed for reproducibility
 set.seed(123)
-# using default gene filtering parameters and a single thread
+# using a single thread in this example
 spe <- nnSVG(spe)
 
 # show results
@@ -98,13 +98,14 @@ rowData(spe)
 
 ## Investigate results
 
-The results are stored in the `rowData` of the `SpatialExperiment` object, as shown above.
+The results are stored in the `rowData` of the `SpatialExperiment` object.
 
 The main results of interest are:
 
 - `LR_stat`: likelihood ratio (LR) statistics
 - `rank`: rank of top SVGs according to LR statistics
-- `padj`: p-values (adjusted for multiple testing), which can be used to define a cutoff for significant SVGs (e.g. `padj` <= 0.05)
+- `pval`: p-values from asymptotic chi-squared distribution with 2 degrees of freedom
+- `padj`: p-values adjusted for multiple testing, which can be used to define a cutoff for statistically significant SVGs (e.g. `padj` <= 0.05)
 - `prop_sv`: effect size, defined as proportion of spatial variance out of total variance
 
 ```{r}
@@ -117,8 +118,8 @@ table(rowData(spe)$padj <= 0.05)
 rowData(spe)[order(rowData(spe)$rank)[1:10], ]
 ```
 
-```{r, fig.width=4, fig.height=3.5}
-# plot expression of top-ranked SVG
+```{r, fig.width=3, fig.height=3}
+# plot spatial expression of top-ranked SVG
 ix <- which(rowData(spe)$rank == 1)
 ix_name <- rowData(spe)$gene_name[ix]
 ix_name
@@ -128,7 +129,7 @@ df <- as.data.frame(
         expr = counts(spe)[ix, ]))
 
 ggplot(df, aes(x = x, y = y, color = expr)) + 
-  geom_point(size = 0.4) + 
+  geom_point(size = 0.3) + 
   coord_fixed() + 
   scale_y_reverse() + 
   scale_color_gradient(low = "gray90", high = "blue") + 

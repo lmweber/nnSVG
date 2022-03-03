@@ -7,31 +7,30 @@
 #' spatially resolved transcriptomics (ST) data.
 #' 
 #' The 'nnSVG' method is based on nearest-neighbor Gaussian processes (Datta et
-#' al. 2016) and uses the BRISC algorithm (Saha and Datta 2018). The method
-#' scales linearly in the number of spatial locations, and can be applied to
-#' datasets containing thousands or more spatial locations. For more details on
-#' the method, see our paper.
+#' al. 2016) and uses the BRISC algorithm (Saha and Datta 2018) for model
+#' fitting and parameter estimation. The method scales linearly with the number
+#' of spatial locations, and can be applied to datasets containing thousands or
+#' more spatial locations. For more details on the method, see our paper.
 #' 
-#' This function runs 'nnSVG' for a full dataset. Internally, the function calls
-#' BRISC once per gene to perform model fitting and parameter estimation, using
-#' parallelization with one core per BRISC run. The spatial covariance parameter
-#' estimates (sigma.sq, tau.sq, phi) are stored in 'Theta' in the BRISC output.
+#' This function runs 'nnSVG' for a full dataset. The function fits a separate
+#' model for each gene, using parallelization with BiocParallel for faster
+#' runtime. The parameter estimates from BRISC (sigma.sq, tau.sq, phi) for each
+#' gene are stored in 'Theta' in the BRISC output.
 #' 
-#' 'nnSVG' then performs inference on the 'sigma.sq' estimates using an
-#' approximate likelihood ratio (LR) test against a model without spatial terms,
-#' and uses the estimated LR statistics to rank SVGs. We also calculate an
-#' effect size, defined as the proportion of spatial variance, 'prop_sv =
-#' sigma.sq / (sigma.sq + tau.sq)'.
-#' 
-#' LR tests are calculated using the asymptotic chi-squared distribution with 2
-#' degrees of freedom. Multiple testing adjusted p-values are calculated using
-#' the Benjamini-Hochberg method.
+#' 'nnSVG' performs inference on the spatial variance parameter estimates
+#' (sigma.sq) using a likelihood ratio (LR) test against a simpler linear model
+#' without spatial terms (i.e. without tau.sq or phi). The estimated LR
+#' statistics can then be used to rank SVGs. P-values are calculated from the LR
+#' statistics using the asymptotic chi-squared distribution with 2 degrees of
+#' freedom, and multiple testing adjusted p-values are calculated using the
+#' Benjamini-Hochberg method. We also calculate an effect size, defined as the
+#' proportion of spatial variance, 'prop_sv = sigma.sq / (sigma.sq + tau.sq)'.
 #' 
 #' The function assumes the input is provided as a \code{SpatialExperiment}
 #' object containing an \code{assay} slot containing either deviance residuals
 #' (e.g. from the \code{scry} package) or log-transformed normalized counts
 #' (e.g. from the \code{scran} package), which have been preprocessed, quality
-#' controlled, and filtered to remove any low-quality spatial locations.
+#' controlled, and filtered to remove low-quality spatial locations.
 #' 
 #' 
 #' @param spe \code{SpatialExperiment}: Input data, assumed to be formatted as a
@@ -53,6 +52,12 @@
 #'   counts from the \code{scran} package. Default =
 #'   \code{binomial_deviance_residuals}.
 #' 
+#' @param n_neighbors \code{integer}: Number of nearest neighbors for fitting
+#'   the nearest-neighbor Gaussian process (NNGP) model with BRISC. The default
+#'   value is 15, which works well in most settings. Smaller numbers (e.g. 5-10)
+#'   will give faster runtime at the expense of reduced performance. Default =
+#'   15.
+#' 
 #' @param n_threads \code{integer}: Number of threads for parallelization.
 #'   Default = 1.
 #' 
@@ -61,9 +66,9 @@
 #' 
 #' 
 #' @return Returns output values as additional columns in the \code{rowData}
-#'   slot of the input object, including spatial covariance parameter estimates,
+#'   slot of the input object, including spatial variance parameter estimates,
 #'   likelihood ratio (LR) statistics, effect sizes (proportion of spatial
-#'   covariance), p-values, and multiple testing adjusted p-values.
+#'   variance), p-values, and multiple testing adjusted p-values.
 #' 
 #' 
 #' @importFrom SpatialExperiment spatialCoords
@@ -112,15 +117,15 @@
 #' 
 nnSVG <- function(spe, X = NULL, 
                   assay_name = "binomial_deviance_residuals", 
-                  n_threads = 1, verbose = FALSE) {
+                  n_neighbors = 15, n_threads = 1, verbose = FALSE) {
   
   if (!is.null(X)) stopifnot(nrow(X) == ncol(spe))
   
   stopifnot(assay_name %in% assayNames(spe))
   
-  # ---------
-  # run BRISC
-  # ---------
+  # -----------------------
+  # run BRISC for each gene
+  # -----------------------
   
   y <- assays(spe)[[assay_name]]
   
@@ -130,11 +135,11 @@ nnSVG <- function(spe, X = NULL,
   coords <- apply(coords, 2, function(col) (col - min(col)) / range_all)
   
   # calculate ordering of coordinates
-  order_brisc <- BRISC_order(coords, order = "AMMD", verbose = verbose)
+  order_brisc <- BRISC_order(coords, order = "Sum_coords", verbose = verbose)
   
   # calculate nearest neighbors
-  nn_brisc <- BRISC_neighbor(coords, n.neighbors = 15, n_omp = 1, 
-                             search.type = "cb", ordering = order_brisc, 
+  nn_brisc <- BRISC_neighbor(coords, n.neighbors = n_neighbors, n_omp = 1, 
+                             search.type = "tree", ordering = order_brisc, 
                              verbose = verbose)
   
   # run BRISC using parallelization
@@ -199,7 +204,7 @@ nnSVG <- function(spe, X = NULL,
   # likelihood ratio (LR) statistics and tests
   # ------------------------------------------
   
-  # calculate log likelihoods for non-spatial models
+  # calculate log likelihoods for nonspatial models
   
   loglik_lm <- sapply(seq_len(nrow(spe)), function(i) {
     y_i <- y[i, ]
@@ -214,8 +219,8 @@ nnSVG <- function(spe, X = NULL,
     loglik_lm = loglik_lm
   )
   
-  # calculate LR statistics and tests (Wilks' theorem, asymptotic chi-square 
-  # with 2 degrees of freedom since 2 more parameters in full model)
+  # calculate LR statistics and tests (Wilks' theorem, asymptotic chi-square
+  # with 2 degrees of freedom)
   
   LR_stat = -2 * (mat_brisc[, "loglik_lm"] - mat_brisc[, "loglik"])
   

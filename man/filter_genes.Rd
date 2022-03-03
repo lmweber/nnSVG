@@ -51,9 +51,9 @@ We use this function in the examples and vignettes in the 'nnSVG' package,
 and provide default filtering parameter values that are appropriate for 10x
 Genomics Visium data.
 
-Alternatively, users can also perform filtering and preprocessing separately,
-and run \code{\link{nnSVG}} on a preprocessed \code{SpatialExperiment}
-object.
+The use of this function is optional. Users can also perform filtering and
+preprocessing separately, and run \code{\link{nnSVG}} on a preprocessed
+\code{SpatialExperiment} object.
 }
 \examples{
 library(SpatialExperiment)

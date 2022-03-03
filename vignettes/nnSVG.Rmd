@@ -2,7 +2,7 @@
 title: "nnSVG tutorial"
 author: 
   - name: Lukas M. Weber
-    affiliation: &id1 "Johns Hopkins Bloomberg School of Public Health, Baltimore, USA"
+    affiliation: &id1 "Johns Hopkins Bloomberg School of Public Health, Baltimore, MD, USA"
   - name: Stephanie C. Hicks
     affiliation: &id1
 package: nnSVG

@@ -23,11 +23,11 @@ URL: https://github.com/lmweber/nnSVG
 BugReports: https://github.com/lmweber/nnSVG/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
-biocViews:
+biocViews: 
     Spatial, 
     SingleCell, 
     Transcriptomics
-Imports:
+Imports: 
     SpatialExperiment, 
     SingleCellExperiment, 
     SummarizedExperiment, 
@@ -39,7 +39,7 @@ Imports:
     stats, 
     methods
 VignetteBuilder: knitr
-Suggests:
+Suggests: 
     BiocStyle, 
     knitr, 
     rmarkdown, 

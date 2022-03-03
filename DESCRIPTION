@@ -33,11 +33,9 @@ Imports:
     SummarizedExperiment, 
     BRISC, 
     BiocParallel, 
-    BiocSingular, 
     Matrix, 
     matrixStats, 
-    stats, 
-    methods
+    stats
 VignetteBuilder: knitr
 Suggests: 
     BiocStyle, 

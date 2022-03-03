@@ -26,7 +26,9 @@ Encoding: UTF-8
 biocViews: 
     Spatial, 
     SingleCell, 
-    Transcriptomics
+    Transcriptomics, 
+    GeneExpression, 
+    Preprocessing
 Imports: 
     SpatialExperiment, 
     SingleCellExperiment, 

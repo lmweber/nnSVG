@@ -45,5 +45,6 @@ Suggests:
     rmarkdown, 
     STexampleData, 
     scry, 
-    ggplot2
+    ggplot2, 
+    testthat
 RoxygenNote: 7.1.2

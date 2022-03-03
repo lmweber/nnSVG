@@ -22,6 +22,7 @@ Authors@R: c(
 URL: https://github.com/lmweber/nnSVG
 BugReports: https://github.com/lmweber/nnSVG/issues
 License: MIT + file LICENSE
+Encoding: UTF-8
 biocViews:
     Spatial, 
     SingleCell, 

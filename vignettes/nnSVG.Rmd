@@ -37,7 +37,7 @@ For faster runtime in this example, we subsample the dataset and run `nnSVG` on 
 ```{r, message=FALSE}
 library(SpatialExperiment)
 library(STexampleData)
-library(scry)
+library(scran)
 library(nnSVG)
 library(ggplot2)
 ```

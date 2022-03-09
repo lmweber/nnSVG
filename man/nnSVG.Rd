@@ -7,7 +7,7 @@
 nnSVG(
   spe,
   X = NULL,
-  assay_name = "binomial_deviance_residuals",
+  assay_name = "logcounts",
   n_neighbors = 15,
   n_threads = 1,
   verbose = FALSE
@@ -16,8 +16,8 @@ nnSVG(
 \arguments{
 \item{spe}{\code{SpatialExperiment}: Input data, assumed to be formatted as a
 \code{SpatialExperiment} object with an \code{assay} slot containing either
-deviance residuals (e.g. from the \code{scry} package) or log-transformed
-normalized counts (e.g. from the \code{scran} package), and a
+log-transformed normalized counts (e.g. from the \code{scran} package) or
+deviance residuals (e.g. from the \code{scry} package), and a
 \code{spatialCoords} slot containing spatial coordinates of the
 measurements.}
 
@@ -28,10 +28,9 @@ intercept-only model.}
 
 \item{assay_name}{\code{character}: Name of the \code{assay} slot in the
 input object containing the preprocessed gene expression values. For
-example, \code{binomial_deviance_residuals} for deviance residuals from the
-\code{scry} package, or \code{logcounts} for log-transformed normalized
-counts from the \code{scran} package. Default =
-\code{binomial_deviance_residuals}.}
+example, \code{logcounts} for log-transformed normalized counts from the
+\code{scran} package, or \code{binomial_deviance_residuals} for deviance
+residuals from the \code{scry} package. Default = \code{logcounts}.}
 
 \item{n_neighbors}{\code{integer}: Number of nearest neighbors for fitting
 the nearest-neighbor Gaussian process (NNGP) model with BRISC. The default
@@ -80,15 +79,15 @@ Benjamini-Hochberg method. We also calculate an effect size, defined as the
 proportion of spatial variance, 'prop_sv = sigma.sq / (sigma.sq + tau.sq)'.
 
 The function assumes the input is provided as a \code{SpatialExperiment}
-object containing an \code{assay} slot containing either deviance residuals
-(e.g. from the \code{scry} package) or log-transformed normalized counts
-(e.g. from the \code{scran} package), which have been preprocessed, quality
+object containing an \code{assay} slot containing either log-transformed
+normalized counts (e.g. from the \code{scran} package) or deviance residuals
+(e.g. from the \code{scry} package), which have been preprocessed, quality
 controlled, and filtered to remove low-quality spatial locations.
 }
 \examples{
 library(SpatialExperiment)
 library(STexampleData)
-library(scry)
+library(scran)
 
 # load example dataset from STexampleData package
 spe <- Visium_humanDLPFC()
@@ -98,12 +97,17 @@ spe <- Visium_humanDLPFC()
 # keep only spots over tissue
 spe <- spe[, colData(spe)$in_tissue == 1]
 
+# skip spot-level quality control, since this has been performed previously 
+# on this dataset
+
 # filter low-expressed and mitochondrial genes
 spe <- filter_genes(spe)
 
-# calculate deviance residuals using scry package
-spe <- nullResiduals(spe, assay = "counts", 
-                     fam = "binomial", type = "deviance")
+# calculate log-transformed normalized counts using scran package
+set.seed(123)
+qclus <- quickCluster(spe)
+spe <- computeSumFactors(spe, cluster = qclus)
+spe <- logNormCounts(spe)
 
 # select small number of genes for faster runtime in this example
 set.seed(123)

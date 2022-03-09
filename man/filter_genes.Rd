@@ -44,8 +44,8 @@ Preprocessing function to filter low-expressed genes and/or mitochondrial
 genes for 'nnSVG'.
 
 This function can be used to filter out low-expressed genes and/or
-mitochondrial genes before additional preprocessing (calculating deviance
-residuals or log-transformed normalized counts) and running 'nnSVG'.
+mitochondrial genes before additional preprocessing (calculating
+log-transformed normalized counts or deviance residuals) and running 'nnSVG'.
 
 We use this function in the examples and vignettes in the 'nnSVG' package,
 and provide default filtering parameter values that are appropriate for 10x

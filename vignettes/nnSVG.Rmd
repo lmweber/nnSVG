@@ -56,14 +56,19 @@ dim(spe)
 spe <- spe[, colData(spe)$in_tissue == 1]
 dim(spe)
 
+# skip spot-level quality control, since this has been performed previously 
+# on this dataset
+
 # filter low-expressed and mitochondrial genes
 # using default filtering parameters
 spe <- filter_genes(spe)
 
-# calculate deviance residuals using scry package
-# (alternatively could calculate log-transformed normalized counts)
-spe <- nullResiduals(spe, assay = "counts", 
-                     fam = "binomial", type = "deviance")
+# calculate log-transformed normalized counts using scran package
+# (alternatively could calculate deviance residuals using scry package)
+set.seed(123)
+qclus <- quickCluster(spe)
+spe <- computeSumFactors(spe, cluster = qclus)
+spe <- logNormCounts(spe)
 
 assayNames(spe)
 ```

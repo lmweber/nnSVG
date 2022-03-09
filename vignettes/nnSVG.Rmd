@@ -133,7 +133,7 @@ df <- as.data.frame(
   cbind(spatialCoords(spe), 
         expr = counts(spe)[ix, ]))
 
-ggplot(df, aes(x = pxl_col_in_fulres, y = pxl_row_in_fullres, color = expr)) + 
+ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres, color = expr)) + 
   geom_point(size = 0.8) + 
   coord_fixed() + 
   scale_y_reverse() + 

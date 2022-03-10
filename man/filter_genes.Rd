@@ -25,7 +25,8 @@ locations (spots). Defaults: \code{filter_genes_ncounts} = 3,
 in at least 0.5 percent of spots. Set to NULL to disable.}
 
 \item{filter_genes_pcspots}{\code{numeric}: Second filtering parameter for
-low-expressed genes. See \code{filter_genes_ncounts} for details.}
+low-expressed genes. Set to NULL to disable. See
+\code{filter_genes_ncounts} for details.}
 
 \item{filter_mito}{\code{logical}: Whether to filter out mitochondrial genes,
 identified by gene names starting with "MT" or "mt". This requires that the

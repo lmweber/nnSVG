@@ -32,7 +32,8 @@
 #'   in at least 0.5 percent of spots. Set to NULL to disable.
 #' 
 #' @param filter_genes_pcspots \code{numeric}: Second filtering parameter for
-#'   low-expressed genes. See \code{filter_genes_ncounts} for details.
+#'   low-expressed genes. Set to NULL to disable. See
+#'   \code{filter_genes_ncounts} for details.
 #' 
 #' @param filter_mito \code{logical}: Whether to filter out mitochondrial genes,
 #'   identified by gene names starting with "MT" or "mt". This requires that the
@@ -68,7 +69,7 @@ filter_genes <- function(spe, filter_genes_ncounts = 3,
                          filter_mito = TRUE) {
   
   # filter low-expressed genes
-  if (!is.null(filter_genes_ncounts) | !is.null(filter_genes_pcspots)) {
+  if (!is.null(filter_genes_ncounts) & !is.null(filter_genes_pcspots)) {
     stopifnot("counts" %in% assayNames(spe))
     nspots <- ceiling(filter_genes_pcspots / 100 * ncol(spe))
     

@@ -68,6 +68,17 @@ filter_genes <- function(spe, filter_genes_ncounts = 3,
                          filter_genes_pcspots = 0.5, 
                          filter_mito = TRUE) {
   
+  # filter mitochondrial genes
+  if (filter_mito) {
+    stopifnot("gene_name" %in% colnames(rowData(spe)))
+    message("Gene filtering: removing mitochondrial genes")
+    
+    is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
+    message("removed ", sum(is_mito), " mitochondrial genes")
+    
+    spe <- spe[!is_mito, ]
+  }
+  
   # filter low-expressed genes
   if (!is.null(filter_genes_ncounts) & !is.null(filter_genes_pcspots)) {
     stopifnot("counts" %in% assayNames(spe))
@@ -82,17 +93,6 @@ filter_genes <- function(spe, filter_genes_ncounts = 3,
             " genes due to low expression")
     
     spe <- spe[!ix_remove, ]
-  }
-  
-  # filter mitochondrial genes
-  if (filter_mito) {
-    stopifnot("gene_name" %in% colnames(rowData(spe)))
-    message("Gene filtering: removing mitochondrial genes")
-    
-    is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
-    message("removed ", sum(is_mito), " mitochondrial genes")
-    
-    spe <- spe[!is_mito, ]
   }
   
   spe

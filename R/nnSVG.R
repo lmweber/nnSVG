@@ -226,7 +226,7 @@ nnSVG <- function(spe, X = NULL,
   # calculate LR statistics and tests (Wilks' theorem, asymptotic chi-square
   # with 2 degrees of freedom)
   
-  LR_stat = -2 * (mat_brisc[, "loglik_lm"] - mat_brisc[, "loglik"])
+  LR_stat <- -2 * (mat_brisc[, "loglik_lm"] - mat_brisc[, "loglik"])
   
   pval <- 1 - pchisq(LR_stat, df = 2)
   padj <- p.adjust(pval, method = "BH")

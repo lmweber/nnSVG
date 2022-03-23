@@ -29,6 +29,7 @@ biocViews:
     Transcriptomics, 
     GeneExpression, 
     Preprocessing
+Depends: 
 Imports: 
     SpatialExperiment, 
     SingleCellExperiment, 

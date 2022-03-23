@@ -210,13 +210,13 @@ nnSVG <- function(spe, X = NULL,
   
   # calculate log likelihoods for nonspatial models
   
-  loglik_lm <- sapply(seq_len(nrow(spe)), function(i) {
+  loglik_lm <- vapply(seq_len(nrow(spe)), function(i) {
     y_i <- y[i, ]
     if (is.null(X)) {
       X <- rep(1, ncol(spe))
     }
     as.numeric(logLik(lm(y_i ~ X)))
-  })
+  }, numeric(1))
   
   mat_brisc <- cbind(
     mat_brisc, 

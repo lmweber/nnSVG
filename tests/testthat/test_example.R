@@ -11,6 +11,6 @@ test_that("example has correct dimensions", {
 })
 
 test_that("example identifies correct number of significant SVGs", {
-  expect_equal(as.numeric(table(rowData(spe)$padj <= 0.05)), c(3, 1))
+  expect_equal(as.numeric(table(rowData(spe)$padj <= 0.05)), 4)
 })
 

@@ -58,7 +58,9 @@
 #'   15.
 #' 
 #' @param n_threads \code{integer}: Number of threads for parallelization.
-#'   Default = 1.
+#'   Default = 1. We recommend setting this equal to the number of cores
+#'   available (if working on a laptop or desktop) or around 10 or more (if
+#'   working on a compute cluster).
 #' 
 #' @param BPPARAM \code{BiocParallelParam}: Optional additional argument for
 #'   parallelization. This argument is provided for advanced users of

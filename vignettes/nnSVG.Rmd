@@ -26,6 +26,22 @@ The `nnSVG` R package is integrated into the Bioconductor framework and uses the
 For more details on the method, see our paper.
 
 
+# Installation
+
+The `nnSVG` package can be installed from Bioconductor.
+
+The following code will install the latest stable release version from Bioconductor.
+
+```{r, eval=FALSE}
+# install Bioconductor installer from CRAN
+install.packages("BiocManager")
+# install nnSVG package
+BiocManager::install("nnSVG")
+```
+
+The latest development version can also be installed from the [devel](http://bioconductor.org/developers/how-to/useDevel/) version of Bioconductor or from [GitHub](https://github.com/lmweber/nnSVG).
+
+
 # Tutorial
 
 ## Run nnSVG

@@ -54,12 +54,7 @@
 #' library(STexampleData)
 #' 
 #' # load example dataset from STexampleData package
-#' spe <- Visium_humanDLPFC()
-#' 
-#' # preprocessing steps
-#' 
-#' # keep only spots over tissue
-#' spe <- spe[, colData(spe)$in_tissue == 1]
+#' spe <- ST_mouseOB()
 #' 
 #' # filter low-expressed and mitochondrial genes
 #' spe <- filter_genes(spe)

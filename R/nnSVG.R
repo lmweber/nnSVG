@@ -60,6 +60,14 @@
 #' @param n_threads \code{integer}: Number of threads for parallelization.
 #'   Default = 1.
 #' 
+#' @param BPPARAM \code{BiocParallelParam}: Optional additional argument for
+#'   parallelization. This argument is provided for advanced users of
+#'   \code{BiocParallel} for further flexibility for parallelization on some
+#'   operating systems. If provided, this should be an instance of
+#'   \code{BiocParallelParam}. For most users, the recommended option is to use
+#'   the \code{n_threads} argument instead. Default = NULL, in which case
+#'   \code{n_threads} will be used instead.
+#' 
 #' @param verbose \code{logical}: Whether to display verbose output for model
 #'   fitting and parameter estimation from \code{BRISC}. Default = FALSE.
 #' 
@@ -121,11 +129,16 @@
 #' 
 nnSVG <- function(spe, X = NULL, 
                   assay_name = "logcounts", n_neighbors = 15, 
-                  n_threads = 1, verbose = FALSE) {
+                  n_threads = 1, BPPARAM = NULL, 
+                  verbose = FALSE) {
   
   if (!is.null(X)) stopifnot(nrow(X) == ncol(spe))
   
   stopifnot(assay_name %in% assayNames(spe))
+  
+  if (is.null(BPPARAM)) {
+    BPPARAM <- MulticoreParam(workers = n_threads)
+  }
   
   # -----------------------
   # run BRISC for each gene
@@ -165,7 +178,7 @@ nnSVG <- function(spe, X = NULL,
       runtime = runtime[["elapsed"]]
     )
     res_i
-  }, BPPARAM = MulticoreParam(workers = n_threads))
+  }, BPPARAM = BPPARAM)
   
   # collapse output list into matrix
   mat_brisc <- do.call("rbind", out_brisc)

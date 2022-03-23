@@ -10,6 +10,7 @@ nnSVG(
   assay_name = "logcounts",
   n_neighbors = 15,
   n_threads = 1,
+  BPPARAM = NULL,
   verbose = FALSE
 )
 }
@@ -40,6 +41,14 @@ will give faster runtime at the expense of reduced performance. Default =
 
 \item{n_threads}{\code{integer}: Number of threads for parallelization.
 Default = 1.}
+
+\item{BPPARAM}{\code{BiocParallelParam}: Optional additional argument for
+parallelization. This argument is provided for advanced users of
+\code{BiocParallel} for further flexibility for parallelization on some
+operating systems. If provided, this should be an instance of
+\code{BiocParallelParam}. For most users, the recommended option is to use
+the \code{n_threads} argument instead. Default = NULL, in which case
+\code{n_threads} will be used instead.}
 
 \item{verbose}{\code{logical}: Whether to display verbose output for model
 fitting and parameter estimation from \code{BRISC}. Default = FALSE.}

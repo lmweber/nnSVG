@@ -30,6 +30,7 @@ biocViews:
     GeneExpression, 
     Preprocessing
 Depends: 
+    R (>= 4.0.0)
 Imports: 
     SpatialExperiment, 
     SingleCellExperiment, 

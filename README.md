@@ -15,13 +15,13 @@ The package is currently available from GitHub and has been submitted to Biocond
 
 ## Installation
 
-The development version of the package can be installed from GitHub as follows, including updated versions of dependencies:
+The development version of the package can be installed from GitHub as follows, including updated versions of dependencies. (Note the `ref = "release"` argument.)
 
 ```
 remotes::install_github("drighelli/SpatialExperiment")
 remotes::install_github("lmweber/STexampleData")
 install.packages("BRISC")
-remotes::install_github("lmweber/nnSVG")
+remotes::install_github("lmweber/nnSVG", ref = "release")
 ```
 
 

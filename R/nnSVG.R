@@ -57,6 +57,12 @@
 #'   will give faster runtime at the expense of reduced performance. Default =
 #'   15.
 #' 
+#' @param order \code{character}: Ordering scheme to use for ordering
+#'   coordinates with BRISC. Default = \code{"AMMD"} for "approximate maximum
+#'   minimum distance", which is recommended for datasets with at least 65
+#'   spots. For very small datasets (n <= 65), \code{"Sum_coords"} can be used
+#'   instead. See BRISC documentation for details.
+#' 
 #' @param n_threads \code{integer}: Number of threads for parallelization.
 #'   Default = 1. We recommend setting this equal to the number of cores
 #'   available (if working on a laptop or desktop) or around 10 or more (if
@@ -123,7 +129,8 @@
 #' rowData(spe)
 #' 
 nnSVG <- function(spe, X = NULL, 
-                  assay_name = "logcounts", n_neighbors = 15, 
+                  assay_name = "logcounts", 
+                  n_neighbors = 15, order = "AMMD", 
                   n_threads = 1, BPPARAM = NULL, 
                   verbose = FALSE) {
   
@@ -147,7 +154,7 @@ nnSVG <- function(spe, X = NULL,
   coords <- apply(coords, 2, function(col) (col - min(col)) / range_all)
   
   # calculate ordering of coordinates
-  order_brisc <- BRISC_order(coords, order = "Sum_coords", verbose = verbose)
+  order_brisc <- BRISC_order(coords, order = order, verbose = verbose)
   
   # calculate nearest neighbors
   nn_brisc <- BRISC_neighbor(coords, n.neighbors = n_neighbors, n_omp = 1, 

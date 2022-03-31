@@ -9,6 +9,7 @@ nnSVG(
   X = NULL,
   assay_name = "logcounts",
   n_neighbors = 15,
+  order = "AMMD",
   n_threads = 1,
   BPPARAM = NULL,
   verbose = FALSE
@@ -38,6 +39,12 @@ the nearest-neighbor Gaussian process (NNGP) model with BRISC. The default
 value is 15, which works well in most settings. Smaller numbers (e.g. 5-10)
 will give faster runtime at the expense of reduced performance. Default =
 15.}
+
+\item{order}{\code{character}: Ordering scheme to use for ordering
+coordinates with BRISC. Default = \code{"AMMD"} for "approximate maximum
+minimum distance", which is recommended for datasets with at least 65
+spots. For very small datasets (n <= 65), \code{"Sum_coords"} can be used
+instead. See BRISC documentation for details.}
 
 \item{n_threads}{\code{integer}: Number of threads for parallelization.
 Default = 1. We recommend setting this equal to the number of cores

@@ -32,7 +32,7 @@ intercept-only model.}
 input object containing the preprocessed gene expression values. For
 example, \code{logcounts} for log-transformed normalized counts from the
 \code{scran} package, or \code{binomial_deviance_residuals} for deviance
-residuals from the \code{scry} package. Default = \code{logcounts}.}
+residuals from the \code{scry} package. Default = \code{"logcounts"}.}
 
 \item{n_neighbors}{\code{integer}: Number of nearest neighbors for fitting
 the nearest-neighbor Gaussian process (NNGP) model with BRISC. The default

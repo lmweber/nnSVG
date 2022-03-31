@@ -53,9 +53,10 @@
 #' 
 #' @param n_neighbors \code{integer}: Number of nearest neighbors for fitting
 #'   the nearest-neighbor Gaussian process (NNGP) model with BRISC. The default
-#'   value is 15, which works well in most settings. Smaller numbers (e.g. 5-10)
-#'   will give faster runtime at the expense of reduced performance. Default =
-#'   15.
+#'   value is 10, which we recommend for most datasets. Higher numbers (e.g. 15)
+#'   may give slightly improved likelihood estimates in some datasets (at the
+#'   expense of slower runtime), and smaller numbers (e.g. 5) will give faster
+#'   runtime (at the expense of reduced performance). Default = 10.
 #' 
 #' @param order \code{character}: Ordering scheme to use for ordering
 #'   coordinates with BRISC. Default = \code{"AMMD"} for "approximate maximum
@@ -130,7 +131,7 @@
 #' 
 nnSVG <- function(spe, X = NULL, 
                   assay_name = "logcounts", 
-                  n_neighbors = 15, order = "AMMD", 
+                  n_neighbors = 10, order = "AMMD", 
                   n_threads = 1, BPPARAM = NULL, 
                   verbose = FALSE) {
   

@@ -65,7 +65,7 @@
 #'   coordinates with BRISC. Default = \code{"AMMD"} for "approximate maximum
 #'   minimum distance", which is recommended for datasets with at least 65
 #'   spots. For very small datasets (n <= 65), \code{"Sum_coords"} can be used
-#'   instead. See BRISC documentation for details.
+#'   instead. See BRISC documentation for details. Default = \code{"AMMD"}.
 #' 
 #' @param n_threads \code{integer}: Number of threads for parallelization.
 #'   Default = 1. We recommend setting this equal to the number of cores

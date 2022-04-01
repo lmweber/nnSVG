@@ -39,10 +39,7 @@ the nearest-neighbor Gaussian process (NNGP) model with BRISC. The default
 value is 10, which we recommend for most datasets. Higher numbers (e.g. 15)
 may give slightly improved likelihood estimates in some datasets (at the
 expense of slower runtime), and smaller numbers (e.g. 5) will give faster
-runtime (at the expense of reduced performance). High numbers (e.g. 20) may
-also improve stability in datasets containing very low-expressed genes
-(although in most datasets we recommend filtering out low-expressed genes
-instead). Default = 10.}
+runtime (at the expense of reduced performance). Default = 10.}
 
 \item{order}{\code{character}: Ordering scheme to use for ordering
 coordinates with BRISC. Default = \code{"AMMD"} for "approximate maximum

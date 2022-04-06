@@ -10,18 +10,25 @@ The `nnSVG` package is integrated into the Bioconductor framework and uses the [
 
 More details on the method will be provided in our paper (to be submitted to bioRxiv soon).
 
-The package is currently available from GitHub and has been submitted to Bioconductor.
+The package is currently available from GitHub and the `devel` version of [Bioconductor](https://bioconductor.org/packages/nnSVG).
 
 
 ## Installation
 
-The development version of the package can be installed from GitHub as follows, including updated versions of dependencies. (Note the `ref = "release"` argument.)
+The package can be installed from the `devel` version of [Bioconductor](https://bioconductor.org/packages/nnSVG) as follows. Note this requires R version 4.2 and the [devel version of Bioconductor to be installed](https://www.bioconductor.org/developers/how-to/useDevel/).
+
+```
+install.packages("BiocManager")
+BiocManager::install("nnSVG")
+```
+
+Alternatively, the package can also be installed from GitHub as follows, including updated versions of dependencies:
 
 ```
 remotes::install_github("drighelli/SpatialExperiment")
 remotes::install_github("lmweber/STexampleData")
 install.packages("BRISC")
-remotes::install_github("lmweber/nnSVG", ref = "release")
+remotes::install_github("lmweber/nnSVG")
 ```
 
 
@@ -37,6 +44,6 @@ A preprint describing `nnSVG` will be submitted to bioRxiv soon.
 
 ## Additional references
 
-- Nearest-neighbor Gaussian processes (NNGP): [Datta et al. (2016)](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091)
+- Nearest-neighbor Gaussian processes (NNGP): [Datta et al. (2016)](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091), [Finley et al. (2019)](https://www.tandfonline.com/doi/full/10.1080/10618600.2018.1537924)
 - BRISC: [Saha and Datta (2018)](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)
 

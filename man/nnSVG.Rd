@@ -71,11 +71,11 @@ Returns output values as additional columns in the \code{rowData}
 }
 \description{
 Function to run 'nnSVG' method to identify spatially variable genes (SVGs) in
-spatially resolved transcriptomics (ST) data.
+spatially-resolved transcriptomics data.
 }
 \details{
 Function to run 'nnSVG' method to identify spatially variable genes (SVGs) in
-spatially resolved transcriptomics (ST) data.
+spatially-resolved transcriptomics data.
 
 The 'nnSVG' method is based on nearest-neighbor Gaussian processes (Datta et
 al. 2016) and uses the BRISC algorithm (Saha and Datta 2018) for model

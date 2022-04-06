@@ -167,11 +167,13 @@ nnSVG <- function(spe, X = NULL,
   out_brisc <- bplapply(ix, function(i) {
     # fit model (intercept-only model if x is NULL)
     y_i <- y[i, ]
-    runtime <- system.time({
-      out_i <- BRISC_estimation(coords = coords, y = y_i, x = X, 
-                                cov.model = "exponential", 
-                                ordering = order_brisc, neighbor = nn_brisc, 
-                                verbose = verbose)
+    suppressWarnings({
+      runtime <- system.time({
+        out_i <- BRISC_estimation(coords = coords, y = y_i, x = X, 
+                                  cov.model = "exponential", 
+                                  ordering = order_brisc, neighbor = nn_brisc, 
+                                  verbose = verbose)
+      })
     })
     res_i <- c(
       out_i$Theta, 

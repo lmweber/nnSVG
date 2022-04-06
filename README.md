@@ -15,14 +15,14 @@ The package is currently available from GitHub and the `devel` version of [Bioco
 
 ## Installation
 
-The package can be installed from the `devel` version of [Bioconductor](https://bioconductor.org/packages/nnSVG) as follows. Note this requires R version 4.2 and the [devel version of Bioconductor to be installed](https://www.bioconductor.org/developers/how-to/useDevel/).
+The package can be installed from the `devel` version of [Bioconductor](https://bioconductor.org/packages/nnSVG) as follows. Note this requires R version 4.2 and the [devel version of Bioconductor](https://www.bioconductor.org/developers/how-to/useDevel/) to be installed.
 
 ```
 install.packages("BiocManager")
 BiocManager::install("nnSVG")
 ```
 
-Alternatively, the package can also be installed from GitHub as follows, including updated versions of dependencies:
+Alternatively, the package can also be installed from GitHub as follows, including updated versions of dependencies.
 
 ```
 remotes::install_github("drighelli/SpatialExperiment")

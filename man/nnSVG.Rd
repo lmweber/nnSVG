@@ -109,16 +109,23 @@ library(STexampleData)
 library(scran)
 
 # load example dataset from STexampleData package
-spe <- ST_mouseOB()
+spe <- Visium_humanDLPFC()
 
 # preprocessing steps
-# skip spot-level quality control
+
+# keep only spots over tissue
+spe <- spe[, colData(spe)$in_tissue == 1]
+
+# skip spot-level quality control, since this has been performed previously 
+# on this dataset
 
 # filter low-expressed and mitochondrial genes
 spe <- filter_genes(spe)
 
 # calculate log-transformed normalized counts using scran package
-spe <- computeSumFactors(spe)
+set.seed(123)
+qclus <- quickCluster(spe)
+spe <- computeSumFactors(spe, cluster = qclus)
 spe <- logNormCounts(spe)
 
 # select small number of genes for faster runtime in this example

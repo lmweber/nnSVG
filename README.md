@@ -22,13 +22,13 @@ install.packages("BiocManager")
 BiocManager::install("nnSVG")
 ```
 
-Alternatively, the package can also be installed from GitHub as follows, including updated versions of dependencies.
+Alternatively, the package can also be installed from GitHub as follows, including updated versions of dependencies. (Note the `ref = "release"` argument.)
 
 ```
 remotes::install_github("drighelli/SpatialExperiment")
 remotes::install_github("lmweber/STexampleData")
 install.packages("BRISC")
-remotes::install_github("lmweber/nnSVG")
+remotes::install_github("lmweber/nnSVG", ref = "release")
 ```
 
 

@@ -5,7 +5,8 @@
 \title{nnSVG}
 \usage{
 nnSVG(
-  spe,
+  input,
+  spatial_coords = NULL,
   X = NULL,
   assay_name = "logcounts",
   n_neighbors = 10,
@@ -16,23 +17,37 @@ nnSVG(
 )
 }
 \arguments{
-\item{spe}{\code{SpatialExperiment}: Input data, assumed to be formatted as a
-\code{SpatialExperiment} object with an \code{assay} slot containing either
-log-transformed normalized counts (e.g. from the \code{scran} package) or
-deviance residuals (e.g. from the \code{scry} package), and a
-\code{spatialCoords} slot containing spatial coordinates of the
-measurements.}
+\item{input}{\code{SpatialExperiment} or \code{numeric} matrix: Input data,
+which can either be a \code{SpatialExperiment} object or a \code{numeric}
+matrix of values. If it is a \code{SpatialExperiment} object, it is assumed
+to have an \code{assay} slot containing either log-transformed normalized
+counts (e.g. from the \code{scran} package) or deviance residuals (e.g.
+from the \code{scry} package), and a \code{spatialCoords} slot containing
+spatial coordinates of the measurements. If it is a \code{numeric} matrix,
+the values are assumed to already be transformed and normalized (e.g.
+log-transformed normalized counts), formatted as \code{rows = genes} and
+\code{columns = spots}, and a separate \code{numeric} matrix of spatial
+coordinates must also be provided with the \code{spatial_coords} argument.}
+
+\item{spatial_coords}{\code{numeric} matrix: Matrix containing columns of
+spatial coordinates, formatted as \code{rows = spots}. This must be
+provided if \code{input} is provied as a \code{numeric} matrix of values,
+and is ignored if \code{input} is provided as a \code{SpatialExperiment}
+object. Default = NULL.}
 
 \item{X}{\code{numeric} matrix: Optional design matrix containing columns of
 covariates per spatial location, e.g. known spatial domains. Number of rows
 must match the number of spatial locations. Default = NULL, which fits an
 intercept-only model.}
 
-\item{assay_name}{\code{character}: Name of the \code{assay} slot in the
-input object containing the preprocessed gene expression values. For
-example, \code{logcounts} for log-transformed normalized counts from the
-\code{scran} package, or \code{binomial_deviance_residuals} for deviance
-residuals from the \code{scry} package. Default = \code{"logcounts"}.}
+\item{assay_name}{\code{character}: If \code{input} is provided as a
+\code{SpatialExperiment} object, this argument selects the name of the
+\code{assay} slot in the input object containing the preprocessed gene
+expression values. For example, \code{logcounts} for log-transformed
+normalized counts from the \code{scran} package, or
+\code{binomial_deviance_residuals} for deviance residuals from the
+\code{scry} package. Default = \code{"logcounts"}, or ignored if
+\code{input} is provided as a \code{numeric} matrix of values.}
 
 \item{n_neighbors}{\code{integer}: Number of nearest neighbors for fitting
 the nearest-neighbor Gaussian process (NNGP) model with BRISC. The default
@@ -64,10 +79,13 @@ the \code{n_threads} argument instead. Default = NULL, in which case
 fitting and parameter estimation from \code{BRISC}. Default = FALSE.}
 }
 \value{
-Returns output values as additional columns in the \code{rowData}
-  slot of the input object, including spatial variance parameter estimates,
-  likelihood ratio (LR) statistics, effect sizes (proportion of spatial
-  variance), p-values, and multiple testing adjusted p-values.
+If the input was provided as a \code{SpatialExperiment} object, the
+  output values are returned as additional columns in the \code{rowData} slot
+  of the input object. If the input was provided as a \code{numeric} matrix
+  of values, the output is returned as a \code{numeric} matrix. The output
+  values include spatial variance parameter estimates, likelihood ratio (LR)
+  statistics, effect sizes (proportion of spatial variance), p-values, and
+  multiple testing adjusted p-values.
 }
 \description{
 Function to run 'nnSVG' method to identify spatially variable genes (SVGs) in
@@ -97,11 +115,15 @@ freedom, and multiple testing adjusted p-values are calculated using the
 Benjamini-Hochberg method. We also calculate an effect size, defined as the
 proportion of spatial variance, 'prop_sv = sigma.sq / (sigma.sq + tau.sq)'.
 
-The function assumes the input is provided as a \code{SpatialExperiment}
-object containing an \code{assay} slot containing either log-transformed
-normalized counts (e.g. from the \code{scran} package) or deviance residuals
-(e.g. from the \code{scry} package), which have been preprocessed, quality
-controlled, and filtered to remove low-quality spatial locations.
+The function assumes the input is provided either as a
+\code{SpatialExperiment} object or a \code{numeric} matrix of values. If the
+input is a \code{SpatialExperiment} object, it is assumed to contain an
+\code{assay} slot containing either log-transformed normalized counts (e.g.
+from the \code{scran} package) or deviance residuals (e.g. from the
+\code{scry} package), which have been preprocessed, quality controlled, and
+filtered to remove low-quality spatial locations. If the input is a
+\code{numeric} matrix of values, these values are assumed to already be
+transformed and normalized (e.g. log-transformed normalized counts).
 }
 \examples{
 library(SpatialExperiment)

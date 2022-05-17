@@ -39,7 +39,8 @@ Imports:
     BiocParallel, 
     Matrix, 
     matrixStats, 
-    stats
+    stats, 
+    methods
 VignetteBuilder: knitr
 Suggests: 
     BiocStyle, 

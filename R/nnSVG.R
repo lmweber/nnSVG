@@ -26,30 +26,48 @@
 #' Benjamini-Hochberg method. We also calculate an effect size, defined as the
 #' proportion of spatial variance, 'prop_sv = sigma.sq / (sigma.sq + tau.sq)'.
 #' 
-#' The function assumes the input is provided as a \code{SpatialExperiment}
-#' object containing an \code{assay} slot containing either log-transformed
-#' normalized counts (e.g. from the \code{scran} package) or deviance residuals
-#' (e.g. from the \code{scry} package), which have been preprocessed, quality
-#' controlled, and filtered to remove low-quality spatial locations.
+#' The function assumes the input is provided either as a
+#' \code{SpatialExperiment} object or a \code{numeric} matrix of values. If the
+#' input is a \code{SpatialExperiment} object, it is assumed to contain an
+#' \code{assay} slot containing either log-transformed normalized counts (e.g.
+#' from the \code{scran} package) or deviance residuals (e.g. from the
+#' \code{scry} package), which have been preprocessed, quality controlled, and
+#' filtered to remove low-quality spatial locations. If the input is a
+#' \code{numeric} matrix of values, these values are assumed to already be
+#' transformed and normalized (e.g. log-transformed normalized counts).
 #' 
 #' 
-#' @param spe \code{SpatialExperiment}: Input data, assumed to be formatted as a
-#'   \code{SpatialExperiment} object with an \code{assay} slot containing either
-#'   log-transformed normalized counts (e.g. from the \code{scran} package) or
-#'   deviance residuals (e.g. from the \code{scry} package), and a
-#'   \code{spatialCoords} slot containing spatial coordinates of the
-#'   measurements.
+#' @param input \code{SpatialExperiment} or \code{numeric} matrix: Input data,
+#'   which can either be a \code{SpatialExperiment} object or a \code{numeric}
+#'   matrix of values. If it is a \code{SpatialExperiment} object, it is assumed
+#'   to have an \code{assay} slot containing either log-transformed normalized
+#'   counts (e.g. from the \code{scran} package) or deviance residuals (e.g.
+#'   from the \code{scry} package), and a \code{spatialCoords} slot containing
+#'   spatial coordinates of the measurements. If it is a \code{numeric} matrix,
+#'   the values are assumed to already be transformed and normalized (e.g.
+#'   log-transformed normalized counts), formatted as \code{rows = genes} and
+#'   \code{columns = spots}, and a separate \code{numeric} matrix of spatial
+#'   coordinates must also be provided with the \code{spatial_coords} argument.
+#' 
+#' @param spatial_coords \code{numeric} matrix: Matrix containing columns of
+#'   spatial coordinates, formatted as \code{rows = spots}. This must be
+#'   provided if \code{input} is provied as a \code{numeric} matrix of values,
+#'   and is ignored if \code{input} is provided as a \code{SpatialExperiment}
+#'   object. Default = NULL.
 #' 
 #' @param X \code{numeric} matrix: Optional design matrix containing columns of
 #'   covariates per spatial location, e.g. known spatial domains. Number of rows
 #'   must match the number of spatial locations. Default = NULL, which fits an
 #'   intercept-only model.
 #' 
-#' @param assay_name \code{character}: Name of the \code{assay} slot in the
-#'   input object containing the preprocessed gene expression values. For
-#'   example, \code{logcounts} for log-transformed normalized counts from the
-#'   \code{scran} package, or \code{binomial_deviance_residuals} for deviance
-#'   residuals from the \code{scry} package. Default = \code{"logcounts"}.
+#' @param assay_name \code{character}: If \code{input} is provided as a
+#'   \code{SpatialExperiment} object, this argument selects the name of the
+#'   \code{assay} slot in the input object containing the preprocessed gene
+#'   expression values. For example, \code{logcounts} for log-transformed
+#'   normalized counts from the \code{scran} package, or
+#'   \code{binomial_deviance_residuals} for deviance residuals from the
+#'   \code{scry} package. Default = \code{"logcounts"}, or ignored if
+#'   \code{input} is provided as a \code{numeric} matrix of values.
 #' 
 #' @param n_neighbors \code{integer}: Number of nearest neighbors for fitting
 #'   the nearest-neighbor Gaussian process (NNGP) model with BRISC. The default
@@ -81,10 +99,13 @@
 #'   fitting and parameter estimation from \code{BRISC}. Default = FALSE.
 #' 
 #' 
-#' @return Returns output values as additional columns in the \code{rowData}
-#'   slot of the input object, including spatial variance parameter estimates,
-#'   likelihood ratio (LR) statistics, effect sizes (proportion of spatial
-#'   variance), p-values, and multiple testing adjusted p-values.
+#' @return If the input was provided as a \code{SpatialExperiment} object, the
+#'   output values are returned as additional columns in the \code{rowData} slot
+#'   of the input object. If the input was provided as a \code{numeric} matrix
+#'   of values, the output is returned as a \code{numeric} matrix. The output
+#'   values include spatial variance parameter estimates, likelihood ratio (LR)
+#'   statistics, effect sizes (proportion of spatial variance), p-values, and
+#'   multiple testing adjusted p-values.
 #' 
 #' 
 #' @importFrom SpatialExperiment spatialCoords
@@ -95,6 +116,7 @@
 #' @importFrom Matrix rowSums rowMeans
 #' @importFrom matrixStats rowVars
 #' @importFrom stats lm logLik pchisq p.adjust
+#' @importFrom methods is
 #' 
 #' @export
 #' 
@@ -136,15 +158,20 @@
 #' # for more details see extended example in vignette
 #' rowData(spe)
 #' 
-nnSVG <- function(spe, X = NULL, 
+nnSVG <- function(input, spatial_coords = NULL, X = NULL, 
                   assay_name = "logcounts", 
                   n_neighbors = 10, order = "AMMD", 
                   n_threads = 1, BPPARAM = NULL, 
                   verbose = FALSE) {
   
-  if (!is.null(X)) stopifnot(nrow(X) == ncol(spe))
+  if (is(input, "SpatialExperiment")) {
+    spe <- input
+    stopifnot(assay_name %in% assayNames(spe))
+  }
   
-  stopifnot(assay_name %in% assayNames(spe))
+  if (!is.null(X)) {
+    stopifnot(nrow(X) == ncol(input))
+  }
   
   if (is.null(BPPARAM)) {
     BPPARAM <- MulticoreParam(workers = n_threads)
@@ -154,10 +181,15 @@ nnSVG <- function(spe, X = NULL,
   # run BRISC for each gene
   # -----------------------
   
-  y <- assays(spe)[[assay_name]]
+  if (is(input, "SpatialExperiment")) {
+    y <- assays(spe)[[assay_name]]
+    coords <- spatialCoords(spe)
+  } else {
+    y <- input
+    coords <- spatial_coords
+  }
   
   # scale coordinates proportionally
-  coords <- spatialCoords(spe)
   range_all <- max(apply(coords, 2, function(col) diff(range(col))))
   coords <- apply(coords, 2, function(col) (col - min(col)) / range_all)
   
@@ -197,7 +229,7 @@ nnSVG <- function(spe, X = NULL,
   # calculate statistics
   # --------------------
   
-  if ("logcounts" %in% assayNames(spe)) {
+  if (is(input, "SpatialExperiment") & ("logcounts" %in% assayNames(spe))) {
     lc <- logcounts(spe)
     # mean logcounts
     mat_brisc <- cbind(
@@ -231,12 +263,20 @@ nnSVG <- function(spe, X = NULL,
   # likelihood ratio (LR) statistics and tests
   # ------------------------------------------
   
+  if (is(input, "SpatialExperiment")) {
+    nrows <- nrow(spe)
+    ncols <- ncol(spe)
+  } else {
+    nrows <- nrow(input)
+    ncols <- ncol(input)
+  }
+  
   # calculate log likelihoods for nonspatial models
   
-  loglik_lm <- vapply(seq_len(nrow(spe)), function(i) {
+  loglik_lm <- vapply(seq_len(nrows), function(i) {
     y_i <- y[i, ]
     if (is.null(X)) {
-      X <- rep(1, ncol(spe))
+      X <- rep(1, ncols)
     }
     as.numeric(logLik(lm(y_i ~ X)))
   }, numeric(1))
@@ -265,14 +305,19 @@ nnSVG <- function(spe, X = NULL,
     padj = padj
   )
   
-  # -------------------------------
-  # return in rowData of spe object
-  # -------------------------------
+  # --------------
+  # return outputs
+  # --------------
   
-  stopifnot(nrow(spe) == nrow(mat_brisc))
-  
-  rowData(spe) <- cbind(rowData(spe), mat_brisc)
-  
-  spe
+  if (is(input, "SpatialExperiment")) {
+    # return in rowData of spe object
+    stopifnot(nrow(spe) == nrow(mat_brisc))
+    rowData(spe) <- cbind(rowData(spe), mat_brisc)
+    spe
+  } else {
+    # return as numeric matrix
+    stopifnot(nrow(input) == nrow(mat_brisc))
+    mat_brisc
+  }
 }
 

@@ -18,20 +18,20 @@ Our paper describing the method is available from [bioRxiv](https://www.biorxiv.
 
 The package can be installed from [Bioconductor](https://bioconductor.org/packages/nnSVG) as follows, using R version 4.2 or above:
 
-```
+```r
 install.packages("BiocManager")
 BiocManager::install("nnSVG")
 ```
 
 Alternatively, the latest development version of the package can also be installed from GitHub:
 
-```
+```r
 remotes::install_github("lmweber/nnSVG")
 ```
 
 If you are installing from GitHub, the following dependency packages may also need to be installed manually from Bioconductor and CRAN:
 
-```
+```r
 install.packages("BiocManager")
 BiocManager::install("SpatialExperiment")
 BiocManager::install("STexampleData")
@@ -55,7 +55,7 @@ An example workflow is provided in the package vignette from [Bioconductor](http
 
 **Load packages**
 
-```
+```r
 library(nnSVG)
 library(STexampleData)
 library(scran)
@@ -65,47 +65,47 @@ library(ggplot2)
 
 **Load example dataset**
 
-```
+```r
 # load example dataset from STexampleData package
 spe <- Visium_humanDLPFC()
 dim(spe)
 ```
 
-```
+```r
 ## [1] 33538  4992
 ```
 
 
 **Preprocessing**
 
-```
+```r
 # keep spots over tissue
 spe <- spe[, colData(spe)$in_tissue == 1]
 dim(spe)
 ```
 
-```
+```r
 ## [1] 33538  3639
 ```
 
-```
+```r
 # spot-level quality control: already performed on this example dataset
 ```
 
-```
+```r
 # filter low-expressed and mitochondrial genes
 # using function from nnSVG package with default filtering parameters
 spe <- filter_genes(spe)
 ```
 
-```
+```r
 ## Gene filtering: removing mitochondrial genes
 ## removed 13 mitochondrial genes
 ## Gene filtering: retaining genes with at least 3 counts in at least 0.5% (n = 19) of spatial locations
 ## removed 30216 out of 33525 genes due to low expression
 ```
 
-```
+```r
 # calculate log-transformed normalized counts (logcounts) using scran package
 set.seed(123)
 qclus <- quickCluster(spe)
@@ -114,14 +114,14 @@ spe <- logNormCounts(spe)
 assayNames(spe)
 ```
 
-```
+```r
 ## [1] "counts"    "logcounts"
 ```
 
 
 **Subset data for this example**
 
-```
+```r
 # select small set of random genes and several known SVGs for faster runtime in this example workflow
 set.seed(123)
 ix_random <- sample(seq_len(nrow(spe)), 10)
@@ -133,14 +133,14 @@ spe <- spe[ix, ]
 dim(spe)
 ```
 
-```
+```r
 ## [1]   16 3639
 ```
 
 
 **Run nnSVG**
 
-```
+```r
 # set seed for reproducibility
 # run nnSVG using a single thread for this example workflow
 set.seed(123)
@@ -150,7 +150,7 @@ spe <- nnSVG(spe, n_threads = 1)
 rowData(spe)
 ```
 
-```
+```r
 ## DataFrame with 16 rows and 17 columns
 ## [...]
 ```
@@ -168,25 +168,25 @@ The main results of interest are:
 - `padj`: approximate p-values adjusted for multiple testing
 - `prop_sv`: effect size defined as proportion of spatial variance
 
-```
+```r
 # number of significant SVGs
 table(rowData(spe)$padj <= 0.05)
 ```
 
-```
+```r
 ## 
 ## FALSE  TRUE 
 ##     7     9
 ```
 
 
-```
+```r
 # show results for top n SVGs
 n <- 10
 rowData(spe)[order(rowData(spe)$rank)[1:n], ]
 ```
 
-```
+```r
 ## DataFrame with 10 rows and 17 columns
 ##                         gene_id   gene_name    feature_type   sigma.sq
 ##                     <character> <character>     <character>  <numeric>
@@ -243,19 +243,19 @@ rowData(spe)[order(rowData(spe)$rank)[1:n], ]
 
 Plot expression of the top-ranked SVG.
 
-```
+```r
 # plot spatial expression of top-ranked SVG
 ix <- which(rowData(spe)$rank == 1)
 ix_name <- rowData(spe)$gene_name[ix]
 ix_name
 ```
 
-```
+```r
 ## [1] "MOBP"
 ```
 
 
-```
+```r
 df <- as.data.frame(cbind(spatialCoords(spe), expr = counts(spe)[ix, ]))
 
 ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres, 

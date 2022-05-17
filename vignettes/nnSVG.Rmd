@@ -19,16 +19,16 @@ vignette: >
 
 `nnSVG` is a method for scalable identification of spatially variable genes (SVGs) in spatially-resolved transcriptomics data.
 
-The method is based on nearest-neighbor Gaussian processes ([Datta et al., 2016](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091), [Finley et al., 2019](https://www.tandfonline.com/doi/full/10.1080/10618600.2018.1537924)) and uses the BRISC algorithm ([Saha and Datta, 2018](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)) for model fitting and parameter estimation. `nnSVG` allows identification and ranking of SVGs with flexible length scales across a tissue slide or within spatial domains defined by covariates. The method scales linearly with the number of spatial locations and can be applied to datasets containing thousands or more spatial locations.
+The `nnSVG` method is based on nearest-neighbor Gaussian processes ([Datta et al., 2016](https://www.tandfonline.com/doi/full/10.1080/01621459.2015.1044091), [Finley et al., 2019](https://www.tandfonline.com/doi/full/10.1080/10618600.2018.1537924)) and uses the BRISC algorithm ([Saha and Datta, 2018](https://onlinelibrary.wiley.com/doi/full/10.1002/sta4.184)) for model fitting and parameter estimation. `nnSVG` allows identification and ranking of SVGs with flexible length scales across a tissue slide or within spatial domains defined by covariates. The method scales linearly with the number of spatial locations and can be applied to datasets containing thousands or more spatial locations.
 
-The `nnSVG` R package is integrated into the Bioconductor framework and uses the [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) class to store data and results.
+`nnSVG` is implemented as an R package within the Bioconductor framework, and is available from [Bioconductor](https://bioconductor.org/packages/nnSVG).
 
 For more details on the method, see our paper.
 
 
 # Installation
 
-The following code will install the latest stable release version of the `nnSVG` package from Bioconductor. Additional details are shown on the [Bioconductor](https://bioconductor.org/packages/nnSVG) page.
+The following code will install the latest release version of the `nnSVG` package from Bioconductor. Additional details are shown on the [Bioconductor](https://bioconductor.org/packages/nnSVG) page.
 
 ```{r, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
@@ -38,6 +38,15 @@ BiocManager::install("nnSVG")
 ```
 
 The latest development version can also be installed from the `devel` version of Bioconductor or from [GitHub](https://github.com/lmweber/nnSVG).
+
+
+# Input data format
+
+In the examples below, we assume the input data are provided as a [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) Bioconductor object. In this case, the outputs are stored in the `rowData` of the `SpatialExperiment` object.
+
+However, the inputs can also be provided as a numeric matrix of normalized and transformed counts (e.g. log-transformed normalized counts) and a numeric matrix of spatial coordinates.
+
+To provide the inputs as numeric matrices, please install the development version of the package from [GitHub](https://github.com/lmweber/nnSVG) or the `devel` version of Bioconductor (which will become the new Bioconductor release version in October 2022).
 
 
 # Tutorial

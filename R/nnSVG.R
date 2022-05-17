@@ -187,6 +187,7 @@ nnSVG <- function(input, spatial_coords = NULL, X = NULL,
   } else {
     y <- input
     coords <- spatial_coords
+    row_names <- rownames(input)
   }
   
   # scale coordinates proportionally
@@ -317,6 +318,7 @@ nnSVG <- function(input, spatial_coords = NULL, X = NULL,
   } else {
     # return as numeric matrix
     stopifnot(nrow(input) == nrow(mat_brisc))
+    rownames(mat_brisc) <- row_names
     mat_brisc
   }
 }

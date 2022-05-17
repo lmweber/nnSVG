@@ -30,6 +30,13 @@ remotes::install_github("lmweber/nnSVG")
 ```
 
 
+## Citation
+
+Our paper describing `nnSVG` is available from bioRxiv:
+
+- [Weber L.M. et al. (2022), "nnSVG: scalable identification of spatially variable genes using nearest-neighbor Gaussian processes", bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v1)
+
+
 ## Workflow
 
 An example workflow is available in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG). A short overview is also provided below.
@@ -147,11 +154,4 @@ ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres,
         axis.text = element_blank(), 
         axis.ticks = element_blank())
 ```
-
-
-## Citation
-
-Our paper describing `nnSVG` is available from bioRxiv:
-
-- [Weber L.M. et al. (2022), "nnSVG: scalable identification of spatially variable genes using nearest-neighbor Gaussian processes", bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v1)
 

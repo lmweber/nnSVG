@@ -41,7 +41,7 @@ Our paper describing `nnSVG` is available from bioRxiv:
 
 An example workflow is available in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG). A short overview is also provided below.
 
-### Load packages
+**Load packages**
 
 ```
 library(nnSVG)
@@ -50,7 +50,7 @@ library(scran)
 library(ggplot2)
 ```
 
-### Load example dataset
+**Load example dataset**
 
 ```
 # load example dataset from STexampleData package
@@ -58,7 +58,7 @@ spe <- Visium_humanDLPFC()
 dim(spe)
 ```
 
-### Preprocessing
+**Preprocessing**
 
 ```
 # keep spots over tissue
@@ -80,7 +80,7 @@ spe <- logNormCounts(spe)
 assayNames(spe)
 ```
 
-### Subset dataset for this example
+**Subset dataset for this example**
 
 ```
 # select small set of random genes and several known SVGs for faster runtime in this example workflow
@@ -94,7 +94,7 @@ spe <- spe[ix, ]
 dim(spe)
 ```
 
-### Run nnSVG
+**Run nnSVG**
 
 ```
 # set seed for reproducibility
@@ -106,7 +106,7 @@ spe <- nnSVG(spe, n_threads = 1)
 rowData(spe)
 ```
 
-### Investigate results
+**Investigate results**
 
 The results are stored in the `rowData` of the `SpatialExperiment` object.
 
@@ -127,7 +127,7 @@ n <- 10
 rowData(spe)[order(rowData(spe)$rank)[1:n], ]
 ```
 
-### Plot expression
+**Plot expression**
 
 Plot expression of the top-ranked SVG.
 

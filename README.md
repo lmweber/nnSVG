@@ -30,17 +30,9 @@ remotes::install_github("lmweber/nnSVG")
 ```
 
 
-## Citation
-
-Our paper describing `nnSVG` is available from bioRxiv:
-
-- [Weber L.M. et al. (2022), "nnSVG: scalable identification of spatially variable genes using nearest-neighbor Gaussian processes", bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v1)
-
-
-
 ## Workflow
 
-An example workflow is available in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG). A short overview is also provided below.
+An example workflow is provided in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG). A short overview is also shown below.
 
 
 **Load packages**
@@ -80,7 +72,9 @@ dim(spe)
 
 ```
 # spot-level quality control: already performed on this example dataset
+```
 
+```
 # filter low-expressed and mitochondrial genes
 # using function from nnSVG package with default filtering parameters
 spe <- filter_genes(spe)
@@ -130,8 +124,8 @@ dim(spe)
 
 ```
 # set seed for reproducibility
-set.seed(123)
 # run nnSVG using a single thread for this example workflow
+set.seed(123)
 spe <- nnSVG(spe, n_threads = 1)
 
 # show results
@@ -140,6 +134,7 @@ rowData(spe)
 
 ```
 ## DataFrame with 16 rows and 17 columns
+## [...]
 ```
 
 
@@ -226,7 +221,7 @@ rowData(spe)[order(rowData(spe)$rank)[1:n], ]
 ```
 
 
-**Plot expression**
+**Plot expression of top SVG**
 
 Plot expression of the top-ranked SVG.
 
@@ -243,9 +238,7 @@ ix_name
 
 
 ```
-df <- as.data.frame(
-  cbind(spatialCoords(spe), 
-        expr = counts(spe)[ix, ]))
+df <- as.data.frame(cbind(spatialCoords(spe), expr = counts(spe)[ix, ]))
 
 ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres, 
                color = expr)) + 
@@ -261,5 +254,12 @@ ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres,
         axis.ticks = element_blank())
 ```
 
-<img src="expression_top_SVG.png" alt="Spatial expression plot of top-ranked SVG" title="Spatial expression plot of top-ranked SVG" width="400px">
+<img src="expression_top_SVG.png" alt="Spatial expression plot of top-ranked SVG" title="Spatial expression plot of top-ranked SVG" width="350px">
+
+
+## Citation
+
+Our paper describing `nnSVG` is available from bioRxiv:
+
+- [Weber L.M. et al. (2022), "nnSVG: scalable identification of spatially variable genes using nearest-neighbor Gaussian processes", bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v1)
 

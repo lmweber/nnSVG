@@ -32,7 +32,7 @@ remotes::install_github("lmweber/nnSVG")
 
 ## Workflow
 
-An example workflow is provided in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG). A short overview is also shown below.
+An example workflow is provided in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG) and shown here in short form.
 
 
 **Load packages**

@@ -24,7 +24,7 @@ to have an \code{assay} slot containing either log-transformed normalized
 counts (e.g. from the \code{scran} package) or deviance residuals (e.g.
 from the \code{scry} package), and a \code{spatialCoords} slot containing
 spatial coordinates of the measurements. If it is a \code{numeric} matrix,
-the values are assumed to already be transformed and normalized (e.g.
+the values are assumed to already be normalized and transformed (e.g.
 log-transformed normalized counts), formatted as \code{rows = genes} and
 \code{columns = spots}, and a separate \code{numeric} matrix of spatial
 coordinates must also be provided with the \code{spatial_coords} argument.}
@@ -123,7 +123,7 @@ from the \code{scran} package) or deviance residuals (e.g. from the
 \code{scry} package), which have been preprocessed, quality controlled, and
 filtered to remove low-quality spatial locations. If the input is a
 \code{numeric} matrix of values, these values are assumed to already be
-transformed and normalized (e.g. log-transformed normalized counts).
+normalized and transformed (e.g. log-transformed normalized counts).
 }
 \examples{
 library(SpatialExperiment)

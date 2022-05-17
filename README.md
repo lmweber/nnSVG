@@ -23,10 +23,19 @@ install.packages("BiocManager")
 BiocManager::install("nnSVG")
 ```
 
-The latest development version of the package can also be installed from GitHub:
+Alternatively, the latest development version of the package can also be installed from GitHub:
 
 ```
 remotes::install_github("lmweber/nnSVG")
+```
+
+If you are installing from GitHub, the following dependency packages may also need to be installed manually from Bioconductor and CRAN:
+
+```
+install.packages("BiocManager")
+BiocManager::install("SpatialExperiment")
+BiocManager::install("STexampleData")
+install.packages("BRISC")
 ```
 
 

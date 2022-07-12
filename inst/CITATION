@@ -1,0 +1,17 @@
+citHeader("nnSVG is described in the following publication:")
+
+citEntry(
+  entry  = "Article", 
+  title  = "nnSVG: scalable identification of spatially variable genes using nearest-neighbor Gaussian processes", 
+  author = personList(as.person("Lukas M. Weber"), 
+                      as.person("Arkajyoti Saha"), 
+                      as.person("Abhirup Datta"), 
+                      as.person("Kasper D. Hansen"), 
+                      as.person("Stephanie C. Hicks")), 
+  journal = "bioRxiv", 
+  year    = "2022", 
+  textVersion = paste0(
+    "Weber et al. (2022), nnSVG: scalable identification of spatially variable genes ", 
+    "using nearest-neighbor Gaussian processes, bioRxiv."
+  )
+)

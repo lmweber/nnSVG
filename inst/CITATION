@@ -10,6 +10,7 @@ citEntry(
                       as.person("Stephanie C. Hicks")), 
   journal = "bioRxiv", 
   year    = "2022", 
+  doi     = "https://doi.org/10.1101/2022.05.16.492124", 
   textVersion = paste0(
     "Weber et al. (2022), nnSVG: scalable identification of spatially variable genes ", 
     "using nearest-neighbor Gaussian processes, bioRxiv."

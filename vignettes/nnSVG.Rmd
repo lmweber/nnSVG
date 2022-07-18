@@ -51,7 +51,9 @@ To provide the inputs as numeric matrices, please install the development versio
 
 # Tutorial
 
-## Run nnSVG
+## Standard analysis
+
+### Run nnSVG
 
 Here we show a short example demonstrating how to run `nnSVG`.
 
@@ -124,7 +126,7 @@ rowData(spe)
 ```
 
 
-## Investigate results
+### Investigate results
 
 The results are stored in the `rowData` of the `SpatialExperiment` object.
 
@@ -160,10 +162,139 @@ ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres, color = expr)) +
   geom_point(size = 0.8) + 
   coord_fixed() + 
   scale_y_reverse() + 
-  scale_color_gradient(low = "gray90", high = "blue", name = "counts") + 
+  scale_color_gradient(low = "gray90", high = "blue", 
+                       trans = "sqrt", breaks = range(df$expr), 
+                       name = "counts") + 
   ggtitle(ix_name) + 
   theme_bw() + 
-  theme(panel.grid = element_blank(), 
+  theme(plot.title = element_text(face = "italic"), 
+        panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_blank(), 
+        axis.ticks = element_blank())
+```
+
+
+
+## With covariates
+
+### Run nnSVG
+
+`nnSVG` can also be run on datasets with known covariates, such as spatial domains or cell types. In this case, the method will identify SVGs within regions defined by the selected covariates, e.g. within spatial domains.
+
+Here we run a short example demonstrating this functionality.
+
+As above, for faster runtime in this example, we subsample a very small subset of the data. For a full analysis, the subsampling step can be skipped.
+
+```{r, message=FALSE}
+library(SpatialExperiment)
+library(STexampleData)
+library(scran)
+library(nnSVG)
+library(ggplot2)
+```
+
+```{r}
+# load example dataset from STexampleData package
+spe <- SlideSeqV2_mouseHPC()
+
+dim(spe)
+```
+
+```{r}
+# preprocessing steps
+
+# remove spots with NA cell type labels
+spe <- spe[, !is.na(colData(spe)$celltype)]
+dim(spe)
+
+# check cell type labels
+table(colData(spe)$celltype)
+
+# filter low-expressed and mitochondrial genes
+# using adjusted filtering parameters for this platform
+spe <- filter_genes(
+  spe, 
+  filter_genes_ncounts = 1, 
+  filter_genes_pcspots = 1, 
+  filter_mito = TRUE
+)
+
+dim(spe)
+
+# calculate log-transformed normalized counts using scran package
+# using library size normalization
+spe <- computeLibraryFactors(spe)
+spe <- logNormCounts(spe)
+
+assayNames(spe)
+```
+
+```{r}
+# select small set of random genes and several known SVGs for 
+# faster runtime in this example
+set.seed(123)
+ix_random <- sample(seq_len(nrow(spe)), 10)
+
+known_genes <- c("Cpne9", "Rgs14")
+ix_known <- which(rowData(spe)$gene_name %in% known_genes)
+
+ix <- c(ix_known, ix_random)
+
+spe <- spe[ix, ]
+dim(spe)
+```
+
+```{r}
+# run nnSVG with covariates
+
+# create model matrix for cell type labels
+X <- model.matrix(~ colData(spe)$celltype)
+dim(X)
+stopifnot(nrow(X) == ncol(spe))
+
+# set seed for reproducibility
+set.seed(123)
+# using a single thread in this example
+spe <- nnSVG(spe, X = X)
+
+# show results
+rowData(spe)
+```
+
+
+### Investigate results
+
+```{r}
+# number of significant SVGs
+table(rowData(spe)$padj <= 0.05)
+```
+
+```{r}
+# show results for top n SVGs
+rowData(spe)[order(rowData(spe)$rank)[1:10], ]
+```
+
+```{r, fig.width=5, fig.height=3.25}
+# plot spatial expression of top-ranked SVG
+ix <- which(rowData(spe)$rank == 1)
+ix_name <- rowData(spe)$gene_name[ix]
+ix_name
+
+df <- as.data.frame(
+  cbind(spatialCoords(spe), 
+        expr = counts(spe)[ix, ]))
+
+ggplot(df, aes(x = xcoord, y = ycoord, color = expr)) + 
+  geom_point(size = 0.1) + 
+  coord_fixed() + 
+  scale_color_gradient(low = "gray90", high = "blue", 
+                       trans = "sqrt", breaks = range(df$expr), 
+                       name = "counts") + 
+  ggtitle(ix_name) + 
+  theme_bw() + 
+  theme(plot.title = element_text(face = "italic"), 
+        panel.grid = element_blank(), 
         axis.title = element_blank(), 
         axis.text = element_blank(), 
         axis.ticks = element_blank())

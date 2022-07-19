@@ -11,7 +11,7 @@ The `nnSVG` method is based on nearest-neighbor Gaussian processes ([Datta et al
 
 `nnSVG` is implemented as an R package within the Bioconductor framework, and is available from [Bioconductor](https://bioconductor.org/packages/nnSVG).
 
-Our paper describing the method is available from [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v1).
+Our preprint describing the method is available from [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v1).
 
 
 ## Installation
@@ -263,21 +263,24 @@ ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres,
   geom_point(size = 0.8) + 
   coord_fixed() + 
   scale_y_reverse() + 
-  scale_color_gradient(low = "gray90", high = "blue", name = "counts") + 
+  scale_color_gradient(low = "gray90", high = "blue", 
+                       trans = "sqrt", breaks = range(df$expr), 
+                       name = "counts") + 
   ggtitle(ix_name) + 
   theme_bw() + 
-  theme(panel.grid = element_blank(), 
+  theme(plot.title = element_text(face = "italic"), 
+        panel.grid = element_blank(), 
         axis.title = element_blank(), 
         axis.text = element_blank(), 
         axis.ticks = element_blank())
 ```
 
-<img src="expression_top_SVG.png" alt="Spatial expression plot of top-ranked SVG" title="Spatial expression plot of top-ranked SVG" width="350px">
+<img src="https://user-images.githubusercontent.com/8062417/179638201-a6d0cc21-a625-4899-8ab4-9b082b1d3a8c.png" alt="Spatial expression plot of top-ranked SVG" title="Spatial expression plot of top-ranked SVG" width="350px">
 
 
 ## Citation
 
-Our paper describing `nnSVG` is available from bioRxiv:
+Our preprint describing `nnSVG` is available from bioRxiv:
 
 - [Weber L.M. et al. (2022), "nnSVG: scalable identification of spatially variable genes using nearest-neighbor Gaussian processes", bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v1)
 

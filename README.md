@@ -43,7 +43,7 @@ install.packages("BRISC")
 
 In the examples below, we assume the input data are provided as a [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) Bioconductor object. In this case, the outputs are stored in the `rowData` of the `SpatialExperiment` object.
 
-However, the inputs can also be provided as a numeric matrix of normalized and transformed counts (e.g. log-transformed normalized counts) and a numeric matrix of spatial coordinates.
+However, the inputs can also be provided as a numeric matrix of normalized and transformed counts (e.g. log-transformed normalized counts, also known as logcounts) and a numeric matrix of spatial coordinates.
 
 To provide the inputs as numeric matrices, please install the development version of the package from [GitHub](https://github.com/lmweber/nnSVG) or the `devel` version of Bioconductor (which will become the new Bioconductor release version in October 2022).
 
@@ -106,10 +106,8 @@ spe <- filter_genes(spe)
 ```
 
 ```r
-# calculate log-transformed normalized counts (logcounts) using scran package
-set.seed(123)
-qclus <- quickCluster(spe)
-spe <- computeSumFactors(spe, cluster = qclus)
+# calculate logcounts (log-transformed normalized counts) using scran package
+# using library size factors
 spe <- logNormCounts(spe)
 assayNames(spe)
 ```
@@ -188,54 +186,42 @@ rowData(spe)[order(rowData(spe)$rank)[1:n], ]
 
 ```r
 ## DataFrame with 10 rows and 17 columns
-##                         gene_id   gene_name    feature_type   sigma.sq
-##                     <character> <character>     <character>  <numeric>
-## ENSG00000168314 ENSG00000168314        MOBP Gene Expression 1.86459294
-## ENSG00000132639 ENSG00000132639      SNAP25 Gene Expression 0.33829228
-## ENSG00000211592 ENSG00000211592        IGKC Gene Expression 0.59161928
-## ENSG00000244734 ENSG00000244734         HBB Gene Expression 0.34819123
-## ENSG00000183036 ENSG00000183036        PCP4 Gene Expression 0.22354847
-## ENSG00000122585 ENSG00000122585         NPY Gene Expression 0.29511061
-## ENSG00000129562 ENSG00000129562        DAD1 Gene Expression 0.03687246
-## ENSG00000114923 ENSG00000114923      SLC4A3 Gene Expression 0.01123674
-## ENSG00000133606 ENSG00000133606       MKRN1 Gene Expression 0.00543859
-## ENSG00000149923 ENSG00000149923       PPP4C Gene Expression 0.12004347
-##                    tau.sq        phi    loglik   runtime      mean       var
-##                 <numeric>  <numeric> <numeric> <numeric> <numeric> <numeric>
-## ENSG00000168314  0.371646   0.922937  -3716.46     0.959  0.841100  1.382681
-## ENSG00000132639  0.440346   3.570016  -3940.04     0.668  3.464790  0.779762
-## ENSG00000211592  0.464762  20.035566  -4580.98     1.618  0.630200  1.042847
-## ENSG00000244734  0.365750  27.611193  -4114.59     2.233  0.418996  0.729640
-## ENSG00000183036  0.456889   8.700988  -4041.98     1.001  0.684281  0.681316
-## ENSG00000122585  0.302841  68.183198  -4087.69     1.375  0.401353  0.599801
-## ENSG00000129562  0.484816   8.805056  -3942.80     2.051  0.561114  0.523034
-## ENSG00000114923  0.237750  16.239042  -2621.78     0.992  0.249525  0.249055
-## ENSG00000133606  0.277671   0.537947  -2861.92     1.873  0.295867  0.283165
-## ENSG00000149923  0.132992 198.872410  -2660.25     5.132  0.235632  0.253096
-##                     spcov   prop_sv loglik_lm    LR_stat      rank        pval
-##                 <numeric> <numeric> <numeric>  <numeric> <numeric>   <numeric>
-## ENSG00000168314  1.623470 0.8338075  -5752.58 4072.24582         1 0.00000e+00
-## ENSG00000132639  0.167868 0.4344665  -4710.39 1540.68468         2 0.00000e+00
-## ENSG00000211592  1.220514 0.5600433  -5239.35 1316.74199         3 0.00000e+00
-## ENSG00000244734  1.408312 0.4877029  -4589.50  949.82287         4 0.00000e+00
-## ENSG00000183036  0.690958 0.3285363  -4464.82  845.69334         5 0.00000e+00
-## ENSG00000122585  1.353525 0.4935363  -4232.97  290.54324         6 0.00000e+00
-## ENSG00000129562  0.342215 0.0706791  -3983.78   81.97837         7 0.00000e+00
-## ENSG00000114923  0.424820 0.0451298  -2633.77   23.96612         8 6.24917e-06
-## ENSG00000133606  0.249257 0.0192102  -2867.31   10.77036         9 4.58402e-03
-## ENSG00000149923  1.470399 0.4744140  -2663.05    5.60524        10 6.06510e-02
-##                        padj
-##                   <numeric>
-## ENSG00000168314 0.00000e+00
-## ENSG00000132639 0.00000e+00
-## ENSG00000211592 0.00000e+00
-## ENSG00000244734 0.00000e+00
-## ENSG00000183036 0.00000e+00
-## ENSG00000122585 0.00000e+00
-## ENSG00000129562 0.00000e+00
-## ENSG00000114923 1.24983e-05
-## ENSG00000133606 8.14937e-03
-## ENSG00000149923 9.70416e-02
+##                         gene_id   gene_name    feature_type   sigma.sq    tau.sq
+##                     <character> <character>     <character>  <numeric> <numeric>
+## ENSG00000168314 ENSG00000168314        MOBP Gene Expression 1.38739383  0.364188
+## ENSG00000132639 ENSG00000132639      SNAP25 Gene Expression 0.43003959  0.430106
+## ENSG00000211592 ENSG00000211592        IGKC Gene Expression 0.56564845  0.455042
+## ENSG00000244734 ENSG00000244734         HBB Gene Expression 0.32942113  0.353754
+## ENSG00000183036 ENSG00000183036        PCP4 Gene Expression 0.23102220  0.452735
+## ENSG00000122585 ENSG00000122585         NPY Gene Expression 0.28567359  0.280173
+## ENSG00000129562 ENSG00000129562        DAD1 Gene Expression 0.02389607  0.464723
+## ENSG00000114923 ENSG00000114923      SLC4A3 Gene Expression 0.01147170  0.237260
+## ENSG00000133606 ENSG00000133606       MKRN1 Gene Expression 0.00632248  0.272432
+## ENSG00000143543 ENSG00000143543         JTB Gene Expression 0.07541566  0.463623
+##                        phi    loglik   runtime      mean       var     spcov
+##                  <numeric> <numeric> <numeric> <numeric> <numeric> <numeric>
+## ENSG00000168314   1.102018  -3663.60     0.631  0.805525  1.205673  1.462248
+## ENSG00000132639   3.033847  -3912.70     0.450  3.451926  0.857922  0.189973
+## ENSG00000211592  20.107022  -4531.64     1.054  0.622937  1.007454  1.207340
+## ENSG00000244734  27.814098  -4044.96     1.559  0.411262  0.697673  1.395587
+## ENSG00000183036   8.272278  -4026.22     0.419  0.687961  0.684598  0.698656
+## ENSG00000122585  71.653290  -3995.23     0.843  0.393975  0.567383  1.356646
+## ENSG00000129562  10.141894  -3842.24     0.590  0.549318  0.489167  0.281410
+## ENSG00000114923  12.765645  -2617.36     0.658  0.250768  0.248816  0.427112
+## ENSG00000133606   0.082764  -2831.51     0.612  0.295404  0.278806  0.269171
+## ENSG00000143543 119.721419  -4036.28     0.731  0.654919  0.539172  0.419318
+##                   prop_sv loglik_lm    LR_stat      rank        pval        padj
+##                 <numeric> <numeric>  <numeric> <numeric>   <numeric>   <numeric>
+## ENSG00000168314 0.7920804  -5503.33 3679.46397         1 0.00000e+00 0.00000e+00
+## ENSG00000132639 0.4999614  -4884.19 1942.98556         2 0.00000e+00 0.00000e+00
+## ENSG00000211592 0.5541822  -5176.53 1289.77508         3 0.00000e+00 0.00000e+00
+## ENSG00000244734 0.4821910  -4507.99  926.04573         4 0.00000e+00 0.00000e+00
+## ENSG00000183036 0.3378716  -4473.57  894.68884         5 0.00000e+00 0.00000e+00
+## ENSG00000122585 0.5048609  -4131.87  273.27818         6 0.00000e+00 0.00000e+00
+## ENSG00000129562 0.0489053  -3861.98   39.49098         7 2.65854e-09 6.07667e-09
+## ENSG00000114923 0.0461207  -2632.02   29.31376         8 4.31119e-07 8.62238e-07
+## ENSG00000133606 0.0226812  -2839.08   15.15227         9 5.12539e-04 9.11181e-04
+## ENSG00000143543 0.1399077  -4039.07    5.59664        10 6.09124e-02 9.74599e-02
 ```
 
 

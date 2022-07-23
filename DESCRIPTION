@@ -50,4 +50,4 @@ Suggests:
     scran, 
     ggplot2, 
     testthat
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1

@@ -20,14 +20,14 @@ nnSVG(
 \item{input}{\code{SpatialExperiment} or \code{numeric} matrix: Input data,
 which can either be a \code{SpatialExperiment} object or a \code{numeric}
 matrix of values. If it is a \code{SpatialExperiment} object, it is assumed
-to have an \code{assay} slot containing either log-transformed normalized
-counts (e.g. from the \code{scran} package) or deviance residuals (e.g.
-from the \code{scry} package), and a \code{spatialCoords} slot containing
-spatial coordinates of the measurements. If it is a \code{numeric} matrix,
-the values are assumed to already be normalized and transformed (e.g.
-log-transformed normalized counts), formatted as \code{rows = genes} and
-\code{columns = spots}, and a separate \code{numeric} matrix of spatial
-coordinates must also be provided with the \code{spatial_coords} argument.}
+to have an \code{assay} slot containing either logcounts (e.g. from the
+\code{scran} package) or deviance residuals (e.g. from the \code{scry}
+package), and a \code{spatialCoords} slot containing spatial coordinates of
+the measurements. If it is a \code{numeric} matrix, the values are assumed
+to already be normalized and transformed (e.g. logcounts), formatted as
+\code{rows = genes} and \code{columns = spots}, and a separate
+\code{numeric} matrix of spatial coordinates must also be provided with the
+\code{spatial_coords} argument.}
 
 \item{spatial_coords}{\code{numeric} matrix: Matrix containing columns of
 spatial coordinates, formatted as \code{rows = spots}. This must be
@@ -118,12 +118,12 @@ proportion of spatial variance, 'prop_sv = sigma.sq / (sigma.sq + tau.sq)'.
 The function assumes the input is provided either as a
 \code{SpatialExperiment} object or a \code{numeric} matrix of values. If the
 input is a \code{SpatialExperiment} object, it is assumed to contain an
-\code{assay} slot containing either log-transformed normalized counts (e.g.
-from the \code{scran} package) or deviance residuals (e.g. from the
-\code{scry} package), which have been preprocessed, quality controlled, and
-filtered to remove low-quality spatial locations. If the input is a
-\code{numeric} matrix of values, these values are assumed to already be
-normalized and transformed (e.g. log-transformed normalized counts).
+\code{assay} slot containing either log-transformed normalized counts (also
+known as logcounts, e.g. from the \code{scran} package) or deviance residuals
+(e.g. from the \code{scry} package), which have been preprocessed, quality
+controlled, and filtered to remove low-quality spatial locations. If the
+input is a \code{numeric} matrix of values, these values are assumed to
+already be normalized and transformed (e.g. logcounts).
 }
 \examples{
 library(SpatialExperiment)
@@ -144,10 +144,8 @@ spe <- spe[, colData(spe)$in_tissue == 1]
 # filter low-expressed and mitochondrial genes
 spe <- filter_genes(spe)
 
-# calculate log-transformed normalized counts using scran package
-set.seed(123)
-qclus <- quickCluster(spe)
-spe <- computeSumFactors(spe, cluster = qclus)
+# calculate logcounts (log-transformed normalized counts) using scran package
+# using library size factors
 spe <- logNormCounts(spe)
 
 # select small number of genes for faster runtime in this example

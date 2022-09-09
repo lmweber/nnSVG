@@ -247,7 +247,7 @@ dim(spe)
 # run nnSVG with covariates
 
 # create model matrix for cell type labels
-X <- model.matrix(~ colData(spe)$celltype)
+X <- model.matrix(~ droplevels(colData(spe)$celltype))
 dim(X)
 stopifnot(nrow(X) == ncol(spe))
 

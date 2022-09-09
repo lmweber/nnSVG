@@ -247,7 +247,7 @@ dim(spe)
 # run nnSVG with covariates
 
 # create model matrix for cell type labels
-X <- model.matrix(~ droplevels(colData(spe)$celltype))
+X <- model.matrix(~ colData(spe)$celltype)
 dim(X)
 stopifnot(nrow(X) == ncol(spe))
 
@@ -258,6 +258,14 @@ spe <- nnSVG(spe, X = X)
 
 # show results
 rowData(spe)
+```
+
+
+Note that if there are any empty levels in the factor used to create the design matrix, these can be removed as follows:
+
+```{r, eval = FALSE}
+# create model matrix after dropping empty factor levels
+X <- model.matrix(~ droplevels(as.factor(colData(spe)$celltype)))
 ```
 
 

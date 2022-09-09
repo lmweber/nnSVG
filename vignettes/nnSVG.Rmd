@@ -263,7 +263,7 @@ rowData(spe)
 
 Note that if there are any empty levels in the factor used to create the design matrix, these can be removed as follows:
 
-```{r, eval = FALSE}
+```{r}
 # create model matrix after dropping empty factor levels
 X <- model.matrix(~ droplevels(as.factor(colData(spe)$celltype)))
 ```

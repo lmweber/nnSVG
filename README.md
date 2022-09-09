@@ -108,6 +108,7 @@ spe <- filter_genes(spe)
 ```r
 # calculate logcounts (log-transformed normalized counts) using scran package
 # using library size factors
+spe <- computeLibraryFactors(spe)
 spe <- logNormCounts(spe)
 assayNames(spe)
 ```

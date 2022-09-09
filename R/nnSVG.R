@@ -141,6 +141,7 @@
 #' 
 #' # calculate logcounts (log-transformed normalized counts) using scran package
 #' # using library size factors
+#' spe <- computeLibraryFactors(spe)
 #' spe <- logNormCounts(spe)
 #' 
 #' # select small number of genes for faster runtime in this example

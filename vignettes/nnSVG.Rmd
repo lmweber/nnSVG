@@ -577,7 +577,7 @@ ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres, color = gene)) +
 This section describes some common errors and solutions. Feedback on any additional issues is welcome to be provided as [GitHub issues](https://github.com/lmweber/nnSVG/issues).
 
 
-## Zeros (spots or genes)
+## Zeros (genes or spots)
 
 After filtering out low-expressed genes or low-quality spots, it is possible that new zeros have been introduced, i.e. either rows (genes) or columns (spots) with all zero values. This can create errors in subsequent steps, e.g. calculating logcounts.
 
@@ -614,9 +614,9 @@ The nnSVG model requires some minimum number of spots for reliable model fitting
 
 As an approximate guide, we recommend at least 100 spots (spatial locations).
 
-In datasets with multiple samples, this minimum number of spots applies per sample.
+In datasets with multiple samples, the minimum number of spots applies per sample.
 
-In models with covariates for spatial domains, some minimum number of spots per spatial domain is also required. In this case, if the dataset contains too few spots, one possible solution can be to combine spatial domains into larger domains, e.g. if the main biological interest is one domain vs. all the rest (where the rest can be combined).
+In models with covariates for spatial domains, some minimum number of spots per spatial domain is also required. In this case, if the dataset contains too few spots, one possible solution can be to combine spatial domains into larger domains, e.g. if the main biological interest is one domain vs. all the rest (where the rest can be combined into one domain).
 
 
 ## Multiple samples

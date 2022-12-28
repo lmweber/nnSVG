@@ -143,7 +143,7 @@ table(rowData(spe)$padj <= 0.05)
 rowData(spe)[order(rowData(spe)$rank)[1:10], ]
 ```
 
-```{r, fig.width=5, fig.height=5}
+```{r, fig.small=TRUE}
 # plot spatial expression of top-ranked SVG
 ix <- which(rowData(spe)$rank == 1)
 ix_name <- rowData(spe)$gene_name[ix]
@@ -278,7 +278,7 @@ table(rowData(spe)$padj <= 0.05)
 rowData(spe)[order(rowData(spe)$rank)[1:10], ]
 ```
 
-```{r, fig.width=5, fig.height=3.25}
+```{r, fig.small=TRUE}
 # plot spatial expression of top-ranked SVG
 ix <- which(rowData(spe)$rank == 1)
 ix_name <- rowData(spe)$gene_name[ix]
@@ -542,7 +542,7 @@ topSVGsReplicated <- df_summaryReplicated$gene_name
 ```
 
 
-```{r}
+```{r, fig.wide=TRUE}
 # plot one of the top SVGs
 
 head(df_summary, 5)

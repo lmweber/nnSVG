@@ -572,6 +572,67 @@ ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres, color = gene)) +
 
 
 
+# Troubleshooting
+
+This section describes some common errors and solutions. Feedback on any additional issues is welcome to be provided as [GitHub issues](https://github.com/lmweber/nnSVG/issues).
+
+
+## Zeros (spots or genes)
+
+After filtering out low-expressed genes or low-quality spots, it is possible that new zeros have been introduced, i.e. either rows (genes) or columns (spots) with all zero values. This can create errors in subsequent steps, e.g. calculating logcounts.
+
+The following example code can be used or adapted to check for and remove any zeros.
+
+```{r, eval=FALSE}
+# filter any new zeros created after filtering low-expressed genes
+
+# remove genes with zero expression
+ix_zero_genes <- rowSums(counts(spe)) == 0
+table(ix_zero_genes)
+
+if (sum(ix_zero_genes) > 0) {
+  spe <- spe[!ix_zero_genes, ]
+}
+
+dim(spe)
+
+# remove spots with zero expression
+ix_zero_spots <- colSums(counts(spe)) == 0
+table(ix_zero_spots)
+
+if (sum(ix_zero_spots) > 0) {
+  spe <- spe[, !ix_zero_spots]
+}
+
+dim(spe)
+```
+
+
+## Small numbers of spots
+
+The nnSVG model requires some minimum number of spots for reliable model fitting and parameter estimation. Running nnSVG with too few spots can return errors from the BRISC model fitting functions.
+
+As an approximate guide, we recommend at least 100 spots (spatial locations).
+
+In datasets with multiple samples, this minimum number of spots applies per sample.
+
+In models with covariates for spatial domains, some minimum number of spots per spatial domain is also required. In this case, if the dataset contains too few spots, one possible solution can be to combine spatial domains into larger domains, e.g. if the main biological interest is one domain vs. all the rest (where the rest can be combined).
+
+
+## Multiple samples
+
+In datasets with multiple samples, nnSVG can be run once per sample and the results combined by averaging the ranks of the identified SVGs per sample, as demonstrated in the example above.
+
+In this case, ensure that:
+
+- the loop is set up correctly (subsetting each sample within the loop)
+- gene filtering is performed per sample within the loop
+- any new zeros (rows/genes or columns/spots) introduced by the filtering are removed
+- logcounts are re-calculated after filtering
+- rows (genes) are matched correctly when combining the results from the multiple samples
+
+
+
 # Session information
 
 ```{r}

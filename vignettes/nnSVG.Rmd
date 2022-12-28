@@ -542,7 +542,7 @@ topSVGsReplicated <- df_summaryReplicated$gene_name
 ```
 
 
-```{r, fig.wide=TRUE}
+```{r}
 # plot one of the top SVGs
 
 head(df_summary, 5)

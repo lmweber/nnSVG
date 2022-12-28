@@ -1,5 +1,5 @@
 ---
-title: "nnSVG tutorial"
+title: "nnSVG Tutorial"
 author: 
   - name: Lukas M. Weber
     affiliation: &id1 "Johns Hopkins Bloomberg School of Public Health, Baltimore, MD, USA"
@@ -7,9 +7,10 @@ author:
     affiliation: &id1
 package: nnSVG
 output: 
-  BiocStyle::html_document
+  BiocStyle::html_document: 
+    toc_float: true
 vignette: >
-  %\VignetteIndexEntry{nnSVG tutorial}
+  %\VignetteIndexEntry{nnSVG Tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

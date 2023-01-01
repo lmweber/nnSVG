@@ -557,7 +557,7 @@ df <- as.data.frame(cbind(
 
 ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres, color = gene)) + 
   facet_wrap(~ sample_id, nrow = 1, scales = "free") + 
-  geom_point(size = 0.1) + 
+  geom_point(size = 0.6) + 
   scale_color_gradient(low = "gray80", high = "red", trans = "sqrt", 
                        name = "counts", breaks = range(df$gene)) + 
   scale_y_reverse() + 

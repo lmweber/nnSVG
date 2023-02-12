@@ -43,7 +43,7 @@ The latest development version can also be installed from the `devel` version of
 
 In the examples below, we assume the input data are provided as a [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) Bioconductor object. In this case, the outputs are stored in the `rowData` of the `SpatialExperiment` object.
 
-However, the inputs can also be provided as a numeric matrix of normalized and transformed counts (e.g. log-transformed normalized counts, also known as logcounts) and a numeric matrix of spatial coordinates.
+Alternatively, the inputs can also be provided as a numeric matrix of normalized and transformed counts (e.g. log-transformed normalized counts, also known as logcounts) and a numeric matrix of spatial coordinates.
 
 
 # Tutorial

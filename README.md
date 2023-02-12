@@ -43,9 +43,7 @@ install.packages("BRISC")
 
 In the examples below, we assume the input data are provided as a [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) Bioconductor object. In this case, the outputs are stored in the `rowData` of the `SpatialExperiment` object.
 
-However, the inputs can also be provided as a numeric matrix of normalized and transformed counts (e.g. log-transformed normalized counts, also known as logcounts) and a numeric matrix of spatial coordinates.
-
-To provide the inputs as numeric matrices, please install the development version of the package from [GitHub](https://github.com/lmweber/nnSVG) or the `devel` version of Bioconductor (which will become the new Bioconductor release version in October 2022).
+Alternatively, the inputs can also be provided as a numeric matrix of normalized and transformed counts (e.g. log-transformed normalized counts, also known as logcounts) and a numeric matrix of spatial coordinates.
 
 
 ## Workflow

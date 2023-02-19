@@ -66,6 +66,7 @@ library(ggplot2)
 
 ```{r}
 # load example dataset from STexampleData package
+# see '?Visium_humanDLPFC' for more details
 spe <- Visium_humanDLPFC()
 
 dim(spe)
@@ -177,7 +178,9 @@ ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres, color = expr)) +
 
 `nnSVG` can also be run on datasets with known covariates, such as spatial domains or cell types. In this case, the method will identify SVGs within regions defined by the selected covariates, e.g. within spatial domains.
 
-Here we run a short example demonstrating this functionality.
+Here we run a short example to demonstrate this functionality.
+
+This example dataset contains several known SVGs within spatial domains. Specifically, we are interested in SVGs with gradients of expression within the CA3 region of the mouse hippocampus. (See dataset help files for more details and references.)
 
 As above, for faster runtime in this example, we subsample a very small subset of the data. For a full analysis, the subsampling step can be skipped.
 
@@ -191,6 +194,7 @@ library(ggplot2)
 
 ```{r}
 # load example dataset from STexampleData package
+# see '?SlideSeqV2_mouseHPC' for more details
 spe <- SlideSeqV2_mouseHPC()
 
 dim(spe)
@@ -258,7 +262,7 @@ rowData(spe)
 ```
 
 
-Note that if there are any empty levels in the factor used to create the design matrix, these can be removed as follows:
+Note that if there are any empty levels in the factor used to create the design matrix, these can be removed when creating the design matrix, as follows:
 
 ```{r}
 # create model matrix after dropping empty factor levels
@@ -322,6 +326,7 @@ library(nnSVG)
 
 ```{r}
 # load example dataset from WeberDivechaLCdata package
+# see '?WeberDivechaLCdata_Visium' for more details
 spe <- WeberDivechaLCdata_Visium()
 
 dim(spe)

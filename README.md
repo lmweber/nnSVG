@@ -11,7 +11,7 @@ The `nnSVG` method is based on nearest-neighbor Gaussian processes ([Datta et al
 
 `nnSVG` is implemented as an R package within the Bioconductor framework, and is available from [Bioconductor](https://bioconductor.org/packages/nnSVG).
 
-Our preprint describing the method is available from [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v1).
+Our preprint describing the method is available from [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v2).
 
 
 ## Installation

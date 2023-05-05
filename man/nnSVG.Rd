@@ -106,6 +106,10 @@ model for each gene, using parallelization with BiocParallel for faster
 runtime. The parameter estimates from BRISC (sigma.sq, tau.sq, phi) for each
 gene are stored in 'Theta' in the BRISC output.
 
+Note that the method and this function are designed for a single tissue
+section. For an example of how to run nnSVG in a dataset consisting of
+multiple tissue sections, see the tutorial in the nnSVG package vignette.
+
 'nnSVG' performs inference on the spatial variance parameter estimates
 (sigma.sq) using a likelihood ratio (LR) test against a simpler linear model
 without spatial terms (i.e. without tau.sq or phi). The estimated LR

@@ -29,7 +29,7 @@ Alternatively, the latest development version of the package can also be install
 remotes::install_github("lmweber/nnSVG")
 ```
 
-If you are installing from GitHub, the following dependency packages may also need to be installed manually from Bioconductor and CRAN:
+If you are installing from GitHub, the following dependency packages may need to be installed manually from Bioconductor and CRAN (these are installed automatically if you install from Bioconductor instead):
 
 ```r
 install.packages("BiocManager")
@@ -39,6 +39,11 @@ install.packages("BRISC")
 ```
 
 
+## Tutorial
+
+A detailed tutorial is available in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG). A direct link to the tutorial / package vignette is available [here](https://bioconductor.org/packages/release/bioc/vignettes/nnSVG/inst/doc/nnSVG.html).
+
+
 ## Input data format
 
 In the examples below, we assume the input data are provided as a [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) Bioconductor object. In this case, the outputs are stored in the `rowData` of the `SpatialExperiment` object.
@@ -46,9 +51,9 @@ In the examples below, we assume the input data are provided as a [SpatialExperi
 Alternatively, the inputs can also be provided as a numeric matrix of normalized and transformed counts (e.g. log-transformed normalized counts, also known as logcounts) and a numeric matrix of spatial coordinates.
 
 
-## Workflow
+## Example workflow
 
-An example workflow is provided in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG) and shown here in short form.
+A short example workflow is shown below. This is a modified version of the full tutorial available in the package vignette from [Bioconductor](https://bioconductor.org/packages/nnSVG). A direct link to the tutorial / package vignette is available [here](https://bioconductor.org/packages/release/bioc/vignettes/nnSVG/inst/doc/nnSVG.html)).
 
 
 **Load packages**

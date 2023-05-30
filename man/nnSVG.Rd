@@ -139,69 +139,69 @@ library(scran)
 ### for more details see extended example in vignette
 
 # load example dataset from STexampleData package
-spe <- Visium_humanDLPFC()
+spe1 <- Visium_humanDLPFC()
 
 # preprocessing steps
 # keep only spots over tissue
-spe <- spe[, colData(spe)$in_tissue == 1]
+spe1 <- spe1[, colData(spe1)$in_tissue == 1]
 # skip spot-level quality control (already performed in this dataset)
 # filter low-expressed and mitochondrial genes
-spe <- filter_genes(spe)
+spe1 <- filter_genes(spe1)
 # calculate logcounts using library size factors
-spe <- computeLibraryFactors(spe)
-spe <- logNormCounts(spe)
+spe1 <- computeLibraryFactors(spe1)
+spe1 <- logNormCounts(spe1)
 
 # select small number of genes for fast runtime in this example
 set.seed(123)
 ix <- c(
-  which(rowData(spe)$gene_name \%in\% c("SNAP25", "HBB")), 
-  sample(seq_len(nrow(spe)), 2)
+  which(rowData(spe1)$gene_name \%in\% c("PCP4", "NPY")), 
+  sample(seq_len(nrow(spe1)), 2)
 )
-spe <- spe[ix, ]
+spe1 <- spe1[ix, ]
 
 # run nnSVG
 set.seed(123)
-spe <- nnSVG(spe)
+spe1 <- nnSVG(spe1)
 
 # show results
-rowData(spe)
+rowData(spe1)
 
 
 ### Example 2: With covariates
 ### for more details see extended example in vignette
 
 # load example dataset from STexampleData package
-spe <- SlideSeqV2_mouseHPC()
+spe2 <- SlideSeqV2_mouseHPC()
 
 # preprocessing steps
 # remove spots with NA cell type labels
-spe <- spe[, !is.na(colData(spe)$celltype)]
+spe2 <- spe2[, !is.na(colData(spe2)$celltype)]
 # skip spot-level quality control (already performed in this dataset)
 # filter low-expressed and mitochondrial genes
-spe <- filter_genes(
-  spe, filter_genes_ncounts = 1, filter_genes_pcspots = 1, 
+spe2 <- filter_genes(
+  spe2, filter_genes_ncounts = 1, filter_genes_pcspots = 1, 
   filter_mito = TRUE
 )
 # calculate logcounts using library size normalization
-spe <- computeLibraryFactors(spe)
-spe <- logNormCounts(spe)
+spe2 <- computeLibraryFactors(spe2)
+spe2 <- logNormCounts(spe2)
 
 # select small number of genes for fast runtime in this example
 set.seed(123)
 ix <- c(
-  which(rowData(spe)$gene_name \%in\% c("Cpne9", "Rgs14")), 
-  sample(seq_len(nrow(spe)), 2)
+  which(rowData(spe2)$gene_name \%in\% c("Cpne9", "Rgs14")), 
+  sample(seq_len(nrow(spe2)), 2)
 )
-spe <- spe[ix, ]
+spe2 <- spe2[ix, ]
 
 # create model matrix for cell type labels
-X <- model.matrix(~ colData(spe)$celltype)
+X <- model.matrix(~ colData(spe2)$celltype)
 
 # run nnSVG with covariates
 set.seed(123)
-spe <- nnSVG(spe, X = X)
+spe2 <- nnSVG(spe2, X = X)
 
 # show results
-rowData(spe)
+rowData(spe2)
 
 }

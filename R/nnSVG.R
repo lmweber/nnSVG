@@ -320,7 +320,8 @@ nnSVG <- function(input, spatial_coords = NULL, X = NULL,
     if (is.null(X)) {
       X <- rep(1, ncols)
     }
-    as.numeric(logLik(lm(y_i ~ X)))
+    # model formula without intercept to enable weighted model
+    as.numeric(logLik(lm(y_i ~ X - 1)))
   }, numeric(1))
   
   mat_brisc <- cbind(

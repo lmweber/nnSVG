@@ -1,5 +1,9 @@
-changes in version 0.99.0 (2022-03-02)
-+ version for submission to Bioconductor
+changes in version 1.5.3 (2023-05-30)
++ use model formula without intercept for non-spatial model - to enable 
+  weighted model
 
 changes in version 1.1.2 (2022-05-17)
 + enable non-SpatialExperiment inputs
+
+changes in version 0.99.0 (2022-03-02)
++ version for submission to Bioconductor

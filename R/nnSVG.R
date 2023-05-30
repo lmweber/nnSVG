@@ -129,28 +129,29 @@
 #' library(STexampleData)
 #' library(scran)
 #' 
+#' 
+#' ### Example 1
+#' ### for more details see extended example in vignette
+#' 
 #' # load example dataset from STexampleData package
 #' spe <- Visium_humanDLPFC()
 #' 
 #' # preprocessing steps
-#' 
 #' # keep only spots over tissue
 #' spe <- spe[, colData(spe)$in_tissue == 1]
-#' 
-#' # skip spot-level quality control, since this has been performed previously 
-#' # on this dataset
-#' 
+#' # skip spot-level quality control (already performed in this dataset)
 #' # filter low-expressed and mitochondrial genes
 #' spe <- filter_genes(spe)
-#' 
-#' # calculate logcounts (log-transformed normalized counts) using scran package
-#' # using library size factors
+#' # calculate logcounts using library size factors
 #' spe <- computeLibraryFactors(spe)
 #' spe <- logNormCounts(spe)
 #' 
-#' # select small number of genes for faster runtime in this example
+#' # select small number of genes for fast runtime in this example
 #' set.seed(123)
-#' ix <- sample(seq_len(nrow(spe)), 4)
+#' ix <- c(
+#'   which(rowData(spe)$gene_name %in% c("SNAP25", "HBB")), 
+#'   sample(seq_len(nrow(spe)), 2)
+#' )
 #' spe <- spe[ix, ]
 #' 
 #' # run nnSVG
@@ -158,7 +159,44 @@
 #' spe <- nnSVG(spe)
 #' 
 #' # show results
-#' # for more details see extended example in vignette
+#' rowData(spe)
+#' 
+#' 
+#' ### Example 2: With covariates
+#' ### for more details see extended example in vignette
+#' 
+#' # load example dataset from STexampleData package
+#' spe <- SlideSeqV2_mouseHPC()
+#' 
+#' # preprocessing steps
+#' # remove spots with NA cell type labels
+#' spe <- spe[, !is.na(colData(spe)$celltype)]
+#' # skip spot-level quality control (already performed in this dataset)
+#' # filter low-expressed and mitochondrial genes
+#' spe <- filter_genes(
+#'   spe, filter_genes_ncounts = 1, filter_genes_pcspots = 1, 
+#'   filter_mito = TRUE
+#' )
+#' # calculate logcounts using library size normalization
+#' spe <- computeLibraryFactors(spe)
+#' spe <- logNormCounts(spe)
+#' 
+#' # select small number of genes for fast runtime in this example
+#' set.seed(123)
+#' ix <- c(
+#'   which(rowData(spe)$gene_name %in% c("Cpne9", "Rgs14")), 
+#'   sample(seq_len(nrow(spe)), 2)
+#' )
+#' spe <- spe[ix, ]
+#' 
+#' # create model matrix for cell type labels
+#' X <- model.matrix(~ colData(spe)$celltype)
+#' 
+#' # run nnSVG with covariates
+#' set.seed(123)
+#' spe <- nnSVG(spe, X = X)
+#' 
+#' # show results
 #' rowData(spe)
 #' 
 nnSVG <- function(input, spatial_coords = NULL, X = NULL, 

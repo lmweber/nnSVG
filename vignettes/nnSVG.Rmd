@@ -24,7 +24,7 @@ The `nnSVG` method is based on nearest-neighbor Gaussian processes ([Datta et al
 
 `nnSVG` is implemented as an R package within the Bioconductor framework, and is available from [Bioconductor](https://bioconductor.org/packages/nnSVG).
 
-More details describing the method are available in our preprint, available from [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.16.492124v2).
+More details describing the method are available in our preprint, available from [Nature Communications](https://www.nature.com/articles/s41467-023-39748-z).
 
 
 # Installation
@@ -313,7 +313,7 @@ ggplot(df, aes(x = xcoord, y = ycoord, color = expr)) +
 
 For datasets consisting of multiple biological samples (e.g. multiple 10x Genomics Visium capture areas, or multiple tissue samples from other platforms), we can run nnSVG once per sample and combine the results by averaging the ranks of the SVGs identified per sample.
 
-For this example, we use a dataset from the locus coeruleus region in postmortem human brain samples measured with the 10x Genomics Visium platform, which is available in the [WeberDivechaLCdata](https://bioconductor.org/packages/WeberDivechaLCdata) package and is described in our paper [Weber and Divecha et al. 2022](https://www.biorxiv.org/content/10.1101/2022.10.28.514241v1).
+For this example, we use a dataset from the locus coeruleus region in postmortem human brain samples measured with the 10x Genomics Visium platform, which is available in the [WeberDivechaLCdata](https://bioconductor.org/packages/WeberDivechaLCdata) package and is described in our paper [Weber and Divecha et al. 2023](https://elifesciences.org/reviewed-preprints/84628).
 
 
 ### Run nnSVG
@@ -336,7 +336,7 @@ table(colData(spe)$sample_id)
 ```
 
 
-This dataset contains a complex experimental design consisting of multiple samples (Visium capture areas) and multiple parts (contiguous tissue areas) for some of these samples, as described in our paper [Weber and Divecha et al. 2022](https://www.biorxiv.org/content/10.1101/2022.10.28.514241v1).
+This dataset contains a complex experimental design consisting of multiple samples (Visium capture areas) and multiple parts (contiguous tissue areas) for some of these samples, as described in our paper [Weber and Divecha et al. 2023](https://elifesciences.org/reviewed-preprints/84628).
 
 For the simplified example here, we select two samples. For a dataset with more than two samples, this example can be extended by including more samples within the loops.
 
@@ -409,7 +409,7 @@ dim(spe)
 
 Run nnSVG once per sample and store the resulting lists of top SVGs. Note that we perform additional gene filtering for nnSVG individually per sample, and re-calculate logcounts after the gene filtering for each sample.
 
-In this dataset, mitochondrial genes are of specific biological interest (see our paper [Weber and Divecha et al. 2022](https://www.biorxiv.org/content/10.1101/2022.10.28.514241v1) for details), so we do not filter these genes out (`filter_mito = FALSE`). In most datasets, mitochondrial genes are not of biological interest and should be filtered out (`filter_mito = TRUE`).
+In this dataset, mitochondrial genes are of specific biological interest (see our paper [Weber and Divecha et al. 2023](https://elifesciences.org/reviewed-preprints/84628) for details), so we do not filter these genes out (`filter_mito = FALSE`). In most datasets, mitochondrial genes are not of biological interest and should be filtered out (`filter_mito = TRUE`).
 
 For faster runtime in this example, we also subsample a small number of genes before running `nnSVG`, as in the examples above. For a full analysis, the subsampling step should be skipped.
 
@@ -471,7 +471,7 @@ for (s in seq_along(sample_ids)) {
 ```
 
 
-Now that we have run nnSVG once per sample, we can combine the results across multiple samples by averaging the ranks of the SVGs. This approach was applied in our recent paper [Weber and Divecha et al. 2022](https://www.biorxiv.org/content/10.1101/2022.10.28.514241v1).
+Now that we have run nnSVG once per sample, we can combine the results across multiple samples by averaging the ranks of the SVGs. This approach was applied in our recent paper [Weber and Divecha et al. 2023](https://elifesciences.org/reviewed-preprints/84628).
 
 ```{r}
 # combine results for multiple samples by averaging gene ranks 

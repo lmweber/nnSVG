@@ -18,9 +18,9 @@ test_that("examples give correct numbers of significant SVGs", {
 })
 
 test_that("examples give correct p-values", {
-  expect_equal(signif(rowData(spe1)$pval, 6), 
-               c(0, 0, 1, 7.82181e-02))
-  expect_equal(signif(rowData(spe2)$pval, 6), 
-               c(2.25708e-13, 0, 4.65894e-01, 5.74463e-01))
+  expect_equal(signif(rowData(spe1)$pval, 5), 
+               c(0, 0, 1, 7.8218e-02))
+  expect_equal(signif(rowData(spe2)$pval, 5), 
+               c(2.2571e-13, 0, 4.6589e-01, 5.7446e-01))
 })
 

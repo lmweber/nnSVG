@@ -117,7 +117,7 @@
 #' @importFrom SummarizedExperiment assayNames assays rowData 'rowData<-'
 #' @importFrom BRISC BRISC_order BRISC_neighbor BRISC_estimation
 #' @importFrom BiocParallel bplapply MulticoreParam
-#' @importFrom Matrix rowSums rowMeans
+#' @importFrom Matrix rowSums rowMeans colSums
 #' @importFrom matrixStats rowVars
 #' @importFrom stats lm logLik pchisq p.adjust
 #' @importFrom methods is
@@ -208,6 +208,14 @@ nnSVG <- function(input, spatial_coords = NULL, X = NULL,
   if (is(input, "SpatialExperiment")) {
     spe <- input
     stopifnot(assay_name %in% assayNames(spe))
+    # check for rows or columns of all zero counts
+    if ("counts" %in% assayNames(spe)) {
+      if (sum(rowSums(counts(spe)) == 0) > 0 | sum(colSums(counts(spe)) == 0) > 0) {
+        warning("Rows (genes) and/or columns (spots) containing all zero counts ", 
+                "have been found. Please see examples in tutorial for code to ", 
+                "filter out zeros and/or low-expressed genes to avoid errors.")
+      }
+    }
   }
   
   if (!is.null(X)) {

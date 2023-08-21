@@ -585,9 +585,20 @@ This section describes some common errors and solutions. Feedback on any additio
 
 ## Zeros (genes or spots)
 
-After filtering out low-expressed genes or low-quality spots, it is possible that new zeros have been introduced, i.e. either rows (genes) or columns (spots) with all zero values. This can create errors in subsequent steps, e.g. calculating logcounts.
+If your dataset contains rows (genes) or columns (spots) with all zero counts and you have not performed filtering for zeros and/or low-expressed genes, you may see an error similar to the following:
 
-The following example code can be used or adapted to check for and remove any zeros.
+```
+Timing stopped at: 0.068 0.003 0.072
+Error: BiocParallel errors
+  1 remote errors, element index: 2
+  33536 unevaluated and other errors
+  first remote error:
+Error in BRISC_estimation(coords = coords, y = y_i, x = X, cov.model = "exponential", : c++ error: dpotrf failed
+```
+
+After performing filtering for low-expressed genes and/or low-quality spots, it is also possible that new rows (genes) or columns (spots) of all zero counts may have been introduced. In this case, you may see the same error.
+
+The following example code can be used to check for and remove any rows (genes) or columns (spots) with all zero counts.
 
 ```{r, eval=FALSE}
 # filter any new zeros created after filtering low-expressed genes
@@ -612,6 +623,8 @@ if (sum(ix_zero_spots) > 0) {
 
 dim(spe)
 ```
+
+The `nnSVG()` function also checks for rows (genes) or columns (spots) of all zero counts, and will return a warning if these exist.
 
 
 ## Small numbers of spots

@@ -223,7 +223,7 @@ nnSVG <- function(input, spatial_coords = NULL, X = NULL,
   }
   
   if (is.null(BPPARAM)) {
-    BPPARAM <- BiocParallel::MulticoreParam(workers = n_threads)
+    BPPARAM <- MulticoreParam(workers = n_threads)
   }
   
   # -----------------------

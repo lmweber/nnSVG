@@ -279,25 +279,23 @@ nnSVG <- function(input, spatial_coords = NULL, X = NULL,
   # calculate statistics
   # --------------------
   
-  if (is(input, "SpatialExperiment")) {
-    if ("logcounts" %in% assayNames(spe)) {
-      lc <- logcounts(spe)
-      # mean logcounts
-      mat_brisc <- cbind(
-        mat_brisc, 
-        mean = rowMeans(lc)
-      )
-      # variance of logcounts
-      mat_brisc <- cbind(
-        mat_brisc, 
-        var = rowVars(as.matrix(lc))
-      )
-      # spatial coefficient of variation
-      mat_brisc <- cbind(
-        mat_brisc, 
-        spcov = sqrt(mat_brisc[, "sigma.sq"]) / mat_brisc[, "mean"]
-      )
-    }
+  if (is(input, "SpatialExperiment") && ("logcounts" %in% assayNames(spe))) {
+    lc <- logcounts(spe)
+    # mean logcounts
+    mat_brisc <- cbind(
+      mat_brisc, 
+      mean = rowMeans(lc)
+    )
+    # variance of logcounts
+    mat_brisc <- cbind(
+      mat_brisc, 
+      var = rowVars(as.matrix(lc))
+    )
+    # spatial coefficient of variation
+    mat_brisc <- cbind(
+      mat_brisc, 
+      spcov = sqrt(mat_brisc[, "sigma.sq"]) / mat_brisc[, "mean"]
+    )
   } else {
     # return NAs if logcounts not provided
     mat_brisc <- cbind(

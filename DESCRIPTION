@@ -12,7 +12,7 @@ Description: Method for scalable identification of spatially variable genes
     locations.
 Authors@R: c(
     person("Lukas M.", "Weber", 
-           email = "lukas.weber.edu@gmail.com", 
+           email = "lmweberedu@gmail.com", 
            role = c("aut", "cre"), 
            comment = c(ORCID = "0000-0002-3282-1730")), 
     person("Stephanie C.", "Hicks", 

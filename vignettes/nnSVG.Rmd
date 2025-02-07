@@ -2,9 +2,9 @@
 title: "nnSVG Tutorial"
 author: 
   - name: Lukas M. Weber
-    affiliation: "Boston University School of Public Health, Boston, MA, USA"
+    affiliation: "Boston University, Boston, MA, United States"
   - name: Stephanie C. Hicks
-    affiliation: "Johns Hopkins Bloomberg School of Public Health, Baltimore, MD, USA"
+    affiliation: "Johns Hopkins University, Baltimore, MD, United States"
 package: nnSVG
 output: 
   BiocStyle::html_document: 

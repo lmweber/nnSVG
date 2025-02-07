@@ -15,6 +15,7 @@ citEntry(
   doi     = "https://doi.org/10.1038/s41467-023-39748-z", 
   textVersion = paste0(
     "Weber et al. (2023), nnSVG for the scalable identification of spatially ", 
-    "variable genes using nearest-neighbor Gaussian processes, bioRxiv."
+    "variable genes using nearest-neighbor Gaussian processes, Nature ", 
+    "Communications, 14, 4059."
   )
 )

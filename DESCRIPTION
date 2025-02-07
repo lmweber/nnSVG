@@ -1,5 +1,5 @@
 Package: nnSVG
-Version: 1.11.0
+Version: 1.11.1
 Title: Scalable identification of spatially variable genes in 
     spatially-resolved transcriptomics data
 Description: Method for scalable identification of spatially variable genes 
@@ -12,7 +12,7 @@ Description: Method for scalable identification of spatially variable genes
     locations.
 Authors@R: c(
     person("Lukas M.", "Weber", 
-           email = "lmweberedu@gmail.com", 
+           email = "lmweb012@gmail.com", 
            role = c("aut", "cre"), 
            comment = c(ORCID = "0000-0002-3282-1730")), 
     person("Stephanie C.", "Hicks", 

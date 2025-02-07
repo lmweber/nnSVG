@@ -272,5 +272,5 @@ ggplot(df, aes(x = pxl_col_in_fullres, y = pxl_row_in_fullres,
 
 Our paper describing `nnSVG` is available from Nature Communications:
 
-- [Weber L.M. et al. (2023), "nnSVG for the scalable identification of spatially variable genes using nearest-neighbor Gaussian processes", Nature Communications](https://www.nature.com/articles/s41467-023-39748-z)
+- [Weber L.M. et al. (2023), "nnSVG for the scalable identification of spatially variable genes using nearest-neighbor Gaussian processes", Nature Communications, 14, 4059](https://www.nature.com/articles/s41467-023-39748-z)
 
